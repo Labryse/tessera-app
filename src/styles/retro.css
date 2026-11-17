@@ -1,0 +1,147 @@
+/* Emulators page, ROM folders, save sync and the saves tab. */
+
+.retro { gap: 30px; }
+.retro-sec { display: flex; flex-direction: column; gap: 12px; }
+.retro-sec-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+.emu-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+.emu-card {
+  display: flex; flex-direction: column; gap: 12px; padding: 14px 16px;
+  border: 1px solid var(--border); border-radius: 14px;
+  animation: tileIn 0.4s var(--ease) both; animation-delay: calc(var(--i, 0) * 50ms);
+}
+.emu-card.is-found { border-style: dashed; }
+.emu-card-top { display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+.emu-mono { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: var(--raised); color: var(--muted); }
+.emu-mono.is-on { background: var(--accent-wash); color: var(--text); }
+.emu-card-text { display: flex; flex-direction: column; min-width: 0; }
+.emu-name { font-weight: 650; }
+.emu-path { font-size: 12.5px; color: var(--faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: rtl; text-align: left; }
+.emu-systems { display: flex; flex-wrap: wrap; gap: 5px; }
+.emu-systems .tag { height: 22px; font-size: 12px; }
+.emu-args { display: flex; flex-direction: column; gap: 5px; }
+.emu-args input {
+  height: 32px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--raised);
+  color: var(--text); outline: 0; font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; font-size: 12.5px;
+}
+.emu-args input:focus { border-color: var(--control); }
+
+.folder-list { display: flex; flex-direction: column; gap: 8px; }
+.folder-row {
+  display: grid; grid-template-columns: 52px minmax(0, 1fr) 210px auto auto; gap: 12px; align-items: center;
+  padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px;
+}
+.folder-sys { height: 34px; border-radius: 9px; display: grid; place-items: center; background: var(--raised); font-weight: 700; font-size: 12.5px; }
+.folder-text { display: flex; flex-direction: column; min-width: 0; }
+.folder-path { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: rtl; text-align: left; font-weight: 550; }
+.folder-emu select { width: 100%; }
+
+.add-folder { display: flex; flex-direction: column; gap: 12px; padding: 14px; border-radius: 14px; background: var(--raised); animation: contentIn 0.3s var(--ease) both; }
+.add-folder .pick-file { background: var(--surface); }
+.add-folder-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.add-folder-row .field { height: 36px; background: var(--surface); }
+.add-folder-actions { margin-left: auto; display: flex; gap: 8px; }
+
+.sync-card {
+  display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; align-items: center;
+  padding: 14px 16px; border-radius: 14px; border: 1px solid var(--border);
+}
+.sync-card.is-on { border-color: color-mix(in srgb, var(--positive) 40%, var(--border)); background: color-mix(in srgb, var(--positive) 6%, transparent); }
+.sync-icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--raised); color: var(--muted); }
+.sync-card.is-on .sync-icon { color: var(--positive); }
+.sync-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.sync-text .muted { overflow-wrap: anywhere; }
+.sync-title { font-weight: 650; }
+.sync-actions { display: flex; gap: 8px; }
+.cloud-list { display: flex; flex-direction: column; gap: 4px; }
+.cloud-row { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; padding: 8px 10px; border-radius: 10px; text-align: left; }
+.cloud-row:hover:not(:disabled) { background: var(--raised); }
+.cloud-row:disabled { cursor: default; }
+.cloud-thumb { width: 26px; aspect-ratio: 1; border-radius: 4px; overflow: hidden; background: var(--raised); }
+.cloud-thumb .cover-fallback-text { display: none; }
+.cloud-text { display: flex; flex-direction: column; min-width: 0; }
+.cloud-title { font-weight: 600; }
+
+/* saves tab */
+.saves { max-width: 980px; }
+.save-files { display: flex; flex-direction: column; }
+.save-files li { display: grid; grid-template-columns: 130px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 8px 0; border-top: 1px solid var(--rule); }
+.save-files li:first-child { border-top: 0; }
+.save-kind { font-size: 12.5px; color: var(--muted); }
+.save-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 550; }
+.save-cloud { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--faint); padding-top: 10px; border-top: 1px solid var(--rule); }
+.save-cloud.is-on { color: var(--positive); }
+.snap-list { display: flex; flex-direction: column; }
+.snap-list li { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--rule); }
+.snap-list li:first-child { border-top: 0; }
+.snap-icon { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--raised); color: var(--muted); }
+.snap-list li.is-latest .snap-icon { background: var(--accent-wash); color: var(--text); }
+.snap-text { display: flex; flex-direction: column; min-width: 0; }
+.snap-when { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.snap-badge { font-size: 11px; padding: 1px 7px; border-radius: 999px; background: var(--accent-wash); color: var(--text); font-weight: 600; }
+.snap-where { display: flex; gap: 6px; color: var(--faint); }
+.snap-actions, .snap-confirm { display: flex; align-items: center; gap: 6px; }
+.snap-confirm { animation: contentIn 0.2s var(--ease) both; }
+.snap-confirm .small { color: var(--muted); max-width: 220px; }
+
+/* emulator cards: the program's own icon, its name, what it plays */
+.emu-cards { grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); }
+.emu-card2 {
+  display: grid; grid-template-columns: 60px minmax(0, 1fr) auto; gap: 16px; align-items: center;
+  padding: 16px 16px 16px 18px; border-radius: 18px; border: 1px solid var(--border);
+  background: linear-gradient(var(--surface), var(--surface)) padding-box;
+  transition: border-color 0.2s, transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  animation: tileIn 0.45s var(--ease) both; animation-delay: calc(var(--i, 0) * 60ms);
+}
+.emu-card2:hover { border-color: var(--control); transform: translateY(-2px); box-shadow: 0 14px 30px -18px rgba(0, 0, 0, 0.5); }
+.emu-card2.is-found { border-style: dashed; }
+.emu-art {
+  width: 60px; height: 60px; border-radius: 16px; display: grid; place-items: center;
+  background: var(--raised); color: var(--muted);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 6%, transparent);
+}
+.emu-art img { width: 36px; height: 36px; image-rendering: auto; filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.25)); }
+.emu-body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.emu-name { font-size: 16px; font-weight: 650; letter-spacing: -0.01em; }
+.emu-plays { font-size: 13px; color: var(--muted); line-height: 18px; }
+.emu-actions { display: flex; align-items: center; gap: 6px; }
+.emu-more {
+  grid-column: 1 / -1; display: flex; align-items: flex-end; gap: 10px;
+  padding-top: 14px; border-top: 1px solid var(--rule); animation: contentIn 0.25s var(--ease) both;
+}
+.emu-more .emu-args { flex: 1; }
+.emu-remove { color: var(--negative); }
+
+.folder-cta {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  padding: 22px 24px; border-radius: 18px; border: 1.5px dashed var(--control); text-align: left;
+  color: var(--text); transition: border-color 0.2s, background 0.2s;
+}
+.folder-cta svg { color: var(--accent); margin-bottom: 4px; }
+.folder-cta:hover { border-color: var(--accent); background: var(--raised); }
+.folder-cta-title { font-size: 16px; font-weight: 650; }
+.folder-cta .muted { max-width: 60ch; }
+
+/* save sync: two choices side by side */
+.sync-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 12px; align-items: start; }
+.sync-opt {
+  display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 14px; align-items: center;
+  padding: 16px; border-radius: 18px; border: 1px solid var(--border);
+  transition: border-color 0.2s, background 0.2s;
+}
+.sync-opt.is-on { border-color: color-mix(in srgb, var(--positive) 45%, var(--border)); background: color-mix(in srgb, var(--positive) 6%, transparent); }
+.sync-logo { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; background: var(--raised); color: var(--text); }
+.sync-opt:nth-child(2) .sync-logo { color: #0061fe; }
+.sync-body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.sync-name { font-size: 15.5px; font-weight: 650; }
+.sync-desc { font-size: 13px; color: var(--muted); line-height: 18px; overflow-wrap: anywhere; }
+.sync-act { display: flex; gap: 6px; align-items: center; }
+.sync-setup { grid-column: 1 / -1; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 13.5px; color: var(--muted); }
+.sync-setup summary { cursor: pointer; color: var(--text); font-weight: 550; list-style: none; }
+.sync-setup summary::-webkit-details-marker { display: none; }
+.sync-setup summary::before { content: '+ '; color: var(--accent); }
+.sync-setup[open] summary::before { content: '− '; }
+.sync-setup ol { margin: 10px 0 10px 18px; padding: 0; display: flex; flex-direction: column; gap: 6px; line-height: 20px; }
+.sync-setup ol li { list-style: decimal; }
+.sync-setup strong { color: var(--text); font-weight: 600; }
+.sync-now { align-self: flex-start; }

@@ -1,0 +1,183 @@
+/* Tessera themes. Colour lives in the cover art; the chrome stays near neutral.
+   One accent per theme, used on data (progress, ratings, the play time chart)
+   and on nothing else in the chrome. */
+
+:root,
+[data-theme='graphite'] {
+  color-scheme: dark;
+  --ground: #141414;
+  --surface: #1a1a1a;
+  --raised: #222222;
+  --active: #2a2a2a;
+  --border: #262626;
+  --rule: #212121;
+  --control: #383838;
+  --text: #ecebe8;
+  --muted: #b0aea9;
+  --faint: #979590;
+  --accent: #a9bdd1;
+  --accent-ink: #13171b;
+  --accent-wash: #1f2429;
+  --primary: #ecebe8;
+  --primary-ink: #141414;
+  --positive: #8cc5a0;
+  --negative: #e19a92;
+  --cover-shade: rgba(0, 0, 0, 0.35);
+  --scrim: 10, 10, 10;
+  --dark: 1;
+}
+
+[data-theme='linen'] {
+  color-scheme: light;
+  --ground: #efeeeb;
+  --surface: #fbfbfa;
+  --raised: #f2f1ee;
+  --active: #e6e4e0;
+  --border: #e2e0dc;
+  --rule: #ebeae7;
+  --control: #cdc8bf;
+  --text: #1b1a18;
+  --muted: #57544f;
+  --faint: #6a6761;
+  --accent: #3a6585;
+  --accent-ink: #ffffff;
+  --accent-wash: #e3eaef;
+  --primary: #1f1e1c;
+  --primary-ink: #fbfaf7;
+  --positive: #2f7a52;
+  --negative: #a8392f;
+  --cover-shade: rgba(60, 50, 40, 0.14);
+  --scrim: 20, 18, 16;
+  --dark: 0;
+}
+
+[data-theme='sorbet'] {
+  color-scheme: light;
+  --ground: #f6f0fb;
+  --surface: rgba(255, 253, 255, 0.86);
+  --raised: #f4edf9;
+  --active: #ece2f6;
+  --border: #ebe0f2;
+  --rule: #f1e9f6;
+  --control: #d9c9e6;
+  --text: #2d2438;
+  --muted: #6b6078;
+  --faint: #7a6f87;
+  --accent: #8455c4;
+  --accent-ink: #ffffff;
+  --accent-wash: #efe5fa;
+  --primary: #2d2438;
+  --primary-ink: #fffdff;
+  --positive: #2f8a68;
+  --negative: #c24a62;
+  --cover-shade: rgba(90, 60, 130, 0.12);
+  --scrim: 45, 30, 60;
+  --dark: 0;
+}
+
+[data-theme='synth'] {
+  color-scheme: dark;
+  --ground: #0b0817;
+  --surface: rgba(17, 12, 34, 0.9);
+  --raised: #1c1535;
+  --active: #261c47;
+  --border: #2a2050;
+  --rule: #1d1638;
+  --control: #3d3170;
+  --text: #f3edff;
+  --muted: #b6a9da;
+  --faint: #9a8cc4;
+  --accent: #ff4fd8;
+  --accent-ink: #1c0619;
+  --accent-wash: #2a1236;
+  --primary: #f3edff;
+  --primary-ink: #0b0817;
+  --positive: #3ff2dc;
+  --negative: #ff7a8f;
+  --cover-shade: rgba(255, 79, 216, 0.16);
+  --scrim: 8, 4, 20;
+  --dark: 1;
+}
+
+[data-theme='bauhaus'] {
+  color-scheme: light;
+  --ground: #efe8da;
+  --surface: #fbf7ef;
+  --raised: #f1ebdf;
+  --active: #e7dfcf;
+  --border: #161514;
+  --rule: #dcd3c2;
+  --control: #161514;
+  --text: #161514;
+  --muted: #4f4a42;
+  --faint: #6a645a;
+  --accent: #d63a2b;
+  --accent-ink: #ffffff;
+  --accent-wash: #f6ddd6;
+  --primary: #161514;
+  --primary-ink: #fbf7ef;
+  --positive: #1d6b3f;
+  --negative: #b8281c;
+  --cover-shade: rgba(22, 21, 20, 0.5);
+  --scrim: 22, 21, 20;
+  --dark: 0;
+}
+
+[data-theme='abyss'] {
+  color-scheme: dark;
+  --ground: #031018;
+  --surface: rgba(5, 22, 31, 0.78);
+  --raised: #0c2a36;
+  --active: #113543;
+  --border: #12323f;
+  --rule: #0b2530;
+  --control: #1d4a5a;
+  --text: #e0f3f4;
+  --muted: #92b6bc;
+  --faint: #789ea5;
+  --accent: #4fe0c6;
+  --accent-ink: #022019;
+  --accent-wash: #0b302f;
+  --primary: #e0f3f4;
+  --primary-ink: #031018;
+  --positive: #4fe0c6;
+  --negative: #ff8b7b;
+  --cover-shade: rgba(0, 0, 0, 0.35);
+  --scrim: 1, 10, 15;
+  --dark: 1;
+}
+
+[data-theme='ember'] {
+  color-scheme: dark;
+  --ground: #130e0b;
+  --surface: #1a1410;
+  --raised: #251c16;
+  --active: #2f241c;
+  --border: #2d2219;
+  --rule: #211913;
+  --control: #463628;
+  --text: #f6eadf;
+  --muted: #c6ae9a;
+  --faint: #a8907d;
+  --accent: #ff9c52;
+  --accent-ink: #2a1205;
+  --accent-wash: #33200f;
+  --primary: #f6eadf;
+  --primary-ink: #130e0b;
+  --positive: #b8d47c;
+  --negative: #ff8a70;
+  --cover-shade: rgba(0, 0, 0, 0.4);
+  --scrim: 12, 8, 5;
+  --dark: 1;
+}
+
+:root {
+  --font: 'Hanken Grotesk Variable', 'Segoe UI', system-ui, sans-serif;
+  --radius-sheet: 16px;
+  --radius-card: 14px;
+  --radius-cover: 8px;
+  --radius-control: 10px;
+  --radius-chip: 999px;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --sidebar: 236px;
+}

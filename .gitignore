@@ -1,0 +1,36 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.taste-skill
+
+# store art for the browser demo (copyrighted; fetch with scripts/fetch-media.mjs)
+public/media
+# local tool settings and signing keys never belong in the repository
+.claude
+*.key
+*.pfx
+.env
+.env.*
+# written by the release workflow
+src-tauri/tauri.release.json

@@ -1,0 +1,62 @@
+# Builds Tessera from this repository's source and puts it on a draft release with
+# the signed update file (latest.json). Run it from the Actions tab after raising
+# "version" in src-tauri/tauri.conf.json; publish the draft when it looks right.
+#
+# Repository secrets it reads (Settings → Secrets and variables → Actions):
+#   TAURI_SIGNING_PRIVATE_KEY           contents of %USERPROFILE%\.tauri\tessera.key
+#   TAURI_SIGNING_PRIVATE_KEY_PASSWORD  its password (may be empty)
+#   TESSERA_ITAD_KEY                    IsThereAnyDeal key built into the app (optional)
+#   TESSERA_GOOGLE_CLIENT_ID / _SECRET  Google Drive sync client (optional)
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - run: npm ci
+
+      # the updater asks this repository's latest release; forks point at their own
+      - name: Release settings
+        shell: pwsh
+        run: |
+          $conf = @{
+            bundle  = @{ createUpdaterArtifacts = $true }
+            plugins = @{ updater = @{ endpoints = @("https://github.com/${{ github.repository }}/releases/latest/download/latest.json") } }
+          }
+          $conf | ConvertTo-Json -Depth 5 | Set-Content src-tauri/tauri.release.json -Encoding utf8
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          TESSERA_ITAD_KEY: ${{ secrets.TESSERA_ITAD_KEY }}
+          # bug reports open an issue in this repository
+          TESSERA_REPO: ${{ github.repository }}
+          TESSERA_GOOGLE_CLIENT_ID: ${{ secrets.TESSERA_GOOGLE_CLIENT_ID }}
+          TESSERA_GOOGLE_CLIENT_SECRET: ${{ secrets.TESSERA_GOOGLE_CLIENT_SECRET }}
+        with:
+          args: --config src-tauri/tauri.release.json
+          tagName: v__VERSION__
+          releaseName: Tessera __VERSION__
+          releaseDraft: true
+          includeUpdaterJson: true

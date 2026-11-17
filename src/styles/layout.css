@@ -1,0 +1,117 @@
+/* Where things sit, as a theme's layout says: the menu as a left or right column, a thin
+   rail or a bar across the top, and a game list column beside the page. The shell puts
+   data-nav and data-list on .app; sizes come from the theme as variables. */
+
+/* ---------------------------------------------------------------- the grid */
+.app[data-list='left'] { grid-template-columns: var(--sidebar) var(--list-w, 280px) minmax(0, 1fr); grid-template-areas: 'nav list main'; }
+.app[data-list='right'] { grid-template-columns: var(--sidebar) minmax(0, 1fr) var(--list-w, 280px); grid-template-areas: 'nav main list'; }
+
+.app[data-nav='right'] { grid-template-columns: minmax(0, 1fr) var(--sidebar); grid-template-areas: 'main nav'; --sheet-m: var(--gap, 8px) 0 var(--gap, 8px) var(--gap, 8px); }
+.app[data-nav='right'][data-list='left'] { grid-template-columns: var(--list-w, 280px) minmax(0, 1fr) var(--sidebar); grid-template-areas: 'list main nav'; }
+.app[data-nav='right'][data-list='right'] { grid-template-columns: minmax(0, 1fr) var(--list-w, 280px) var(--sidebar); grid-template-areas: 'main list nav'; }
+
+.app[data-nav='rail'] { --sidebar: 68px; }
+
+.app[data-nav='top'] { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); grid-template-areas: 'nav' 'main'; --sheet-m: 0 var(--gap, 8px) var(--gap, 8px); }
+.app[data-nav='top'][data-list='left'] { grid-template-columns: var(--list-w, 280px) minmax(0, 1fr); grid-template-areas: 'nav nav' 'list main'; }
+.app[data-nav='top'][data-list='right'] { grid-template-columns: minmax(0, 1fr) var(--list-w, 280px); grid-template-areas: 'nav nav' 'main list'; }
+
+/* with a list, the two panels keep the same space between them and the window */
+.app[data-list] { column-gap: var(--gap, 8px); }
+.app[data-list] > .sheet, .app[data-list] > .game-list { margin: var(--gap, 8px) 0; }
+.app[data-list][data-nav='left'], .app[data-list][data-nav='rail'] { padding-right: var(--gap, 8px); }
+.app[data-list][data-nav='right'] { padding-left: var(--gap, 8px); }
+.app[data-list][data-nav='top'] { padding: 0 var(--gap, 8px); }
+.app[data-list][data-nav='top'] > .sheet, .app[data-list][data-nav='top'] > .game-list { margin: 0 0 var(--gap, 8px); }
+.app.is-big .game-list { visibility: hidden; }
+
+.nav-group-items { display: flex; flex-direction: column; gap: 1px; }
+
+/* ---------------------------------------------------------------- a bar across the top */
+.app[data-nav='top'] > .sidebar {
+  flex-direction: row; align-items: center; gap: 6px; padding: 10px 14px;
+  overflow: visible; min-width: 0; position: relative; z-index: 30;
+}
+.app[data-nav='top'] .brand { padding: 0 12px 0 4px; flex: none; }
+.app[data-nav='top'] .search-trigger { margin: 0; flex: none; width: auto; padding: 0 10px; }
+.app[data-nav='top'] .search-trigger span, .app[data-nav='top'] .sidebar kbd, .app[data-nav='top'] .nav-count { display: none; }
+.app[data-nav='top'] .nav { flex-direction: row; gap: 2px; min-width: 0; overflow-x: auto; scrollbar-width: none; flex: 0 1 auto; }
+.app[data-nav='top'] .nav-item { padding: 0 11px; flex: none; }
+/* a bar has room for words, not for icons beside them */
+.app[data-nav='top'] .nav > .nav-item .nav-icon { display: none; }
+.app[data-nav='top'] .nav-label { flex: none; }
+.app[data-nav='top'] .nav-group { margin: 0; position: relative; flex: none; }
+.app[data-nav='top'] .nav-heading {
+  height: var(--nav-item, 32px); display: flex; align-items: center; gap: 6px; padding: 0 8px 0 12px;
+  border-radius: 8px; font-size: inherit; color: var(--muted); cursor: default;
+}
+.app[data-nav='top'] .nav-group:hover > .nav-heading, .app[data-nav='top'] .nav-group:focus-within > .nav-heading { background: var(--raised); color: var(--text); }
+.app[data-nav='top'] .nav-group-items {
+  position: absolute; top: 100%; left: 0; min-width: 240px; max-height: 70vh; overflow-y: auto; padding: 6px;
+  display: none; background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.5);
+}
+.app[data-nav='top'] .nav-group:hover > .nav-group-items, .app[data-nav='top'] .nav-group:focus-within > .nav-group-items { display: flex; }
+.app[data-nav='top'] .nav-group-items .nav-count { display: inline; }
+.app[data-nav='top'] .sidebar-foot {
+  margin: 0 0 0 auto; padding: 0; position: static; background: none; backdrop-filter: none;
+  display: flex; flex-direction: row; align-items: center; gap: 4px; flex: none;
+}
+.app[data-nav='top'] .sidebar-foot .nav-label { display: none; }
+.app[data-nav='top'] .sidebar-foot .nav-item { padding: 0 10px; }
+.app[data-nav='top'] .now-playing { flex-direction: row; margin: 0 6px 0 0; }
+.app[data-nav='top'] .np-item { padding: 4px 10px 4px 4px; gap: 0; }
+.app[data-nav='top'] .np-thumb { width: 22px; }
+.app[data-nav='top'] .np-presence, .app[data-nav='top'] .np-item .sess-bar { display: none; }
+
+/* ---------------------------------------------------------------- a thin rail */
+.app[data-nav='rail'] > .sidebar { padding: 14px 10px; }
+.app[data-nav='rail'] .brand { justify-content: center; padding: 2px 0 12px; }
+.app[data-nav='rail'] .brand-name, .app[data-nav='rail'] .sidebar .nav-label, .app[data-nav='rail'] .sidebar .nav-count,
+.app[data-nav='rail'] .sidebar kbd, .app[data-nav='rail'] .search-trigger span, .app[data-nav='rail'] .nav-heading,
+.app[data-nav='rail'] .nav-hint, .app[data-nav='rail'] .nav-new, .app[data-nav='rail'] .np-text, .app[data-nav='rail'] .np-item .sess-bar { display: none; }
+.app[data-nav='rail'] .nav-group { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--rule); }
+.app[data-nav='rail'] .sidebar .nav-item, .app[data-nav='rail'] .search-trigger { justify-content: center; padding: 0; height: max(var(--nav-item, 32px), 40px); }
+.app[data-nav='rail'] .np-item { padding: 6px; align-items: center; }
+
+/* ---------------------------------------------------------------- the game list */
+.game-list {
+  display: flex; flex-direction: column; min-height: 0; min-width: 0;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sheet); overflow: hidden;
+}
+.gl-head { display: flex; align-items: center; gap: 8px; padding: 14px 14px 8px; }
+.gl-scope { flex: 1; min-width: 0; text-align: left; font-weight: 650; font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gl-scope:hover { color: var(--accent); }
+.gl-n { font-size: 12px; color: var(--faint); }
+.gl-search { display: flex; align-items: center; gap: 8px; margin: 0 10px 8px; height: 32px; padding: 0 10px; border-radius: var(--radius-control); background: var(--raised); color: var(--faint); }
+.gl-search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--text); font: inherit; }
+.gl-search input::placeholder { color: var(--faint); }
+.gl-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 0 6px 10px; scrollbar-width: thin; scrollbar-color: var(--active) transparent; }
+.gl-group + .gl-group { margin-top: 6px; }
+.gl-group-head {
+  display: flex; align-items: center; gap: 6px; width: 100%; height: 28px; padding: 0 8px;
+  font-size: 11.5px; font-weight: 650; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em;
+}
+.gl-group-head > span:first-of-type { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gl-group-head .gl-n { margin-left: auto; }
+.gl-group-head:hover { color: var(--text); }
+.gl-chev { flex: none; transition: transform 0.15s; }
+.gl-group-head[aria-expanded='true'] .gl-chev { transform: rotate(90deg); }
+.gl-row {
+  display: flex; align-items: center; gap: 10px; width: 100%; height: var(--list-row, 32px); padding: 0 8px;
+  border-radius: 6px; color: var(--text); text-align: left;
+}
+.gl-row:hover { background: var(--raised); }
+.gl-row.is-active { background: var(--active); }
+.gl-row.is-remote { color: var(--faint); }
+.gl-row.is-remote:hover, .gl-row.is-remote.is-active { color: var(--muted); }
+.gl-row.is-live .gl-title { color: var(--accent); }
+.gl-title { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13.5px; }
+.gl-live { flex: none; font-size: 11px; color: var(--accent); }
+.gl-art { flex: none; height: calc(var(--list-row, 32px) - 8px); overflow: hidden; border-radius: 3px; background: var(--raised); display: grid; place-items: center; }
+.gl-art.is-cover { aspect-ratio: 2 / 3; }
+.gl-art.is-header { aspect-ratio: 460 / 215; }
+.gl-art img { width: 100%; height: 100%; object-fit: cover; }
+.gl-row.is-remote .gl-art img { filter: saturate(0.4); opacity: 0.7; }
+.gl-art-letter { font-size: 10px; font-weight: 700; color: var(--muted); }
+.gl-empty { padding: 16px; color: var(--faint); }

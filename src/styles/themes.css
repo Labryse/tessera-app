@@ -1,0 +1,115 @@
+/* Each theme is more than a palette: its own backdrop, corners, borders and a
+   few touches on headings, the active menu item and the main buttons.
+   Graphite and Linen stay plain on purpose. */
+
+/* corners per theme (html[...] so they win over the :root defaults) */
+html[data-theme='sorbet'] { --radius-sheet: 24px; --radius-card: 20px; --radius-cover: 14px; --radius-control: 14px; }
+html[data-theme='bauhaus'] { --radius-sheet: 4px; --radius-card: 3px; --radius-cover: 2px; --radius-control: 3px; --radius-chip: 3px; }
+html[data-theme='abyss'] { --radius-sheet: 20px; --radius-card: 16px; }
+
+/* ---------------------------------------------------------------- Sorbet: pastel, soft */
+[data-theme='sorbet'] body {
+  background:
+    radial-gradient(42vw 38vw at 6% 4%, #ffd9e6 0%, transparent 70%),
+    radial-gradient(40vw 40vw at 96% 12%, #d8ecff 0%, transparent 70%),
+    radial-gradient(46vw 40vw at 70% 104%, #d6f5e6 0%, transparent 70%),
+    radial-gradient(36vw 32vw at 18% 96%, #ffe7cf 0%, transparent 70%),
+    #f6f0fb;
+  background-attachment: fixed;
+}
+[data-theme='sorbet'] .sheet { border-color: rgba(255, 255, 255, 0.9); box-shadow: 0 24px 70px rgba(130, 90, 180, 0.14); }
+[data-theme='sorbet'] .nav-item.is-active { background: rgba(255, 255, 255, 0.85); box-shadow: 0 6px 18px rgba(130, 90, 180, 0.14); color: var(--accent); }
+[data-theme='sorbet'] .btn-accent, [data-theme='sorbet'] .btn-primary { background: linear-gradient(135deg, #9a6ad8, #e58bb7); color: #fff; }
+[data-theme='sorbet'] .panel, [data-theme='sorbet'] .tile-cover { box-shadow: 0 8px 26px rgba(130, 90, 180, 0.1); }
+[data-theme='sorbet'] h1 { letter-spacing: -0.02em; }
+
+/* ---------------------------------------------------------------- Synth: neon night */
+[data-theme='synth'] body {
+  background:
+    radial-gradient(60vw 40vw at 100% 0%, rgba(255, 79, 216, 0.22) 0%, transparent 65%),
+    radial-gradient(55vw 45vw at 0% 100%, rgba(63, 242, 220, 0.16) 0%, transparent 65%),
+    repeating-linear-gradient(0deg, rgba(124, 92, 255, 0.07) 0 1px, transparent 1px 44px),
+    repeating-linear-gradient(90deg, rgba(124, 92, 255, 0.07) 0 1px, transparent 1px 44px),
+    #0b0817;
+  background-attachment: fixed;
+}
+[data-theme='synth'] .sheet { border-color: rgba(255, 79, 216, 0.3); box-shadow: 0 0 0 1px rgba(124, 92, 255, 0.12), 0 0 70px rgba(255, 79, 216, 0.1); }
+[data-theme='synth'] h1 {
+  background: linear-gradient(90deg, #ff4fd8 0%, #9b7bff 50%, #3ff2dc 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+[data-theme='synth'] .nav-item.is-active { background: linear-gradient(90deg, rgba(255, 79, 216, 0.24), rgba(124, 92, 255, 0.06)); box-shadow: inset 2px 0 0 #ff4fd8; }
+[data-theme='synth'] .btn-accent, [data-theme='synth'] .btn-primary {
+  background: linear-gradient(135deg, #ff4fd8, #9b7bff); color: #fff; box-shadow: 0 0 22px rgba(255, 79, 216, 0.45);
+}
+[data-theme='synth'] .tile-hit:hover .tile-cover { box-shadow: 0 0 0 1px rgba(255, 79, 216, 0.6), 0 0 28px rgba(255, 79, 216, 0.35); }
+[data-theme='synth'] .sess-bar > span, [data-theme='synth'] .big-tile.is-focus { box-shadow: 0 0 12px rgba(255, 79, 216, 0.7); }
+[data-theme='synth'] .big-tile.is-focus { box-shadow: 0 0 0 3px #ff4fd8, 0 0 34px rgba(255, 79, 216, 0.6); }
+
+/* ---------------------------------------------------------------- Bauhaus: shapes on paper */
+[data-theme='bauhaus'] body {
+  background:
+    linear-gradient(#161514, #161514) left 18px bottom 0 / 3px 46px no-repeat,
+    radial-gradient(circle at 100% 100%, #2456a6 0 34px, transparent 35px),
+    #efe8da;
+  background-attachment: fixed;
+}
+/* the shapes live on the sheet's own corners, out of the way of the text */
+[data-theme='bauhaus'] .sheet {
+  margin: 12px 14px 14px 12px; border: 2px solid #161514; box-shadow: 8px 8px 0 #161514;
+  background:
+    radial-gradient(circle at 100% 0, #d63a2b 0 118px, transparent 119px),
+    linear-gradient(#2456a6, #2456a6) right 150px top 0 / 26px 74px no-repeat,
+    radial-gradient(circle at 0 100%, #f2b51f 0 92px, transparent 93px),
+    linear-gradient(#161514, #161514) left 118px bottom 0 / 54px 14px no-repeat,
+    #fbf7ef;
+}
+[data-theme='bauhaus'] .sheet-scroll::-webkit-scrollbar-thumb { background: #161514; border-color: #fbf7ef; border-radius: 0; }
+[data-theme='bauhaus'] h1 { text-transform: uppercase; font-weight: 800; letter-spacing: 0.01em; }
+[data-theme='bauhaus'] .panel-title, [data-theme='bauhaus'] .lib-group-title { text-transform: uppercase; letter-spacing: 0.04em; font-weight: 800; }
+[data-theme='bauhaus'] .nav-item.is-active { background: #161514; color: #fbf7ef; }
+[data-theme='bauhaus'] .btn { border: 1.5px solid #161514; box-shadow: 2px 2px 0 #161514; transition: transform 0.12s, box-shadow 0.12s; }
+[data-theme='bauhaus'] .btn:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 #161514; }
+[data-theme='bauhaus'] .btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #161514; }
+[data-theme='bauhaus'] .btn-ghost { border-color: transparent; box-shadow: none; }
+[data-theme='bauhaus'] .btn-accent { background: #d63a2b; color: #fff; }
+[data-theme='bauhaus'] .btn-primary { background: #2456a6; color: #fff; }
+[data-theme='bauhaus'] .tile-cover { border: 2px solid #161514; }
+[data-theme='bauhaus'] .panel { border-width: 2px; }
+
+/* ---------------------------------------------------------------- Abyss: deep water, slow light */
+[data-theme='abyss'] body { background: #031018; }
+[data-theme='abyss'] body::before {
+  content: ''; position: fixed; inset: -20%; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(40% 35% at 20% 15%, rgba(40, 160, 170, 0.55) 0%, transparent 70%),
+    radial-gradient(45% 40% at 85% 30%, rgba(40, 90, 190, 0.5) 0%, transparent 70%),
+    radial-gradient(50% 40% at 50% 100%, rgba(30, 150, 130, 0.45) 0%, transparent 70%);
+  animation: abyssDrift 48s ease-in-out infinite alternate;
+}
+@keyframes abyssDrift { to { transform: translate(4%, -3%) rotate(6deg) scale(1.08); } }
+[data-theme='abyss'] .sheet { border-color: rgba(79, 224, 198, 0.14); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45); }
+[data-theme='abyss'] .nav-item.is-active { background: rgba(79, 224, 198, 0.1); color: var(--accent); }
+[data-theme='abyss'] .btn-accent { background: linear-gradient(135deg, #4fe0c6, #3aa8e0); color: #022019; }
+[data-theme='abyss'] h1 { font-weight: 600; letter-spacing: -0.01em; }
+
+/* ---------------------------------------------------------------- Ember: warm, by the fire */
+[data-theme='ember'] body {
+  background:
+    radial-gradient(70vw 40vw at 50% 110%, rgba(255, 120, 40, 0.3) 0%, transparent 70%),
+    radial-gradient(30vw 30vw at 0% 0%, rgba(255, 170, 90, 0.07) 0%, transparent 70%),
+    #130e0b;
+  background-attachment: fixed;
+}
+[data-theme='ember'] h1, [data-theme='ember'] .panel-title, [data-theme='ember'] .big-title {
+  font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif; font-weight: 600; letter-spacing: 0;
+}
+[data-theme='ember'] h1 { font-size: 27px; }
+[data-theme='ember'] .sheet {
+  background: radial-gradient(80% 50% at 50% 115%, rgba(255, 120, 40, 0.13), transparent 70%), radial-gradient(40% 30% at 100% 0%, rgba(255, 190, 120, 0.05), transparent 70%), #1a1410;
+  border-color: #2d2219; box-shadow: 0 0 0 1px rgba(255, 156, 82, 0.05), 0 30px 80px rgba(0, 0, 0, 0.5); }
+[data-theme='ember'] .nav-item.is-active { background: rgba(255, 156, 82, 0.12); color: #ffc497; }
+[data-theme='ember'] .btn-accent { background: linear-gradient(135deg, #ffb062, #ff7a3d); color: #2a1205; }
+
+@media (prefers-reduced-motion: reduce) { [data-theme='abyss'] body::before { animation: none; } }
+html.reduce-motion body::before { animation: none; }

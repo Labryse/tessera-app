@@ -57,12 +57,16 @@ const picture = (n: NewsItem, g?: Game) => n.image ?? g?.hero ?? g?.header ?? nu
 
 interface Post { n: NewsItem; g?: Game }
 
-/** a picture that gives way to the game's art when it does not load */
+/** a picture that gives way to the game's art when it does not load, or when it is a
+ *  thin heading strip (some posts open with one) that would be blown up on a card */
 function Art({ src, fallback, className = '' }: { src: string | null; fallback?: string | null; className?: string }) {
   const [failed, setFailed] = useState(false);
   const url = failed ? fallback ?? null : src;
   if (!url) return <span className={`nw-art-none ${className}`} />;
-  return <img className={className} src={url} alt="" loading="lazy" onError={() => setFailed(true)} />;
+  return (
+    <img className={className} src={url} alt="" loading="lazy" onError={() => setFailed(true)}
+      onLoad={(e) => { const i = e.currentTarget; if (!failed && i.naturalWidth > i.naturalHeight * 4) setFailed(true); }} />
+  );
 }
 
 function Meta({ p, onGame }: { p: Post; onGame?: () => void }) {

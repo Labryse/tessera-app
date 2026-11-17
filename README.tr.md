@@ -16,7 +16,7 @@ Bütün mağazalardaki oyunların tek listede görünür. Aynı oyun iki mağaza
 
 ![Oyun sayfası](docs/screenshots/tr/game.webp)
 
-Oyunun bilgileri, ekran görüntüleri, başarımları, oturumların, notların ve incelemen tek sayfada durur. Mağaza fiyatları yan yana görünür; istek listendeki oyun indirime girince Windows bildirimi gelir.
+Oyunun bilgileri, ekran görüntüleri, başarımları, oturumların ve notların tek sayfada durur. Mağaza fiyatları yan yana görünür; istek listendeki oyun indirime girince Windows bildirimi gelir.
 
 ## İstatistikler
 

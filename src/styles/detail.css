@@ -298,39 +298,6 @@
 .live-bar > span { border-radius: 2px; }
 .btn-live:hover { background: var(--accent-wash); }
 
-/* ---------------------------------------------------------------- review */
-.rv-editor, .rv-view { max-width: 900px; gap: 16px; }
-.rv-verdicts { align-self: flex-start; }
-.rv-verdicts button { display: inline-flex; align-items: center; gap: 7px; }
-.rv-verdicts .rv-v-yes[aria-pressed='true'] { color: var(--positive); }
-.rv-verdicts .rv-v-no[aria-pressed='true'] { color: var(--negative); }
-.rv-text {
-  width: 100%; resize: vertical; min-height: 150px; padding: 14px 16px; border-radius: 12px;
-  border: 1px solid var(--border); background: var(--raised); color: var(--text); outline: 0;
-  font-size: 15.5px; line-height: 25px; transition: border-color 0.2s;
-}
-.rv-text:focus { border-color: var(--control); }
-.rv-text::placeholder { color: var(--faint); }
-.rv-lists { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.rv-list { display: flex; flex-direction: column; gap: 8px; }
-.rv-list ul { display: flex; flex-direction: column; gap: 6px; }
-.rv-list li { display: flex; align-items: flex-start; gap: 8px; line-height: 22px; }
-.rv-list li::before { content: ''; flex: none; width: 14px; height: 14px; margin-top: 4px; border-radius: 50%; }
-.rv-pro li::before { background: color-mix(in srgb, var(--positive) 28%, transparent); box-shadow: inset 0 0 0 4px var(--surface); background-color: var(--positive); }
-.rv-con li::before { background-color: var(--negative); box-shadow: inset 0 0 0 4px var(--surface); }
-.rv-list li span { flex: 1; }
-.rv-add { display: flex; align-items: center; gap: 8px; color: var(--faint); padding: 6px 10px; border-radius: 9px; border: 1px dashed var(--border); }
-.rv-add input { flex: 1; border: 0; outline: 0; background: transparent; color: var(--text); }
-.rv-head { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 16px; }
-.rv-verdict { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; font-weight: 600; background: var(--raised); }
-.rv-verdict.rv-v-yes { color: var(--positive); background: color-mix(in srgb, var(--positive) 12%, transparent); }
-.rv-verdict.rv-v-no { color: var(--negative); background: color-mix(in srgb, var(--negative) 12%, transparent); }
-.rv-score { font-size: 15px; font-weight: 600; }
-.rv-tools { margin-left: auto; display: flex; gap: 4px; }
-.rv-body p { font-size: 16.5px; line-height: 28px; margin: 0 0 14px; max-width: 70ch; }
-.rv-lists-view { padding-top: 14px; border-top: 1px solid var(--rule); }
-.rv-mini { color: var(--muted); line-height: 22px; }
-.rv-mini strong { color: var(--text); }
 .scan-state-sm { padding: 0 0 12px; font-size: 13px; }
 
 /* ---------------------------------------------------------------- news */

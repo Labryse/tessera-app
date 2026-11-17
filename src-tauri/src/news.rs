@@ -3,6 +3,7 @@
 
 use crate::{db, AppState};
 use serde_json::{json, Value};
+use std::collections::HashMap;
 
 const FRESH_FOR: i64 = 3 * 3600;
 const CLAN_IMAGES: &str = "https://clan.akamai.steamstatic.com/images";
@@ -18,8 +19,8 @@ pub fn appid_of(platform: &str, external_id: &str, meta: &Value) -> Option<u32> 
 
 /// the latest announcements of one game, newest first
 pub async fn for_app(st: &AppState, appid: u32) -> Result<Vec<Value>, String> {
-    // v2: items carry the readable body too
-    let key = format!("news2:{appid}");
+    // v3: items carry Steam's own card picture
+    let key = format!("news3:{appid}");
     if let Some(Value::Array(v)) = db::cache_get(&st.db.lock().unwrap(), &key, FRESH_FOR) {
         return Ok(v);
     }
@@ -34,12 +35,45 @@ pub async fn for_app(st: &AppState, appid: u32) -> Result<Vec<Value>, String> {
         return Err(format!("Steam {}", r.status()));
     }
     let v: Value = r.json().await.map_err(|e| e.to_string())?;
-    let items: Vec<Value> = v["appnews"]["newsitems"].as_array().map(|a| a.iter().map(item).collect()).unwrap_or_default();
+    let caps = capsules(st, appid).await;
+    let items: Vec<Value> = v["appnews"]["newsitems"].as_array().map(|a| a.iter().map(|n| item(n, &caps)).collect()).unwrap_or_default();
     let _ = db::cache_put(&st.db.lock().unwrap(), &key, &Value::Array(items.clone()));
     Ok(items)
 }
 
-fn item(n: &Value) -> Value {
+/// Steam's own 800×450 card picture for each announcement, by its title. The first
+/// picture inside a post can be a thin heading strip that looks broken on a card.
+async fn capsules(st: &AppState, appid: u32) -> HashMap<String, String> {
+    let mut out = HashMap::new();
+    let Ok(r) = st
+        .http
+        .get("https://store.steampowered.com/events/ajaxgetpartnereventspageable/")
+        .query(&[("clan_accountid", "0"), ("appid", appid.to_string().as_str()), ("offset", "0"), ("count", "20"), ("l", "english")])
+        .send()
+        .await
+    else {
+        return out;
+    };
+    let Ok(v) = r.json::<Value>().await else { return out };
+    for e in v["events"].as_array().into_iter().flatten() {
+        if let Some((title, url)) = capsule(e) {
+            out.insert(title, url);
+        }
+    }
+    out
+}
+
+/// one event's title and card picture
+fn capsule(e: &Value) -> Option<(String, String)> {
+    const CLAN_BASE: u64 = 103_582_791_429_521_408;
+    let clan = e["clan_steamid"].as_str().and_then(|s| s.parse::<u64>().ok()).or_else(|| e["clan_steamid"].as_u64())?.checked_sub(CLAN_BASE)?;
+    let data: Value = serde_json::from_str(e["jsondata"].as_str()?).ok()?;
+    let file = data["localized_capsule_image"].as_array()?.iter().find_map(|x| x.as_str().filter(|s| !s.is_empty()))?;
+    let title = e["announcement_body"]["headline"].as_str().or_else(|| e["event_name"].as_str())?;
+    Some((title.trim().to_string(), format!("{CLAN_IMAGES}/{clan}/{file}")))
+}
+
+fn item(n: &Value, caps: &HashMap<String, String>) -> Value {
     let body = n["contents"].as_str().unwrap_or_default();
     let title = n["title"].as_str().unwrap_or_default();
     let tagged = n["tags"].as_array().is_some_and(|t| t.iter().any(|x| x.as_str() == Some("patchnotes")));
@@ -48,7 +82,7 @@ fn item(n: &Value) -> Value {
         "title": title,
         "url": n["url"],
         "date": n["date"],
-        "image": first_image(body),
+        "image": caps.get(title.trim()).cloned().or_else(|| first_image(body)),
         "summary": summary(body, 320),
         "body": reading(body, 12000),
         "patch": tagged || looks_like_patch(title),
@@ -191,6 +225,18 @@ mod tests {
     }
 
     #[test]
+    fn finds_the_card_picture_of_an_event() {
+        let e = json!({
+            "clan_steamid": "103582791435406442",
+            "event_name": "New Legend",
+            "announcement_body": { "headline": "New Legend: Morgwyn" },
+            "jsondata": "{\"localized_capsule_image\":[\"c5a9.jpg\",null]}"
+        });
+        assert_eq!(capsule(&e), Some(("New Legend: Morgwyn".into(), "https://clan.akamai.steamstatic.com/images/5885034/c5a9.jpg".into())));
+        assert_eq!(capsule(&json!({ "clan_steamid": "1", "jsondata": "{}" })), None);
+    }
+
+    #[test]
     fn cuts_long_text_at_a_word() {
         let s = summary("one two three four five", 12);
         assert_eq!(s, "one two…");
@@ -205,7 +251,7 @@ mod tests {
             tracker: crate::tracker::Tracker::new(true),
             dir: std::env::temp_dir(),
         };
-        for appid in [1086940u32, 730, 1145350] {
+        for appid in [1086940u32, 730, 1145350, 291550] {
             let v = tauri::async_runtime::block_on(for_app(&st, appid)).unwrap();
             println!("== {appid}: {} items", v.len());
             for n in v.iter().take(3) {

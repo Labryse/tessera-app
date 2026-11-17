@@ -9,7 +9,6 @@ import {
 import { sampleHue, tame } from '../lib/accent';
 import { Cover, Progress, RatingBar, StatusPicker, useCountUp } from './bits';
 import { WeekBars } from './WeekBars';
-import { ReviewTab } from './Review';
 import { SavesTab } from './Saves';
 import { NewsTab, steamApp } from './News';
 import { ArtPicker } from './ArtPicker';
@@ -21,8 +20,8 @@ import { api, shotUrl, type ShotFile, type SteamDetails } from '../lib/backend';
 import { ago, bytes, clock, duration, gb, int, longDate, score, shortDate, pct } from '../lib/format';
 
 import { t as tr, locale } from '../lib/i18n';
-type Tab = 'overview' | 'achievements' | 'sessions' | 'news' | 'notes' | 'review' | 'saves';
-const TABS: Tab[] = ['overview', 'achievements', 'sessions', 'notes', 'review', 'saves'];
+type Tab = 'overview' | 'achievements' | 'sessions' | 'news' | 'notes' | 'saves';
+const TABS: Tab[] = ['overview', 'achievements', 'sessions', 'notes', 'saves'];
 const AXES: { id: keyof RatingAxes; label: string }[] = [
   { id: 'story', label: tr('Hikâye') },
   { id: 'gameplay', label: tr('Oynanış') },
@@ -230,7 +229,6 @@ export function GameDetail({ id }: { id: string }) {
           ['sessions', tr('Oturumlar'), g.sessions.length || null],
           ...(steamApp(g) != null ? [['news', tr('Haberler'), null] as [Tab, string, null]] : []),
           ['notes', tr('Notlar'), g.notes.length || null],
-          ['review', tr('İnceleme'), null],
           ...(g.rom && !demo ? [['saves', tr('Kayıtlar'), null] as [Tab, string, null]] : []),
         ] as [Tab, string, string | number | null][]).map(([k, label, n]) => (
           <button key={k} ref={(el) => { tabRefs.current[k] = el; }} role="tab" aria-selected={tab === k}
@@ -247,7 +245,6 @@ export function GameDetail({ id }: { id: string }) {
         {tab === 'sessions' && <Sessions g={g} />}
         {tab === 'news' && <NewsTab g={g} />}
         {tab === 'notes' && <Notes g={g} />}
-        {tab === 'review' && <ReviewTab g={g} />}
         {tab === 'saves' && <SavesTab g={g} />}
       </div>
       {!demo && <ArtPicker g={g} open={artOpen} onClose={() => setArtOpen(false)} />}
@@ -608,20 +605,8 @@ function Overview({ g, about, onTab }: { g: Game; about: string; onTab: (t: Tab)
         <RecordPanel g={g} />
       </section>
 
-      {(rare.length > 0 || note || g.rom || g.review) && (
+      {(rare.length > 0 || note || g.rom) && (
         <div className="split">
-          {g.review && (
-            <section className="panel">
-              <div className="panel-head">
-                <h2 className="panel-title">{tr('İncelemen')}</h2>
-                <button className="link" onClick={() => onTab('review')}>{tr('Aç')}</button>
-              </div>
-              <p className="rv-mini">
-                {g.review.verdict && <strong>{g.review.verdict === 'yes' ? tr('Tavsiye ederim. ') : g.review.verdict === 'no' ? tr('Tavsiye etmem. ') : tr('Kararsızım. ')}</strong>}
-                {g.review.text.slice(0, 220)}{g.review.text.length > 220 ? '…' : ''}
-              </p>
-            </section>
-          )}
           {rare.length > 0 && (
             <section className="panel">
               <div className="panel-head">

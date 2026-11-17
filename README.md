@@ -16,7 +16,7 @@ Games from every store show up in one list. A game you own in two stores becomes
 
 ![Game page](docs/screenshots/en/game.webp)
 
-A game's details, screenshots, achievements, your sessions, notes and review are on one page. Store prices sit side by side, and when a game on your wishlist goes on sale you get a Windows notification.
+A game's details, screenshots, achievements, your sessions and notes are on one page. Store prices sit side by side, and when a game on your wishlist goes on sale you get a Windows notification.
 
 ## Statistics
 

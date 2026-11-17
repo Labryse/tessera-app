@@ -7,6 +7,7 @@ import { Bell, BellRing, TrendingDown, X } from 'lucide-react';
 import { useStore } from '../store';
 import { api, isDesktop, type Tracked } from '../lib/backend';
 import { cheapest, money, samplePrices, ShopMark } from './Stores';
+import { pct } from '../lib/format';
 
 import { t } from '../lib/i18n';
 // one list for every component on screen
@@ -123,7 +124,7 @@ export function TrackedShelf() {
                     <span className="tracked-price">
                       {x.shopId != null && x.shop && <ShopMark id={x.shopId} name={x.shop} size={12} />}
                       <strong className="num">{money(x.price, x.currency ?? 'USD')}</strong>
-                      {d > 0 && <span className="tracked-drop num"><TrendingDown size={12} strokeWidth={2} /> %{d}</span>}
+                      {d > 0 && <span className="tracked-drop num"><TrendingDown size={12} strokeWidth={2} /> {pct(d)}</span>}
                     </span>
                   ) : <span className="muted small">{t('Satışta değil')}</span>}
                   {x.target != null && <span className={`tracked-goal ${hit ? 'is-hit' : ''}`}>{t('Hedef')} <span className="num">{money(x.target, x.currency ?? 'USD')}</span></span>}

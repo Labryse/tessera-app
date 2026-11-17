@@ -1,5 +1,5 @@
 // Screenshots for the README, taken from the browser demo (npm run dev) with a headless
-// Chrome or Edge driven over the DevTools protocol. Writes docs/screenshots/*.webp.
+// Chrome or Edge driven over the DevTools protocol. Writes docs/screenshots/{en,tr}/*.webp.
 //   node scripts/screenshots.mjs [http://localhost:5174]
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
@@ -8,6 +8,12 @@ import { join } from 'node:path';
 
 const BASE = process.argv[2] ?? 'http://localhost:5174';
 const OUT = 'docs/screenshots';
+// the words the script clicks on, in each language
+const LANGS = {
+  en: { create: 'Create theme', layout: 'Layout', preset: 'Top menu and game list' },
+  tr: { create: 'Tema oluştur', layout: 'Yerleşim', preset: 'Üst menü ve oyun listesi' },
+};
+let lang = 'en';
 const W = 1440, H = 900, SCALE = 1.5;
 const PORT = 9333;
 
@@ -22,7 +28,7 @@ if (!exe) throw new Error('Chrome or Edge not found');
 const profile = mkdtempSync(join(tmpdir(), 'tessera-shots-'));
 const browser = spawn(exe, [
   '--headless=new', `--remote-debugging-port=${PORT}`, `--user-data-dir=${profile}`, '--no-first-run',
-  '--hide-scrollbars', '--lang=tr', '--autoplay-policy=no-user-gesture-required', 'about:blank',
+  '--hide-scrollbars', '--autoplay-policy=no-user-gesture-required', 'about:blank',
 ], { stdio: 'ignore' });
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -58,7 +64,7 @@ const open = async (path, setup = '') => {
   await wait(800);
   await js(`
     localStorage.clear();
-    localStorage.setItem('tessera.lang', 'tr');
+    localStorage.setItem('tessera.lang', '${lang}');
     localStorage.setItem('tessera.prefs', JSON.stringify({ startupAnim: false, startupSound: false, welcomed: true }));
     ${setup}
   `);
@@ -71,8 +77,8 @@ const shot = async (name) => {
   await js(`await Promise.all([...document.images].filter((i) => !i.complete).map((i) => new Promise((r) => { i.onload = i.onerror = r; setTimeout(r, 4000); })));`);
   await wait(900);
   const { data } = await send('Page.captureScreenshot', { format: 'webp', quality: 88 });
-  writeFileSync(join(OUT, `${name}.webp`), Buffer.from(data, 'base64'));
-  console.log('saved', name);
+  writeFileSync(join(OUT, lang, `${name}.webp`), Buffer.from(data, 'base64'));
+  console.log('saved', lang, name);
 };
 const click = (sel, text) => js(`
   const el = [...document.querySelectorAll(${JSON.stringify(sel)})].find((e) => ${text ? `e.textContent.includes(${JSON.stringify(text)})` : 'true'});
@@ -80,34 +86,37 @@ const click = (sel, text) => js(`
   el.click();
 `);
 
-mkdirSync(OUT, { recursive: true });
 try {
-  await open('');
-  await shot('library');
+  for (lang of Object.keys(LANGS)) {
+    const w = LANGS[lang];
+    mkdirSync(join(OUT, lang), { recursive: true });
+    await open('');
+    await shot('library');
 
-  await open('#game/1145350');
-  await shot('game');
+    await open('#game/1145350');
+    await shot('game');
 
-  await open('#stats');
-  await shot('stats');
+    await open('#stats');
+    await shot('stats');
 
-  await open('#system/gba');
-  await shot('retro');
+    await open('#system/gba');
+    await shot('retro');
 
-  await open('#big');
-  await shot('big-screen');
+    await open('#big');
+    await shot('big-screen');
 
-  // the theme studio on a top bar with a game list beside the page
-  await open('#settings/appearance');
-  await click('button', 'Tema oluştur');
-  await wait(800);
-  await click('.sd-tabs button', 'Yerleşim');
-  await wait(400);
-  await click('.sd-preset', 'Üst menü ve oyun listesi');
-  await wait(800);
-  await js(`document.querySelectorAll('.gl-row')[4]?.click();`);
-  await wait(1500);
-  await shot('theme-studio');
+    // the theme studio on a top bar with a game list beside the page
+    await open('#settings/appearance');
+    await click('button', w.create);
+    await wait(800);
+    await click('.sd-tabs button', w.layout);
+    await wait(400);
+    await click('.sd-preset', w.preset);
+    await wait(800);
+    await js(`document.querySelectorAll('.gl-row')[4]?.click();`);
+    await wait(1500);
+    await shot('theme-studio');
+  }
 } finally {
   ws.close();
   browser.kill();

@@ -9,6 +9,7 @@ import { cheapest, KeyAsk, money, PriceList, samplePrices, ShopMark } from './St
 import { steamApp } from './News';
 import { FollowButton, TrackedShelf, useIsTracked } from './Track';
 import type { Game } from '../data/library';
+import { pct } from '../lib/format';
 
 import { t as tr, locale } from '../lib/i18n';
 // the last search and the popular picks, kept while the user looks at a game and comes back
@@ -110,7 +111,7 @@ function ShopCard({ h, i, big = false }: { h: ShopHit; i: number; big?: boolean 
         {tracked && <span className="shop-bell" aria-label={tr('Takip ediliyor')}><BellRing size={13} strokeWidth={2} /></span>}
         {best ? (
           <span className={`wl-tag ${best.cut > 0 ? 'is-sale' : ''} ${big ? 'is-big' : ''}`}>
-            {best.cut > 0 && <span className="wl-cut num">−%{best.cut}</span>}
+            {best.cut > 0 && <span className="wl-cut num">−{pct(best.cut)}</span>}
             <span className="wl-amount">
               {best.cut > 0 && <s className="num">{money(best.regular, best.currency)}</s>}
               <b className="num">{money(best.price, best.currency)}</b>
@@ -279,7 +280,7 @@ function ShopGame({ gid }: { gid: string }) {
           {reviews.length > 0 && (
             <p className="shop-reviews">
               {reviews.slice(0, 3).map((r) => (
-                <span key={r.source}><strong className="num">{r.source === 'Steam' ? `%${r.score}` : r.score}</strong> <span className="muted">{r.source}{r.count ? tr(' · {0} inceleme', r.count.toLocaleString(locale)) : ''}</span></span>
+                <span key={r.source}><strong className="num">{r.source === 'Steam' ? pct(r.score) : r.score}</strong> <span className="muted">{r.source}{r.count ? tr(' · {0} inceleme', r.count.toLocaleString(locale)) : ''}</span></span>
               ))}
             </p>
           )}

@@ -11,7 +11,7 @@ import {
   totalMinutes, tracksWithTessera, type Game,
 } from '../data/library';
 import { Cover, RatingBar } from './bits';
-import { ago, duration, gb, int, score } from '../lib/format';
+import { ago, duration, gb, int, score, pct } from '../lib/format';
 import {
   EMPTY_FILTERS, GROUPS, SORTS, activeCount, groupGames, matches, primaryGenre, sortGames, withDefaults, type Filters, type GroupId, type SortId,
 } from '../lib/filters';
@@ -167,7 +167,7 @@ export function LibraryView({ scope }: { scope: Scope }) {
               {top && top.m > 0 && <>{tr(', en çok')} <button className="link" onClick={() => go({ name: 'game', id: top.g.id })}>{top.g.title}</button> ({duration(top.m, { compact: true })})</>}.
             </>
           ) : <>{tr('Son 30 günde bu listeden bir şey oynamadın.')}</>}
-          {backlog.length > 0 && <> {tr('Sırada')} {backlog.length} {tr('oyun bekliyor; ana hikâyeleri toplam ~')}{backlogHours} {tr('saat.')}</>}
+          {backlog.length > 0 && <> {tr('Sırada {0} oyun bekliyor; ana hikâyeleri toplam ~{1} saat.', backlog.length, backlogHours)}</>}
         </p>
       )}
 
@@ -300,7 +300,7 @@ function TileFact({ g, sort }: { g: Game; sort: SortId }) {
   const time = <span className="num">{t ? duration(t, { compact: true }) : tr('Oynanmadı')}</span>;
   switch (sort) {
     case 'metacritic': return g.metacritic != null ? <span className="num">{tr('Metacritic')} {g.metacritic}</span> : <span className="dash">{tr('Metacritic yok')}</span>;
-    case 'userScore': return g.userScore != null ? <span className="num">%{g.userScore} {tr('olumlu')}</span> : <span className="dash">—</span>;
+    case 'userScore': return g.userScore != null ? <span className="num">{pct(g.userScore)} {tr('olumlu')}</span> : <span className="dash">—</span>;
     case 'rating': return g.rating != null ? <span className="num">{tr('Puanım')} {score(g.rating)}</span> : <span className="dash">{tr('Puan yok')}</span>;
     case 'release': return <span className="num">{g.year ?? '—'}</span>;
     case 'size': return <span className="num">{g.installed && g.sizeGB ? gb(g.sizeGB) : '—'}</span>;

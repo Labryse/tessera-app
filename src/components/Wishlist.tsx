@@ -6,7 +6,7 @@ import { CalendarClock, ExternalLink, RefreshCw, Sparkles, Tag } from 'lucide-re
 import { useStore } from '../store';
 import { api, type WishItem, type WishPrices } from '../lib/backend';
 import { cheapest, money, openDeal, opensApp, samplePrices, ShopMark } from './Stores';
-import { ago, shortDate } from '../lib/format';
+import { ago, shortDate, pct } from '../lib/format';
 import { t, locale } from '../lib/i18n';
 
 type Sort = 'priority' | 'discount' | 'price' | 'release' | 'added';
@@ -52,7 +52,7 @@ export function PriceTag({ w, big = false }: { w: WishItem; big?: boolean }) {
   if (w.price == null) return <span className={`wl-tag is-none ${big ? 'is-big' : ''}`}>{t('Satışta değil')}</span>;
   return (
     <span className={`wl-tag ${onSale(w) ? 'is-sale' : ''} ${big ? 'is-big' : ''}`}>
-      {onSale(w) && <span className="wl-cut num">−%{w.discount}</span>}
+      {onSale(w) && <span className="wl-cut num">−{pct(w.discount)}</span>}
       <span className="wl-amount">
         {onSale(w) && w.formattedOriginal && <s className="num">{w.formattedOriginal}</s>}
         <b className="num">{w.formatted}</b>
@@ -73,7 +73,7 @@ function Elsewhere({ w, prices }: { w: WishItem; prices: WishPrices | null }) {
       <ShopMark id={best.shopId} name={best.shop} size={12} />
       <span>{best.shop}</span>
       <b className="num">{money(best.price, best.currency)}</b>
-      {best.cut > 0 && <span className="num wl-else-cut">−%{best.cut}</span>}
+      {best.cut > 0 && <span className="num wl-else-cut">−{pct(best.cut)}</span>}
     </button>
   );
 }

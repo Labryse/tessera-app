@@ -1,6 +1,6 @@
 import { TODAY } from '../data/library';
 
-import { t, locale } from './i18n';
+import { t, lang, locale } from './i18n';
 const nf1 = new Intl.NumberFormat(locale, { maximumFractionDigits: 1, minimumFractionDigits: 1 });
 const nf0 = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
 
@@ -16,6 +16,8 @@ export function duration(min: number, opts: { compact?: boolean } = {}): string 
 
 export const hours1 = (min: number) => nf1.format(min / 60);
 export const int = (n: number) => nf0.format(n);
+/** a percentage the way the language writes it: %50 or 50% */
+export const pct = (n: number | string | null | undefined) => (n == null ? '' : lang === 'tr' ? `%${n}` : `${n}%`);
 export const score = (n: number) => nf1.format(n).replace(/[.,]0$/, '');
 
 const MONTHS = [t('Oca'), t('Şub'), t('Mar'), t('Nis'), t('May'), t('Haz'), t('Tem'), t('Ağu'), t('Eyl'), t('Eki'), t('Kas'), t('Ara')];

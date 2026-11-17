@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useStore } from '../store';
 import type { Game } from '../data/library';
-import { duration, int, monthLong, monthShort, shortDate } from '../lib/format';
+import { duration, int, monthLong, monthShort, shortDate, pct } from '../lib/format';
 import { Cover } from './bits';
 
 import { t as tr } from '../lib/i18n';
@@ -126,7 +126,7 @@ export function YearView({ year }: { year: number }) {
                 <span className="year-cover"><Cover game={r.g} /></span>
                 <span className="year-rank num">{i + 1}</span>
                 <span className="year-pick-title">{r.g.title}</span>
-                <span className="muted small num">{duration(r.m, { compact: r.m >= 600 })} · %{Math.round((r.m / y.total) * 100)}</span>
+                <span className="muted small num">{duration(r.m, { compact: r.m >= 600 })} · {pct(Math.round((r.m / y.total) * 100))}</span>
               </button>
             ))}
           </section>

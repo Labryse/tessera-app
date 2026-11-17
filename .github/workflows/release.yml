@@ -58,5 +58,7 @@ jobs:
           args: --config src-tauri/tauri.release.json
           tagName: v__VERSION__
           releaseName: Tessera __VERSION__
+          releaseBody: |
+            Windows 10/11 · [Code signing policy](https://github.com/${{ github.repository }}/blob/main/CODE_SIGNING.md) · [Privacy](https://github.com/${{ github.repository }}/blob/main/PRIVACY.md)
           releaseDraft: true
           includeUpdaterJson: true

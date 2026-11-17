@@ -8,6 +8,7 @@ import { api, type Deal, type GamePrices } from '../lib/backend';
 import { isSystem, type Game } from '../data/library';
 import { PlatformLogo } from './PlatformLogo';
 import { steamApp } from './News';
+import { pct } from '../lib/format';
 
 import { t as tr, locale } from '../lib/i18n';
 // IsThereAnyDeal shop id → Tessera's store mark
@@ -93,7 +94,7 @@ export function PriceList({ data, appid }: { data: GamePrices; appid: number | n
                     )}
                   </span>
                   <span className="store-price">
-                    {d.cut > 0 && <span className="wish-off num">−%{d.cut}</span>}
+                    {d.cut > 0 && <span className="wish-off num">−{pct(d.cut)}</span>}
                     {d.cut > 0 && <s className="muted num">{money(d.regular, d.currency)}</s>}
                     <span className="num">{money(d.price, d.currency)}</span>
                   </span>

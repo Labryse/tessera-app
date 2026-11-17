@@ -1,61 +1,65 @@
 # Tessera
 
-Steam, Epic, GOG, Xbox, Battle.net, EA ve Ubisoft oyunlarını ve retro ROM'ları tek bir yerde toplayan, Windows için açık kaynaklı bir oyun kütüphanesi.
+**English** · [Türkçe](README.tr.md)
 
-**[İndir](https://github.com/Labryse/tessera-app/releases/latest)** · Windows 10/11 · Ücretsiz · GPL-3.0
+An open source game library for Windows that brings your Steam, Epic, GOG, Xbox, Battle.net, EA and Ubisoft games and your retro ROMs together in one place.
 
-![Kütüphane](docs/screenshots/library.webp)
+**[Download](https://github.com/Labryse/tessera-app/releases/latest)** · Windows 10/11 · Free · GPL-3.0 · [Code signing policy](CODE_SIGNING.md)
 
-## Kütüphane
+![Library](docs/screenshots/en/library.webp)
 
-Bütün mağazalardaki oyunların tek listede görünür. Aynı oyun iki mağazada varsa tek kart olur ve süreler toplanır. Türe, etikete, süreye, puana ya da Steam Deck desteğine göre filtreleyebilir, filtrelerden otomatik dolan kategoriler kurabilirsin. "Ne oynasam?" kararsız kaldığında bir oyun seçer.
+## Library
 
-## Oyun sayfası
+Games from every store show up in one list. A game you own in two stores becomes a single card, with the play time added up. Filter by genre, tag, play time, score or Steam Deck support, and build categories that fill themselves from filters. When you can't decide what to play, Tessera picks a game for you.
 
-![Oyun sayfası](docs/screenshots/game.webp)
+## Game page
 
-Oyunun bilgileri, ekran görüntüleri, başarımları, oturumların, notların ve incelemen tek sayfada durur. Mağaza fiyatları yan yana görünür; istek listendeki oyun indirime girince Windows bildirimi gelir.
+![Game page](docs/screenshots/en/game.webp)
 
-## İstatistikler
+A game's details, screenshots, achievements, your sessions, notes and review are on one page. Store prices sit side by side, and when a game on your wishlist goes on sale you get a Windows notification.
 
-![İstatistikler](docs/screenshots/stats.webp)
+## Statistics
 
-Haftada ne kadar oynadığını, en çok hangi saatlerde oynadığını ve sıradaki oyunları bitirmenin ne kadar süreceğini gösterir. Bir de yılın özeti var.
+![Statistics](docs/screenshots/en/stats.webp)
+
+How much you play each week, the hours you play most, and how long it would take to finish the games in your backlog. There is a year in review too.
 
 ## Retro
 
-![Retro](docs/screenshots/retro.webp)
+![Retro](docs/screenshots/en/retro.webp)
 
-ROM klasörünü gösterirsin; Tessera oyunları tanır, kapaklarını bulur ve seçtiğin emülatörle açar. RetroAchievements hesabını bağlarsan başarımlar da görünür.
+Point Tessera at your ROM folder. It recognises the games, finds their covers and opens them with the emulator you choose. Link your RetroAchievements account to see achievements as well.
 
-## Geniş ekran
+## Big screen
 
-![Geniş ekran](docs/screenshots/big-screen.webp)
+![Big screen](docs/screenshots/en/big-screen.webp)
 
-Televizyon ve kumanda için tam ekran mod. F11 ya da kumandadaki Start tuşuyla açılır.
+A full-screen mode for the TV and a controller. Open it with F11 or the Start button on your controller.
 
-## Tema stüdyosu
+## Theme studio
 
-![Tema stüdyosu](docs/screenshots/theme-studio.webp)
+![Theme studio](docs/screenshots/en/theme-studio.webp)
 
-Hazır temaların yanında kendi temanı yapabilirsin: renkler, yazı tipleri, köşeler, arka plan resmi, menünün yeri, oyun listesi sütunu, hangi parçaların görüneceği, hatta menüdeki yazılar. Değişiklikler uygulamanın üstünde anında görünür. Temalar kod olarak kopyalanıp paylaşılabilir.
+Besides the ready-made themes you can make your own: colours, fonts, corners, a background picture, where the menu sits, a game list column, which parts are shown, even the words in the menu. Changes show on the app as you make them. Themes can be copied as code and shared.
 
-## Gizlilik
+## Privacy
 
-- Hiçbir hesap kendiliğinden bağlanmaz; neyi bağlayacağını sen seçersin.
-- Girişler platformun kendi sayfasında yapılır, Tessera şifre görmez. Anahtarlar Windows Kimlik Bilgisi Yöneticisi'nde saklanır.
-- Verilerin bilgisayarında kalır, Tessera'nın sunucusu yoktur.
-- Hata raporları sen göndermedikçe hiçbir yere gitmez.
+- No account is linked on its own; you choose what to link.
+- You sign in on the platform's own page, so Tessera never sees your password. Keys are kept in Windows Credential Manager.
+- Your data stays on your computer. Tessera has no server.
+- Error reports go nowhere unless you send them.
 
-## Geliştirme
+[PRIVACY.md](PRIVACY.md) lists every server Tessera connects to and why.
+
+## Development
 
 ```bash
 npm install
 npx tauri dev
 ```
 
-Sadece arayüz üzerinde çalışmak için `npm run dev` yeter; tarayıcıda örnek bir kütüphaneyle açılır. Kaynaklar, bağlantıların nasıl çalıştığı, sürüm çıkarma ve testler için bkz. [docs/AYRINTILAR.md](docs/AYRINTILAR.md).
+To work on the interface only, `npm run dev` is enough; it opens in the browser with a sample library. For sources, how the connections work, releases and tests, see [docs/AYRINTILAR.md](docs/AYRINTILAR.md) (in Turkish).
 
-## Lisans
+## License
 
-[GPL-3.0-or-later](LICENSE). Fiyatlar [IsThereAnyDeal](https://isthereanydeal.com/) üzerinden gelir; Tessera onlarla bağlantılı değildir. Oyun adları ve görselleri sahiplerine aittir.
+[GPL-3.0-or-later](LICENSE). Prices come from [IsThereAnyDeal](https://isthereanydeal.com/); Tessera is not affiliated with them. Game names and images belong to their owners.

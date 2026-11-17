@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState, type MutableRefObject, type React
 import { BarChart3, Bell, BellRing, Delete, ExternalLink, Gamepad2, Heart, LibraryBig, MessageSquare, Newspaper, Play, Search, Store, Tag, User, Users, Wrench } from 'lucide-react';
 import { useStore } from '../store';
 import { isSystem, lastPlayed, PLATFORMS, totalMinutes, type Game, type PlatformId } from '../data/library';
-import { ago, duration, int } from '../lib/format';
+import { ago, duration, int, pct } from '../lib/format';
 import { tick, type PadAction, type PadKind } from '../lib/pad';
 import { api, type Friend, type ShopHit } from '../lib/backend';
 import { Cover } from './bits';
@@ -443,7 +443,7 @@ function ShopTab(p: TabProps) {
     const fol = { label: isTracked ? tr('Takibi bırak') : tr('Takip et'), run: () => { (isTracked ? unfollow(h.gid) : follow(h.gid, h.title, art)).then(() => notify(isTracked ? tr('Takip bırakıldı') : tr('Takip ediliyor · ucuzlayınca haber verilecek'))).catch((e) => notify(String(e))); } };
     return {
       key: `shop:${h.gid}`, title: h.title, art, bg: h.art?.banner ?? art,
-      tag: best ? <span className={`wl-tag ${best.cut > 0 ? 'is-sale' : ''}`}>{best.cut > 0 && <span className="wl-cut num">−%{best.cut}</span>}<span className="wl-amount"><b className="num">{money(best.price, best.currency)}</b></span></span> : undefined,
+      tag: best ? <span className={`wl-tag ${best.cut > 0 ? 'is-sale' : ''}`}>{best.cut > 0 && <span className="wl-cut num">−{pct(best.cut)}</span>}<span className="wl-amount"><b className="num">{money(best.price, best.currency)}</b></span></span> : undefined,
       sub: best ? tr('En ucuz: {0}', best.shop) : undefined,
       meta: best ? [tr('En ucuz: {0}', best.shop)] : [],
       y: fol,

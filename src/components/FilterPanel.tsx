@@ -6,6 +6,7 @@ import {
   FEATURES, LAST, METACRITIC_STEPS, MINE_STEPS, PLAY, SIZE, USER_STEPS, pills, tally, type Filters,
 } from '../lib/filters';
 
+import { pct } from '../lib/format';
 import { t as tr, locale } from '../lib/i18n';
 type Set_ = (f: Filters) => void;
 
@@ -127,7 +128,7 @@ export function FilterPanel({ base, f, set }: { base: Game[]; f: Filters; set: S
         </div>
         <div className="fscore">
           <span className="fscore-label">{tr('Steam kullanıcıları')}<span className="fscore-n">{withUser} {tr('oyunda var')}</span></span>
-          <Steps label={tr('Steam kullanıcı puanı')} value={f.userScore} steps={USER_STEPS} fmt={(n) => `%${n}+`} onChange={(v) => set({ ...f, userScore: v })} />
+          <Steps label={tr('Steam kullanıcı puanı')} value={f.userScore} steps={USER_STEPS} fmt={(n) => `${pct(n)}+`} onChange={(v) => set({ ...f, userScore: v })} />
         </div>
         <div className="fscore">
           <span className="fscore-label">{tr('Puanım')}</span>

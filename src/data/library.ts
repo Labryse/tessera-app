@@ -9,7 +9,7 @@
 import steamMeta from './steam-meta.json';
 import achData from './achievements.json';
 
-import { t as tr } from '../lib/i18n';
+import { lang, t as tr } from '../lib/i18n';
 export type PlatformId = 'steam' | 'xbox' | 'battlenet' | 'ubisoft' | 'ea' | 'epic' | 'gog' | 'local'
   | 'gba' | 'gb' | 'gbc' | 'nes' | 'snes' | 'n64' | 'nds' | 'genesis' | 'ps1' | 'ps2' | 'psp' | 'gc';
 
@@ -57,7 +57,7 @@ export const STATUSES: { id: Status; label: string; hint: string }[] = [
   { id: 'backlog', label: tr('Sırada'), hint: tr('Başlamadım, sıraya aldım') },
   { id: 'paused', label: tr('Ara verdim'), hint: tr('Yarım kaldı, döneceğim') },
   { id: 'completed', label: tr('Bitirdim'), hint: tr('Ana hikâye tamam') },
-  { id: 'hundred', label: '%100', hint: tr('Her şeyi yaptım') },
+  { id: 'hundred', label: lang === 'tr' ? '%100' : '100%', hint: tr('Her şeyi yaptım') },
   { id: 'endless', label: tr('Sonu yok'), hint: tr('Çok oyunculu, sandbox, bitmeyen türden') },
   { id: 'dropped', label: tr('Bıraktım'), hint: tr('Bir daha açmam') },
 ];
@@ -210,6 +210,8 @@ const date = (s: string) => new Date(s + 'T12:00:00');
 type Meta = { media: Record<string, boolean>; store: null | {
   name: string; short: string; developers: string[]; publishers: string[]; release: string | null;
   genres: string[]; metacritic: number | null; achievements: number; screenshots: string[];
+  /** the same store text in English */
+  en?: { short: string; release: string | null; genres: string[] };
 } };
 const META = steamMeta as unknown as Record<string, Meta>;
 const ACH = achData as unknown as Record<string, { api: string; name: string; description: string; hidden: boolean; icon: string; percent: number | null }[]>;
@@ -320,6 +322,9 @@ const SPECS: Spec[] = [
 
 const cleanTitle = (s: string) => s.replace(/[®™]/g, '').replace(/^REMNANT II/, 'Remnant II').replace(/^STAR WARS/, 'Star Wars').trim();
 
+/** store "genres" that are not genres */
+const NOT_GENRES = new Set(['Erken Erişim', 'Oynaması Ücretsiz', 'Early Access', 'Free To Play', 'Free to Play']);
+
 function yearOf(release: string | null): number | null {
   const m = release?.match(/(\d{4})/);
   return m ? Number(m[1]) : null;
@@ -354,7 +359,7 @@ function buildAchievements(spec: Spec, store: Meta['store'], sessions: Session[]
 
 /** store tags, features and a user score for the sample library */
 function sampleFacts(spec: Spec, genres: string[]): Pick<Game, 'storeTags' | 'features' | 'userScore' | 'reviewCount'> {
-  const tags = [...(spec.tags ?? []), ...genres.filter((g) => g !== 'Erken Erişim')];
+  const tags = [...(spec.tags ?? []), ...genres.filter((g) => !NOT_GENRES.has(g))];
   const coop = tags.some((t) => /co-op|parti|takım|mmo|rekabet/i.test(t));
   const features = ['single', 'achievements', 'cloud', 'family'];
   if (coop) features.push('multi', 'coop', 'online-coop');
@@ -368,7 +373,7 @@ function sampleFacts(spec: Spec, genres: string[]): Pick<Game, 'storeTags' | 'fe
 
 const steamGames: Game[] = SPECS.map((spec, i) => {
   const m = META[String(spec.appid)];
-  const s = m?.store;
+  const s = m?.store && lang === 'en' && m.store.en ? { ...m.store, ...m.store.en } : m?.store;
   const media = m?.media ?? {};
   const p = `/media/${spec.appid}`;
   const sessions = spec.activity
@@ -398,7 +403,7 @@ const steamGames: Game[] = SPECS.map((spec, i) => {
     publisher: s?.publishers?.[0]?.replace(', Inc.', '') ?? '—',
     release: s?.release ?? '—',
     year: yearOf(s?.release ?? null),
-    genres: (s?.genres ?? []).filter((g) => g !== 'Erken Erişim' && g !== 'Oynaması Ücretsiz'),
+    genres: (s?.genres ?? []).filter((g) => !NOT_GENRES.has(g)),
     tags: spec.tags ?? [],
     collections: spec.collections ?? [],
     status: spec.status,
@@ -421,10 +426,10 @@ const steamGames: Game[] = SPECS.map((spec, i) => {
 
 // ---------------------------------------------------------------------------
 // Game Boy Advance (mGBA)
-export const GBA_FOLDER = 'C:\\Oyunlar\\GBA';
+export const GBA_FOLDER = lang === 'tr' ? 'C:\\Oyunlar\\GBA' : 'C:\\Games\\GBA';
 export const EMULATORS = [
   {
-    id: 'mgba', name: 'mGBA', version: '0.10.5', path: 'C:\\Emulatorler\\mGBA\\mGBA.exe',
+    id: 'mgba', name: 'mGBA', version: '0.10.5', path: lang === 'tr' ? 'C:\\Emulatorler\\mGBA\\mGBA.exe' : 'C:\\Emulators\\mGBA\\mGBA.exe',
     systems: ['gba'] as PlatformId[], args: '"{rom}" -f', extensions: ['.gba', '.gb', '.gbc', '.zip', '.7z'],
     retroAchievements: false,
   },

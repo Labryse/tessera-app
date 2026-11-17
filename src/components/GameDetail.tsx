@@ -18,7 +18,7 @@ import { createPortal } from 'react-dom';
 import { PlatformLogo } from './PlatformLogo';
 import { StoresPanel } from './Stores';
 import { api, shotUrl, type ShotFile, type SteamDetails } from '../lib/backend';
-import { ago, bytes, clock, duration, gb, int, longDate, score, shortDate } from '../lib/format';
+import { ago, bytes, clock, duration, gb, int, longDate, score, shortDate, pct } from '../lib/format';
 
 import { t as tr, locale } from '../lib/i18n';
 type Tab = 'overview' | 'achievements' | 'sessions' | 'news' | 'notes' | 'review' | 'saves';
@@ -186,7 +186,7 @@ export function GameDetail({ id }: { id: string }) {
             {genres.length > 0 && <div><dt>{tr('Tür')}</dt><dd>{genres.slice(0, 3).join(', ')}</dd></div>}
             {size && <div><dt>{tr('Boyut')}</dt><dd className="num">{size}</dd></div>}
             {needs && <div><dt>{tr('Gereken alan')}</dt><dd className="num">{needs}</dd></div>}
-            {rv?.score ? <div><dt>{tr('Steam incelemeleri')}</dt><dd>{REVIEW[rv.score]}{rvPct != null && <span className="muted"> · %{rvPct} ({compact(rv.total ?? 0)})</span>}</dd></div> : null}
+            {rv?.score ? <div><dt>{tr('Steam incelemeleri')}</dt><dd>{REVIEW[rv.score]}{rvPct != null && <span className="muted"> · {pct(rvPct)} ({compact(rv.total ?? 0)})</span>}</dd></div> : null}
             {meta != null && <div><dt>{tr('Metacritic')}</dt><dd className="num">{meta}</dd></div>}
           </dl>
         </div>
@@ -633,7 +633,7 @@ function Overview({ g, about, onTab }: { g: Game; about: string; onTab: (t: Tab)
                   <li key={a.api}>
                     {a.icon && <img src={a.icon} alt="" />}
                     <span className="ach-mini-name">{a.name}</span>
-                    <span className="num muted">%{a.percent?.toLocaleString(locale)}</span>
+                    <span className="num muted">{pct(a.percent?.toLocaleString(locale))}</span>
                   </li>
                 ))}
               </ul>
@@ -675,7 +675,7 @@ function PlayPanel({ g }: { g: Game }) {
       {g.hltb != null && g.status !== 'endless' && (
         <div className="hltb">
           <Progress value={Math.min(t / 60, g.hltb)} total={g.hltb} label={tr('Ana hikâyeye göre ilerleme')} />
-          <span className="muted small">{t / 60 >= g.hltb ? tr('Ana hikâye süresini geçtin') : `%${Math.round((t / 60 / g.hltb) * 100)}`}</span>
+          <span className="muted small">{t / 60 >= g.hltb ? tr('Ana hikâye süresini geçtin') : pct(Math.round((t / 60 / g.hltb) * 100))}</span>
         </div>
       )}
     </section>
@@ -778,10 +778,10 @@ function Achievements({ g, note }: { g: Game; note?: string | null }) {
       <section className="panel ach-summary">
         <div className="ach-count">
           <span className="playtime-value num">{ach.unlocked}<span className="muted"> / {ach.total}</span></span>
-          <span className="muted">%{Math.round((ach.unlocked / ach.total) * 100)}</span>
+          <span className="muted">{pct(Math.round((ach.unlocked / ach.total) * 100))}</span>
         </div>
         <Progress value={ach.unlocked} total={ach.total} label={tr('Başarım ilerlemesi')} />
-        {rarest && <p className="muted">{tr('En nadiri')} <strong className="ink">{rarest.name}</strong> · %{rarest.percent?.toLocaleString(locale)}</p>}
+        {rarest && <p className="muted">{tr('En nadiri')} <strong className="ink">{rarest.name}</strong> · {pct(rarest.percent?.toLocaleString(locale))}</p>}
         {raUser && <p className="muted small">{tr('RetroAchievements ·')} {raUser}{tr('. Başarım kazanmak için oyunu RetroArch gibi destekleyen bir emülatörde oyna.')}</p>}
       </section>
 
@@ -817,7 +817,7 @@ function Achievements({ g, note }: { g: Game; note?: string | null }) {
                     </span>
                   </span>
                   <span className="ach-rarity">
-                    <span className="num">%{a.percent?.toLocaleString(locale) ?? '—'}</span>
+                    <span className="num">{a.percent != null ? pct(a.percent.toLocaleString(locale)) : '—'}</span>
                     <span className="rarity-bar"><span style={{ width: `${Math.max(2, a.percent ?? 0)}%` }} /></span>
                   </span>
                   <span className="ach-date muted">{a.unlockedAt ? shortDate(a.unlockedAt) : tr('Kilitli')}</span>

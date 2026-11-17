@@ -173,9 +173,8 @@ export const game: Record<string, Line> = {
   "oynadın": "",
   ", en çok": ", most of all",
   "Son 30 günde bu listeden bir şey oynamadın.": "You haven’t played anything from this list in the last 30 days.",
-  "Sırada": "Up next:",
-  "oyun bekliyor; ana hikâyeleri toplam ~": "games waiting; their main stories add up to ~",
-  "saat.": "hours.",
+  "Sırada": "Up next",
+  "Sırada {0} oyun bekliyor; ana hikâyeleri toplam ~{1} saat.": "Up next: {0} games waiting; their main stories add up to ~{1} hours.",
   "Ad, geliştirici, etiket": "Name, developer, tag",
   "Bu listede ara": "Search this list",
   "Artan sırada": "Ascending",
@@ -206,8 +205,8 @@ export const game: Record<string, Line> = {
   " · {0} oturum": (a) => ` · ${plural(a[0], 'session')}`,
   "· toplam": "· total",
   " · Tessera sayıyor": " · counted by Tessera",
-  "Oyun": "Game",
-  "Başarım": "Achievement",
+  "Oyun": "Games",
+  "Başarım": "Achievements",
 
   // news
   "Yama 1.0.4 yayında": "Patch 1.0.4 is out",

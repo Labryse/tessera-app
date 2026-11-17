@@ -43,7 +43,16 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/570/ss_f9ebafedaf2d5cfb80ef1f74baa18eb08cad6494.1920x1080.jpg?t=1791407503",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/570/ss_27b6345f22243bd6b885cc64c5cda74e4bd9c3e8.1920x1080.jpg?t=1791407503",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/570/ss_b33a65678dc71cc98df4890e22a89601ee56a918.1920x1080.jpg?t=1791407503"
-      ]
+      ],
+      "en": {
+        "short": "Every day, millions of players worldwide enter battle as one of over a hundred Dota heroes. And no matter if it's their 10th hour of play or 1,000th, there's always something new to discover. With regular updates that ensure a constant evolution of gameplay, features, and heroes, Dota 2 has taken on a life of its own.",
+        "release": "Jul 9, 2013",
+        "genres": [
+          "Action",
+          "Strategy",
+          "Free To Play"
+        ]
+      }
     }
   },
   "105600": {
@@ -95,7 +104,17 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/105600/ss_75ea9a7e39eb34b40efa1e6dfd2536098dc4734b.1920x1080.jpg?t=1792530636",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/105600/ss_782374517c1792debd74d24856203b876eba3a5d.1920x1080.jpg?t=1792530636",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/105600/ss_04dd9f0a5773b686a452ba480b951f83b3ed5061.1920x1080.jpg?t=1792530636"
-      ]
+      ],
+      "en": {
+        "short": "Dig, fight, explore, build! Nothing is impossible in this action-packed adventure game. Four Pack also available!",
+        "release": "May 16, 2011",
+        "genres": [
+          "Action",
+          "Adventure",
+          "Indie",
+          "RPG"
+        ]
+      }
     }
   },
   "108600": {
@@ -146,7 +165,17 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/108600/ss_eb1862af5109e4658e2538d897cbd16b87ad1818.1920x1080.jpg?t=1793224893",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/108600/ss_507e952789822b69868d768e1e4476946f37b1fb.1920x1080.jpg?t=1793224893",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/108600/ss_eca8be032b3f5508bf5bea74cfbc823a4df047ce.1920x1080.jpg?t=1793224893"
-      ]
+      ],
+      "en": {
+        "short": "Project Zomboid is the ultimate in zombie survival. Alone or in MP: you loot, build, craft, fight, farm and fish in a struggle to survive. A hardcore RPG skillset, a vast map, massively customisable sandbox and a cute tutorial raccoon await the unwary. So how will you die? All it takes is a bite..",
+        "release": "Nov 8, 2013",
+        "genres": [
+          "Indie",
+          "RPG",
+          "Simulation",
+          "Early Access"
+        ]
+      }
     }
   },
   "211820": {
@@ -195,7 +224,18 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/211820/ss_a911c976aeb84fcd25c8866eba08e1ca642d25d4.1920x1080.jpg?t=1782391980",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/211820/ss_974323d818a04ed7657aa87eef74f8cf0811548a.1920x1080.jpg?t=1782391980",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/211820/ss_d825ae99fa02dca4c770fef9a9429f6f3fc4598d.1920x1080.jpg?t=1782391980"
-      ]
+      ],
+      "en": {
+        "short": "You’ve fled your home, only to find yourself lost in space with a damaged ship. Your only option is to beam down to the planet below, repair your ship and set off to explore the universe...",
+        "release": "Jul 22, 2016",
+        "genres": [
+          "Action",
+          "Adventure",
+          "Casual",
+          "Indie",
+          "RPG"
+        ]
+      }
     }
   },
   "294100": {
@@ -244,7 +284,16 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/294100/57c3e8d556d47bb5ad048699643528aefc652aa6/ss_57c3e8d556d47bb5ad048699643528aefc652aa6.1920x1080.jpg?t=1782756789",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/294100/59a1400eff99e2b620d623d3d76a02c1592a72e7/ss_59a1400eff99e2b620d623d3d76a02c1592a72e7.1920x1080.jpg?t=1782756789",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/294100/1e3a2734b23daaa4eb60ea33dd87806aa65e0c8f/ss_1e3a2734b23daaa4eb60ea33dd87806aa65e0c8f.1920x1080.jpg?t=1782756789"
-      ]
+      ],
+      "en": {
+        "short": "A sci-fi colony sim driven by an intelligent AI storyteller. Generates stories by simulating psychology, ecology, gunplay, melee combat, climate, biomes, diplomacy, interpersonal relationships, art, medicine, trade, and more.",
+        "release": "Oct 17, 2018",
+        "genres": [
+          "Indie",
+          "Simulation",
+          "Strategy"
+        ]
+      }
     }
   },
   "375480": {
@@ -295,7 +344,17 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/375480/ss_751bbac9b3e96da2d333003c2ace423d5fd30ff7.1920x1080.jpg?t=1792834231",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/375480/ss_7c839f6e77e1daf35c15690ecd0100f6002edf54.1920x1080.jpg?t=1792834231",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/375480/ss_21598d8125fe256af50180bf5a289623ea4e2388.1920x1080.jpg?t=1792834231"
-      ]
+      ],
+      "en": {
+        "short": "Use the magical device known as the Chronicon to travel into the souls and memories of fallen heroes to re-live their grand tales! Epic adventures full of loot and monsters await!",
+        "release": "Aug 21, 2020",
+        "genres": [
+          "Action",
+          "Adventure",
+          "Indie",
+          "RPG"
+        ]
+      }
     }
   },
   "394970": {
@@ -337,7 +396,15 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/394970/ss_0c897f3e5f675e2192f450d079e7582fc1751256.1920x1080.jpg?t=1602283453",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/394970/ss_538ce191990d9e04ec1604ac6d9690d36cb3f99a.1920x1080.jpg?t=1602283453",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/394970/ss_3bd7202cd75454ba923a3cbb43965850f7196335.1920x1080.jpg?t=1602283453"
-      ]
+      ],
+      "en": {
+        "short": "DEADBOLT is an extremely challenging stealth-action hybrid that allows you to take control of the reaper to quell the recent undead uprising.",
+        "release": "Mar 14, 2016",
+        "genres": [
+          "Action",
+          "Indie"
+        ]
+      }
     }
   },
   "397540": {
@@ -386,7 +453,15 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/397540/ss_3531d9f91265d94fc06f6587eba1ca49f2c423d1.1920x1080.jpg?t=1793288452",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/397540/ss_6f1836277ffe8733503a9446d51b8c7eb3d20d5f.1920x1080.jpg?t=1793288452",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/397540/ss_bd8b719de92cfc9e65cd96d5da74426918964291.1920x1080.jpg?t=1793288452"
-      ]
+      ],
+      "en": {
+        "short": "The original shooter-looter returns, packing bazillions of guns and a mayhem-fueled adventure! Blast through new worlds and enemies as one of four new Vault Hunters.",
+        "release": "Mar 13, 2020",
+        "genres": [
+          "Action",
+          "RPG"
+        ]
+      }
     }
   },
   "548430": {
@@ -439,7 +514,14 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/548430/9fad579c755e0c3ed249f581537da3c634d141bb/ss_9fad579c755e0c3ed249f581537da3c634d141bb.1920x1080.jpg?t=1792497307",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/548430/5de4ec4baa28c5df1cecb676be0f399f470beb75/ss_5de4ec4baa28c5df1cecb676be0f399f470beb75.1920x1080.jpg?t=1792497307",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/548430/03ac295f55defe10866d07a6f81329751c5abfb7/ss_03ac295f55defe10866d07a6f81329751c5abfb7.1920x1080.jpg?t=1792497307"
-      ]
+      ],
+      "en": {
+        "short": "Deep Rock Galactic is a 1-4 player co-op FPS featuring dwarven space miners, procedurally-generated destructible environments, and endless hordes of alien monsters. Explore cave systems, mine for minerals, and work together to survive!",
+        "release": "May 13, 2020",
+        "genres": [
+          "Action"
+        ]
+      }
     }
   },
   "582660": {
@@ -486,7 +568,18 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/582660/ss_dc2ae224ccbb7b7825c8b020ba202be065c6021a.1920x1080.jpg?t=1786645008",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/582660/ss_83b8f2759de2c40be97b79288bce8ad41198aa16.1920x1080.jpg?t=1786645008",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/582660/ss_8cd369deed11b84f64e37d08ea8e835be888d3f5.1920x1080.jpg?t=1786645008"
-      ]
+      ],
+      "en": {
+        "short": "Played by over 20 million Adventurers - Black Desert Online is an open-world, action MMORPG. Experience intense, action-packed combat, battle massive world bosses, fight alongside friends to siege and conquer castles, and train in professions such as fishing, trading, crafting, cooking, and more!",
+        "release": "May 24, 2017",
+        "genres": [
+          "Action",
+          "Adventure",
+          "Massively Multiplayer",
+          "RPG",
+          "Strategy"
+        ]
+      }
     }
   },
   "588650": {
@@ -532,7 +625,16 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/588650/ss_a099416b9f3e09d47c42f87667e6ad6f394ba652.1920x1080.jpg?t=1779086887",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/588650/ss_a8b0439ad7750cab1bdec86ecef0daa280e9f93f.1920x1080.jpg?t=1779086887",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/588650/ss_21c61aca6a66745a2abb3f72b93553398fc7fe32.1920x1080.jpg?t=1779086887"
-      ]
+      ],
+      "en": {
+        "short": "Dead Cells is a roguelite, metroidvania inspired, action-platformer. You'll explore a sprawling, ever-changing castle... assuming you’re able to fight your way past its keepers in 2D souls-lite combat. No checkpoints. Kill, die, learn, repeat.",
+        "release": "Aug 6, 2018",
+        "genres": [
+          "Action",
+          "Adventure",
+          "Indie"
+        ]
+      }
     }
   },
   "774361": {
@@ -578,7 +680,16 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/774361/ss_933510ac0fd13c6bd4ecc4c187e0506d520f2e70.1920x1080.jpg?t=1780479368",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/774361/ss_957b6216519c614984ee71c6f6a524d75ea6353b.1920x1080.jpg?t=1780479368",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/774361/ss_959ffc1230d2ca57e18a9c96f3c56f5643b5cce7.1920x1080.jpg?t=1780479368"
-      ]
+      ],
+      "en": {
+        "short": "Blasphemous is a brutal action-platformer with skilled hack’n slash combat set in the nightmare world of Cvstodia. Explore, upgrade your abilities, and perform savage executions on the hordes of enemies that stand between you and your quest to break eternal damnation.",
+        "release": "Sep 10, 2019",
+        "genres": [
+          "Action",
+          "Adventure",
+          "Indie"
+        ]
+      }
     }
   },
   "976730": {
@@ -633,7 +744,14 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/976730/ss_85da13aef2acd210f95f4b43540967f24d7bed6a.1920x1080.jpg?t=1791569963",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/976730/ss_3a4d84cdabf7e015e4409b4218bcd00ba6aa730f.1920x1080.jpg?t=1791569963",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/976730/ss_25d03817a7e55b9b1c12b835af457e827ee8a246.1920x1080.jpg?t=1791569963"
-      ]
+      ],
+      "en": {
+        "short": "The Master Chief’s iconic journey includes six games, built for PC and collected in a single integrated experience. Whether you’re a long-time fan or meeting Spartan 117 for the first time, The Master Chief Collection is the definitive Halo gaming experience.",
+        "release": "Dec 3, 2019",
+        "genres": [
+          "Action"
+        ]
+      }
     }
   },
   "977950": {
@@ -677,7 +795,14 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/977950/ss_1b16c74c5351fa5bb5282dedbac220d56ba825c2.1920x1080.jpg?t=1793318010",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/977950/ss_046d24aa7f7b9e1c1adab0255f94d8cad16ed992.1920x1080.jpg?t=1793318010",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/977950/ss_197ad200f6e3ce942ff5e6c9057146f0d3c519b7.1920x1080.jpg?t=1793318010"
-      ]
+      ],
+      "en": {
+        "short": "A Dance of Fire and Ice (ADOFAI) is a strict rhythm game. Keep your focus as you guide two orbiting planets along a winding path without breaking their perfect equilibrium.",
+        "release": "Jan 24, 2019",
+        "genres": [
+          "Indie"
+        ]
+      }
     }
   },
   "990080": {
@@ -730,7 +855,16 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/ss_94058497bf0f8fabdde17ee8d59bece609a60663.1920x1080.jpg?t=1790708992",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/ss_8e08976236d29b1897769257ac3c64e9264792a5.1920x1080.jpg?t=1790708992",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/ss_d4930d675af053dc1e61a876a34fc003e85e261f.1920x1080.jpg?t=1790708992"
-      ]
+      ],
+      "en": {
+        "short": "Hogwarts Legacy is an immersive, open-world action RPG. Now you can take control of the action and be at the center of your own adventure in the wizarding world.",
+        "release": "Feb 10, 2023",
+        "genres": [
+          "Action",
+          "Adventure",
+          "RPG"
+        ]
+      }
     }
   },
   "1057090": {
@@ -773,7 +907,14 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1057090/ss_608e317acbb76258bedcf1a79e6673a61475908f.1920x1080.jpg?t=1759530749",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1057090/ss_d33bc7bb1d106b841a28d1cf3403fb7b1188252f.1920x1080.jpg?t=1759530749",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1057090/ss_57ea45c3711319429b19ac62c0a21997b10e1042.1920x1080.jpg?t=1759530749"
-      ]
+      ],
+      "en": {
+        "short": "Play the critically acclaimed masterpiece. Embark on a new journey in a vast, exotic world where you’ll encounter towering enemies and challenging puzzles on your quest to unravel Ori’s destiny.",
+        "release": "Mar 10, 2020",
+        "genres": [
+          "Action"
+        ]
+      }
     }
   },
   "1145350": {
@@ -820,7 +961,16 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145350/ss_c8d2b18451a2cc4d5b4fdd78ed84a5e64e051eac.1920x1080.jpg?t=1779901265",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145350/ss_f366f20f4fb699f6735581e04c7c45a1ef7bd1b8.1920x1080.jpg?t=1779901265",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145350/ss_47e14ed55ac7f1bf9266b2cd5b3e4d9eae0ca54c.1920x1080.jpg?t=1779901265"
-      ]
+      ],
+      "en": {
+        "short": "Battle beyond the Underworld using dark sorcery to take on the Titan of Time in this bewitching sequel to the award-winning rogue-like dungeon crawler.",
+        "release": "Sep 25, 2025",
+        "genres": [
+          "Action",
+          "Indie",
+          "RPG"
+        ]
+      }
     }
   },
   "1171690": {
@@ -870,7 +1020,16 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1171690/ss_af6d7e0f6992b235f1305ab9c545cac0ed02d76b.1920x1080.jpg?t=1768340055",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1171690/ss_72ad00264516256dd30d86f8d586f04c6aacf9df.1920x1080.jpg?t=1768340055",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1171690/ss_054fd1b941863dfab3751dd2e53d2ddbb38cdb84.1920x1080.jpg?t=1768340055"
-      ]
+      ],
+      "en": {
+        "short": "Become a Wayfinder, and unlock their powers as you choose your path and playstyle while pushing back a hostile force that has overtaken your world. A Co-Op ARPG where you directly shape and customize the endless adventures you go on with friends, because Wayfinders are stronger together.",
+        "release": "Oct 21, 2024",
+        "genres": [
+          "Action",
+          "Adventure",
+          "RPG"
+        ]
+      }
     }
   },
   "1281930": {
@@ -918,7 +1077,18 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1281930/ss_cbd08080c38bc6814a4562780d313dd7331b02a1.1920x1080.jpg?t=1793819597",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1281930/ss_c2829b132cf00dad0d17c546420cbfa3a122cf9d.1920x1080.jpg?t=1793819597",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1281930/ss_70192ef5332af5291082282b14af62ba7267b092.1920x1080.jpg?t=1793819597"
-      ]
+      ],
+      "en": {
+        "short": "Dig, Fight, and Build your way through the world of player-created mods on Terraria with tModLoader - this DLC makes modding Terraria a reality!",
+        "release": "May 16, 2020",
+        "genres": [
+          "Action",
+          "Adventure",
+          "Indie",
+          "RPG",
+          "Free To Play"
+        ]
+      }
     }
   },
   "1282100": {
@@ -967,7 +1137,16 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1282100/ss_04516c2d149e9089a1950bf84a51a9f92f30559d.1920x1080.jpg?t=1764659459",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1282100/ss_327b4c651cb9a39cf2ec9032d359897a81974d73.1920x1080.jpg?t=1764659459",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1282100/ss_62a6676be62fbb7f793d3975594b1e13316cc716.1920x1080.jpg?t=1764659459"
-      ]
+      ],
+      "en": {
+        "short": "REMNANT II® pits survivors of humanity against new deadly creatures and god-like bosses across terrifying worlds. Play solo or co-op with two other friends to explore the depths of the unknown to stop an evil from destroying reality itself.",
+        "release": "Jul 25, 2023",
+        "genres": [
+          "Action",
+          "Adventure",
+          "RPG"
+        ]
+      }
     }
   },
   "1328670": {
@@ -1010,7 +1189,15 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1328670/ss_4b2b412307b72a21f68148c32fab7a278875d139.1920x1080.jpg?t=1777395134",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1328670/ss_9ecf8386f29c5e3ef066d7591816add13a98d2b0.1920x1080.jpg?t=1777395134",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1328670/ss_9e91250917cdf701007d623387a65c1119b038fe.1920x1080.jpg?t=1777395134"
-      ]
+      ],
+      "en": {
+        "short": "The Mass Effect™ Legendary Edition includes single-player base content and over 40 DLC from the highly acclaimed Mass Effect, Mass Effect 2, and Mass Effect 3 games, including promo weapons, armors, and packs — remastered and optimized for 4K Ultra HD.",
+        "release": "May 14, 2021",
+        "genres": [
+          "Action",
+          "RPG"
+        ]
+      }
     }
   },
   "1551360": {
@@ -1061,7 +1248,18 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/ss_0a13a7ccd38e7c3e6a5f1720050732833b53b6a8.1920x1080.jpg?t=1788546569",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/ss_3654a5988db68f9b47740f9f6a9299682c365599.1920x1080.jpg?t=1788546569",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/ss_0bc32360d32b21abdf889422385cd753862dd73e.1920x1080.jpg?t=1788546569"
-      ]
+      ],
+      "en": {
+        "short": "Explore the vibrant open world landscapes of Mexico with limitless, fun driving action in the world’s greatest cars.",
+        "release": "Nov 8, 2021",
+        "genres": [
+          "Action",
+          "Adventure",
+          "Racing",
+          "Simulation",
+          "Sports"
+        ]
+      }
     }
   },
   "1716740": {
@@ -1106,7 +1304,14 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/ss_aae99c177004bb5ec653d2fcb65a5d30489ec7b8.1920x1080.jpg?t=1786648030",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/ss_c8594798fadfd8e042b2fc8afff7bcf4872c5198.1920x1080.jpg?t=1786648030",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/ss_2288919a390c0147b7d2226354a61452016fd087.1920x1080.jpg?t=1786648030"
-      ]
+      ],
+      "en": {
+        "short": "Starfield is the first new universe in 25 years from Bethesda Game Studios, the award-winning creators of The Elder Scrolls V: Skyrim and Fallout 4.",
+        "release": "Sep 5, 2023",
+        "genres": [
+          "RPG"
+        ]
+      }
     }
   },
   "1774580": {
@@ -1153,7 +1358,15 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1774580/ss_bb84b8cbf9294c6166819c3d3328c4efbdb9d46c.1920x1080.jpg?t=1788257050",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1774580/ss_3c8dd0328d9d5944083d1c1da10f316de090c67d.1920x1080.jpg?t=1788257050",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1774580/ss_3ed1979b4d57f7819813e1c11462e1f631a83987.1920x1080.jpg?t=1788257050"
-      ]
+      ],
+      "en": {
+        "short": "The story of Cal Kestis continues in STAR WARS Jedi: Survivor™, a galaxy-spanning, third-person, action-adventure game.",
+        "release": "Apr 27, 2023",
+        "genres": [
+          "Action",
+          "Adventure"
+        ]
+      }
     }
   },
   "2344520": {
@@ -1215,7 +1428,18 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2344520/38d64c37bf2e84bbec5138cf114529eada712ebc/ss_38d64c37bf2e84bbec5138cf114529eada712ebc.1920x1080.jpg?t=1789491624",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2344520/11d4a9be127719b22681d823b83b0c6b4798bf1f/ss_11d4a9be127719b22681d823b83b0c6b4798bf1f.1920x1080.jpg?t=1789491624",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2344520/ee4b4e1ba9c8a07f40aff563c7c43fd04477d60c/ss_ee4b4e1ba9c8a07f40aff563c7c43fd04477d60c.1920x1080.jpg?t=1789491624"
-      ]
+      ],
+      "en": {
+        "short": "Join the fight for Sanctuary in Diablo® IV, the ultimate action RPG adventure. Experience the critically acclaimed campaign and new seasonal content.",
+        "release": "Oct 17, 2023",
+        "genres": [
+          "Action",
+          "Adventure",
+          "Casual",
+          "Massively Multiplayer",
+          "RPG"
+        ]
+      }
     }
   },
   "2357570": {
@@ -1272,7 +1496,15 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2357570/b17b61def60cb8b3f693cb3a6b80152f7963b04e/ss_b17b61def60cb8b3f693cb3a6b80152f7963b04e.1920x1080.jpg?t=1793732501",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2357570/78e99c6da684734a84fcd69aff1baa7b5fe996f6/ss_78e99c6da684734a84fcd69aff1baa7b5fe996f6.1920x1080.jpg?t=1793732501",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2357570/ec6de0364a1014e97ab05a7cad9f187be0bd494e/ss_ec6de0364a1014e97ab05a7cad9f187be0bd494e.1920x1080.jpg?t=1793732501"
-      ]
+      ],
+      "en": {
+        "short": "Overwatch®, A FUTURE WORTH FIGHTING FOR! Overwatch® is an always-on and ever-evolving free-to-play, team-based action game set in an optimistic future, where every match is the ultimate 5v5 or 6v6 battlefield brawl.",
+        "release": "Aug 10, 2023",
+        "genres": [
+          "Action",
+          "Free To Play"
+        ]
+      }
     }
   },
   "2457220": {
@@ -1321,7 +1553,14 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2457220/f757a8184327a7a53d148ecf62eb7e8823cf2fdf/ss_f757a8184327a7a53d148ecf62eb7e8823cf2fdf.1920x1080.jpg?t=1771352530",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2457220/58c502b53fc3741bf6a3e10dbb4cff5e5460ba0d/ss_58c502b53fc3741bf6a3e10dbb4cff5e5460ba0d.1920x1080.jpg?t=1771352530",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2457220/f0f28c667b0d29666cbc1896f2cf55ea55fffbbd/ss_f0f28c667b0d29666cbc1896f2cf55ea55fffbbd.1920x1080.jpg?t=1771352530"
-      ]
+      ],
+      "en": {
+        "short": "Avowed is a first-person fantasy RPG set in the world of Eora, where your choices carve a path through war, intrigue, and ancient mysteries. Navigate a land in turmoil, forge powerful alliances or deadly rivalries, and wield magic and steel to shape the fate of the Living Lands—and your own destiny.",
+        "release": "Feb 18, 2025",
+        "genres": [
+          "RPG"
+        ]
+      }
     }
   },
   "2751000": {
@@ -1363,7 +1602,15 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2751000/ss_11ba725868d030749cfea0aef6a832bcdc86808d.1920x1080.jpg?t=1777993930",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2751000/ss_29386f461b838966bd9233339f58ceba75eff803.1920x1080.jpg?t=1777993930",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2751000/ss_c134fcbaf1b6f49a27b3e571b58ba1826fa57f37.1920x1080.jpg?t=1777993930"
-      ]
+      ],
+      "en": {
+        "short": "Dash into a stylish and thrilling action-adventure platformer set in a mythological Persian world where the boundaries of time and space are yours to manipulate.",
+        "release": "Aug 8, 2024",
+        "genres": [
+          "Action",
+          "Adventure"
+        ]
+      }
     }
   },
   "3035570": {
@@ -1418,7 +1665,15 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3035570/623373b7bfa16381e083cd713c9743f1da8bb5ec/ss_623373b7bfa16381e083cd713c9743f1da8bb5ec.1920x1080.jpg?t=1792777978",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3035570/23f5b0f6234283f0f430b9672e1d896ff6d19825/ss_23f5b0f6234283f0f430b9672e1d896ff6d19825.1920x1080.jpg?t=1792777978",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3035570/ff4b26a16aaa3cfdb20b267ddd7a235bc91388c0/ss_ff4b26a16aaa3cfdb20b267ddd7a235bc91388c0.1920x1080.jpg?t=1792777978"
-      ]
+      ],
+      "en": {
+        "short": "Become a deadly Master Assassin in this action-adventure game. Explore the streets of ninth-century Baghdad through the eyes of Basim. Take down your targets while seeking justice as part of the Hidden Ones.",
+        "release": "Oct 17, 2024",
+        "genres": [
+          "Action",
+          "Adventure"
+        ]
+      }
     }
   },
   "4126040": {
@@ -1466,7 +1721,20 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4126040/4b7934615abc485253f56e14d4bef1aa636dcd18/ss_4b7934615abc485253f56e14d4bef1aa636dcd18.1920x1080.jpg?t=1793258293",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4126040/519a496bd09ac75d726ac45baa9c9ac44f480acf/ss_519a496bd09ac75d726ac45baa9c9ac44f480acf.1920x1080.jpg?t=1793258293",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4126040/48555a45adb748849eea04efc29349211398ce38/ss_48555a45adb748849eea04efc29349211398ce38.1920x1080.jpg?t=1793258293"
-      ]
+      ],
+      "en": {
+        "short": "Aniimo is a free-to-play, next-gen creature-catching open-world RPG. Explore the vast continent of Idyll, Twine with unique Aniimo, unlock new abilities. Travel to a sky-floating metropolis, meet other Pathfinders, and battle in exciting competitions. Choose your Aniimo and begin your epic journey!",
+        "release": "Sep 15, 2026",
+        "genres": [
+          "Action",
+          "Adventure",
+          "Massively Multiplayer",
+          "RPG",
+          "Simulation",
+          "Strategy",
+          "Free To Play"
+        ]
+      }
     }
   },
   "4656000": {
@@ -1513,7 +1781,15 @@
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4656000/edb04b7f1714524fc59691ad0368492488e317cc/ss_edb04b7f1714524fc59691ad0368492488e317cc.1920x1080.jpg?t=1794217137",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4656000/5564e2b1729232a6c4f9cdc190b5d10f0afc4946/ss_5564e2b1729232a6c4f9cdc190b5d10f0afc4946.1920x1080.jpg?t=1794217137",
         "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4656000/c1063e896d08eaa213aa43498a1a9ac7e9c481d6/ss_c1063e896d08eaa213aa43498a1a9ac7e9c481d6.1920x1080.jpg?t=1794217137"
-      ]
+      ],
+      "en": {
+        "short": "Chaotic bomb disposal fun with friends &amp; monkeys! Work together as a 3-player co-op team of blind, deaf, and mute monkeys. Each player has only part of the needed information. Communicate, solve puzzles, and race against the clock. Can you defuse the bombs before they explode?",
+        "release": "Sep 2, 2026",
+        "genres": [
+          "Casual",
+          "Indie"
+        ]
+      }
     }
   }
 }

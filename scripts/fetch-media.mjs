@@ -51,6 +51,9 @@ for (const id of ids) {
         screenshots: (d.screenshots ?? []).slice(0, 6).map((s) => s.path_full),
       };
     }
+    // the demo in English shows Steam's English text
+    const e = (await (await fetch(`https://store.steampowered.com/api/appdetails?appids=${id}&l=english&cc=us`)).json())?.[id]?.data;
+    if (store && e) store.en = { short: e.short_description, release: e.release_date?.date ?? null, genres: (e.genres ?? []).map((g) => g.description) };
   } catch { /* offline: keep going */ }
   meta[id] = { media: have, store };
   console.log(id, Object.keys(have).join(','), store?.name ?? '(no store data)');

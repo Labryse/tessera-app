@@ -1,6 +1,7 @@
 # Builds Tessera from this repository's source and puts it on a draft release with
 # the signed update file (latest.json). Run it from the Actions tab after raising
-# "version" in src-tauri/tauri.conf.json; publish the draft when it looks right.
+# "version" in src-tauri/tauri.conf.json, or push a tag such as v0.1.1; publish the
+# draft when it looks right.
 #
 # Repository secrets it reads (Settings → Secrets and variables → Actions):
 #   TAURI_SIGNING_PRIVATE_KEY           contents of %USERPROFILE%\.tauri\tessera.key
@@ -11,6 +12,8 @@ name: Release
 
 on:
   workflow_dispatch:
+  push:
+    tags: ["v*"]
 
 permissions:
   contents: write

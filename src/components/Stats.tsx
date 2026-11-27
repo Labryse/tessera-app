@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
 import { useStore } from '../store';
-import { PLATFORMS, STATUSES, TODAY, TRACKING_SINCE, totalMinutes, type PlatformId } from '../data/library';
+import { PLATFORMS, STATUSES, totalMinutes, type PlatformId } from '../data/library';
 import { WeekBars } from './WeekBars';
 import { duration, int } from '../lib/format';
 import { Cover } from './bits';
-import { CalendarRange } from 'lucide-react';
+import { CalendarRange, Share2 } from 'lucide-react';
+import { openShare } from './Share';
 import { yearsWithPlay } from './YearView';
 
 import { t, locale } from '../lib/i18n';
@@ -36,7 +37,8 @@ export function StatsView() {
 
     const backlog = games.filter((g) => g.status === 'backlog');
     const backlogHours = backlog.reduce((a, g) => a + (g.hltb ?? 0), 0);
-    const weeks = (TODAY.getTime() - TRACKING_SINCE.getTime()) / (7 * 86400000);
+    const first = allSessions.reduce((a, x) => Math.min(a, new Date(x.start).getTime()), Infinity);
+    const weeks = Number.isFinite(first) ? Math.max(1, (Date.now() - first) / (7 * 86400000)) : 1;
     const perWeek = tracked / 60 / weeks;
 
     return { allSessions, tracked, total, finished, achOpen, achTotal, byPlatform, topTracked, byHour, peakHour, backlog, backlogHours, perWeek };
@@ -53,13 +55,12 @@ export function StatsView() {
         <div>
           <h1>{t('İstatistikler')}</h1>
         </div>
-        {years.length > 0 && (
-          <div className="year-links">
-            {years.slice(0, 3).map((y) => (
-              <button key={y} className="btn btn-sm" onClick={() => go({ name: 'year', year: y })}><CalendarRange size={14} strokeWidth={1.8} /> {y} {t('özeti')}</button>
-            ))}
-          </div>
-        )}
+        <div className="year-links">
+          {years.slice(0, 3).map((y) => (
+            <button key={y} className="btn btn-sm" onClick={() => go({ name: 'year', year: y })}><CalendarRange size={14} strokeWidth={1.8} /> {y} {t('özeti')}</button>
+          ))}
+          <button className="btn btn-sm btn-accent" onClick={() => openShare({ scope: years.length ? 'month' : 'genre' })}><Share2 size={14} strokeWidth={1.8} /> {t('Özet kartı')}</button>
+        </div>
       </header>
 
       {s.perWeek > 0 ? (

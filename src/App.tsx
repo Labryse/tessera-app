@@ -23,6 +23,7 @@ import { Welcome } from './components/Welcome';
 import { useTrackedEvents } from './components/Track';
 import { ErrorReport } from './components/ErrorReport';
 import { StudioDock } from './components/studio/Studio';
+import { ShareHost } from './components/Share';
 import { GameList } from './components/GameList';
 import { cleanLayout, useLayout } from './lib/layout';
 
@@ -101,6 +102,7 @@ function Shell() {
       <Welcome />
       <ErrorReport />
       <StudioDock />
+      <ShareHost />
       <Splash />
     </div>
   );

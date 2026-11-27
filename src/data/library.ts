@@ -571,7 +571,7 @@ export const lastPlayed = (g: Game): Date | null => {
 };
 export const tracksWithTessera = (g: Game) => !PLATFORMS[g.platform].reportsTime;
 
-export function minutesBetween(games: Game[], from: Date, to: Date = TODAY) {
+export function minutesBetween(games: Game[], from: Date, to: Date = new Date()) {
   let sum = 0;
   for (const g of games) for (const s of g.sessions) {
     const t = new Date(s.start);

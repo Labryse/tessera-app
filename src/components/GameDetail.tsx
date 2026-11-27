@@ -1,6 +1,6 @@
 import { LiveButton } from './Session';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
-import { FolderOpen, Image as ImageIcon, SquarePen, ArrowLeft, Check, ChevronLeft, ChevronRight, Download, Eye, Heart, Lock, Play, Plus, Shapes, X } from 'lucide-react';
+import { FolderOpen, Image as ImageIcon, SquarePen, ArrowLeft, Check, ChevronLeft, ChevronRight, Download, Eye, Heart, Lock, Play, Plus, Shapes, Share2, X } from 'lucide-react';
 import { isLightTheme, useStore } from '../store';
 import {
   PLATFORMS, isSystem, lastPlayed, ratingWord, sessionMinutes, totalMinutes, tracksWithTessera,
@@ -16,6 +16,7 @@ import { usePresence } from './Modal';
 import { createPortal } from 'react-dom';
 import { PlatformLogo } from './PlatformLogo';
 import { StoresPanel } from './Stores';
+import { openShare } from './Share';
 import { api, shotUrl, type ShotFile, type SteamDetails } from '../lib/backend';
 import { ago, bytes, clock, duration, gb, int, longDate, score, shortDate, pct } from '../lib/format';
 
@@ -201,6 +202,9 @@ export function GameDetail({ id }: { id: string }) {
                 <SquarePen size={17} strokeWidth={1.7} />
               </button>
             )}
+            <button className="icon-btn icon-btn-lg" aria-label={tr('Özet kartı')} title={tr('Özet kartı')} onClick={() => openShare({ scope: 'game', gameId: g.id })}>
+              <Share2 size={17} strokeWidth={1.7} />
+            </button>
             <button
               key={faved}
               className={`icon-btn icon-btn-lg heart ${g.favorite ? 'is-on' : ''} ${faved ? 'pop' : ''}`}

@@ -16,13 +16,13 @@ Bütün mağazalardaki oyunların tek listede görünür. Aynı oyun iki mağaza
 
 ![Oyun sayfası](docs/screenshots/tr/game.webp)
 
-Oyunun bilgileri, ekran görüntüleri, başarımları, oturumların ve notların tek sayfada durur. Mağaza fiyatları yan yana görünür; istek listendeki oyun indirime girince Windows bildirimi gelir.
+Oyunun bilgileri, ekran görüntüleri, başarımları, oturumların ve notların tek sayfada durur. Mağaza fiyatları yan yana görünür, Fiyat ara’da sonuçları mağazaya ve indirime göre süzebilirsin; istek listendeki oyun indirime girince Windows bildirimi gelir.
 
 ## İstatistikler
 
 ![İstatistikler](docs/screenshots/tr/stats.webp)
 
-Haftada ne kadar oynadığını, en çok hangi saatlerde oynadığını ve sıradaki oyunları bitirmenin ne kadar süreceğini gösterir. Bir de yılın özeti var.
+Haftada ne kadar oynadığını, en çok hangi saatlerde oynadığını ve sıradaki oyunları bitirmenin ne kadar süreceğini gösterir. Bir de yılın özeti var. Bir yılı, bir ayı, türleri ya da tek bir oyunu paylaşılabilir bir resim kartına çevirebilirsin.
 
 ## Retro
 

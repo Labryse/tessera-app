@@ -1,4 +1,4 @@
-import { PLATFORMS, STATUSES, TODAY, lastPlayed, totalMinutes, type Game, type PlatformId, type Status } from '../data/library';
+import { PLATFORMS, STATUSES, lastPlayed, totalMinutes, type Game, type PlatformId, type Status } from '../data/library';
 
 import { t, locale } from './i18n';
 /** Everything the library can be narrowed by. Inside one group any choice may
@@ -46,10 +46,10 @@ export const PLAY: { id: PlayBucket; label: string; test: (h: number) => boolean
 const DAY = 86400000;
 export type LastBucket = 'week' | 'month' | 'year' | 'over-year' | 'never';
 export const LAST: { id: LastBucket; label: string; test: (d: Date | null) => boolean }[] = [
-  { id: 'week', label: t('Bu hafta'), test: (d) => !!d && TODAY.getTime() - d.getTime() <= 7 * DAY },
-  { id: 'month', label: t('Son 30 gün'), test: (d) => !!d && TODAY.getTime() - d.getTime() <= 30 * DAY },
-  { id: 'year', label: t('Son 1 yıl'), test: (d) => !!d && TODAY.getTime() - d.getTime() <= 365 * DAY },
-  { id: 'over-year', label: t('1 yıldan uzun'), test: (d) => !!d && TODAY.getTime() - d.getTime() > 365 * DAY },
+  { id: 'week', label: t('Bu hafta'), test: (d) => !!d && Date.now() - d.getTime() <= 7 * DAY },
+  { id: 'month', label: t('Son 30 gün'), test: (d) => !!d && Date.now() - d.getTime() <= 30 * DAY },
+  { id: 'year', label: t('Son 1 yıl'), test: (d) => !!d && Date.now() - d.getTime() <= 365 * DAY },
+  { id: 'over-year', label: t('1 yıldan uzun'), test: (d) => !!d && Date.now() - d.getTime() > 365 * DAY },
   { id: 'never', label: t('Hiç açılmadı'), test: (d) => !d },
 ];
 

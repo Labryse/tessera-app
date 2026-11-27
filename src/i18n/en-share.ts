@@ -1,0 +1,58 @@
+// English for the summary cards and the price search's store filter.
+import type { Line } from '../lib/i18n';
+
+export const share: Record<string, Line> = {
+  // the share window
+  "Özet kartı": "Summary card",
+  "Paylaş": "Share",
+  "Yıl": "Year",
+  "Ay": "Month",
+  "Kare": "Square",
+  "Geniş": "Wide",
+  "türler": "genres",
+  "Hepsi yan yana": "All side by side",
+  "Resmi kopyala": "Copy image",
+  "PNG kaydet": "Save PNG",
+  "Metni kopyala": "Copy text",
+  "Kart panoya kopyalandı": "Card copied to the clipboard",
+  "Resim kopyalanamadı; kaydedip paylaşabilirsin.": "Couldn't copy the image; save it and share the file instead.",
+  "Kart kaydedildi": "Card saved",
+  "Metin kopyalandı": "Text copied",
+  "Bu seçim için kayıtlı oynama yok.": "No recorded play for this choice.",
+
+  // what the cards say
+  "{0} saat": (a) => (a[0] === '1' ? '1 hour' : `${a[0]} hours`),
+  "{0} gün": (a) => (a[0] === 1 || a[0] === '1' ? '1 day' : `${a[0]} days`),
+  "{0} özeti": "{0} in review",
+  "Oynanan oyun": "Games played",
+  "İlk kez oynanan": "New to you",
+  "En yoğun ay": "Busiest month",
+  "{0} oturum · {1} farklı gün": "{0} sessions · {1} different days",
+  "{0} yılında {1} oynadım, {2} oyun bitirdim. En çok: {3}.": "In {0} I played {1} and finished {2} games. Most played: {3}.",
+  "Geçen aya göre": "Versus last month",
+  "En çok oynanan gün": "Favourite day",
+  "{0} oturum · {1} gün · {2} oyun": "{0} sessions · {1} days · {2} games",
+  "{0}: {1} oynadım, {2} oturum. En çok: {3}.": "{0}: I played {1} in {2} sessions. Most played: {3}.",
+  "Türlere göre": "By genre",
+  "oynadığın sürenin {0} kadarı · {1} oyun": "{0} of your play time · {1} games",
+  "İkinci sırada": "Runner-up",
+  "En çok {0} oynuyorum: sürenin {1} kadarı. Sonra {2}.": "I play {0} the most: {1} of my time. Then {2}.",
+  "{0} oyun · oynadığın sürenin {1} kadarı": "{0} games · {1} of your play time",
+  "Ortalama puanın": "Your average score",
+  "{0}: {1} oyun, {2}. En çok: {3}.": "{0}: {1} games, {2}. Most played: {3}.",
+  "{0}/10": "{0}/10",
+  "Oturum sayısı": "Sessions",
+  "İlk oturum": "First session",
+  "Bitirdiğin gün": "Finished on",
+  "{0}: {1} oynadım.": "{0}: I've played {1}.",
+  "Başarımların {0} kadarı tamam.": "{0} of the achievements done.",
+
+  // price search by store
+  "Tüm mağazalar": "All stores",
+  "Seçili mağaza": "Chosen store",
+  "Daha ucuzu: {0} · {1}": "Cheaper at {0} · {1}",
+  "{0} mağazasında bunlardan indirimde olan yok.": "None of these are on sale at {0}.",
+  "Bunların hiçbiri {0} mağazasında satılmıyor.": "None of these are sold at {0}.",
+  "Bunlardan indirimde olan yok.": "None of these are on sale.",
+  "Bunların hiçbiri seçili mağazada satılmıyor.": "None of these are sold at the chosen store.",
+};

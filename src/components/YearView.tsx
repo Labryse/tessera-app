@@ -1,6 +1,7 @@
 // A year of play, from the sessions Tessera counted.
 import { useMemo } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Share2 } from 'lucide-react';
+import { openShare } from './Share';
 import { useStore } from '../store';
 import type { Game } from '../data/library';
 import { duration, int, monthLong, monthShort, shortDate, pct } from '../lib/format';
@@ -82,6 +83,7 @@ export function YearView({ year }: { year: number }) {
       <header className="title-row">
         <button className="btn btn-ghost btn-sm" onClick={back}><ArrowLeft size={15} strokeWidth={1.8} /> {tr('İstatistikler')}</button>
         <div className="year-nav">
+          {y.count > 0 && <button className="btn btn-sm btn-accent" onClick={() => openShare({ scope: 'year', year })}><Share2 size={14} strokeWidth={1.8} /> {tr('Paylaş')}</button>}
           <button className="icon-btn" aria-label={tr('Önceki yıl')} disabled={!older} onClick={() => older && go({ name: 'year', year: older })}><ChevronLeft size={18} strokeWidth={1.8} /></button>
           <button className="icon-btn" aria-label={tr('Sonraki yıl')} disabled={!newer} onClick={() => newer && go({ name: 'year', year: newer })}><ChevronRight size={18} strokeWidth={1.8} /></button>
         </div>
@@ -111,7 +113,7 @@ export function YearView({ year }: { year: number }) {
               <button key={g.id} className="year-done-item" onClick={() => go({ name: 'game', id: g.id })} title={g.title} style={{ '--i': i } as React.CSSProperties}>
                 <span className="year-done-cover"><Cover game={g} /></span>
                 <span className="year-done-title">{g.title}</span>
-                <span className="muted small">{monthLong(new Date(g.finishedAt!).getMonth())}{g.status === 'hundred' ? ' · %100' : ''}</span>
+                <span className="muted small">{monthLong(new Date(g.finishedAt!).getMonth())}{g.status === 'hundred' ? ` · ${pct(100)}` : ''}</span>
               </button>
             ))}
           </div>

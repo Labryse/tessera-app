@@ -135,3 +135,34 @@
   font-size: 11.5px; line-height: 1.5; white-space: pre-wrap; word-break: break-word;
 }
 .about-acts { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+
+/* ---------------------------------------------------------------- summary cards to share */
+.share { display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 22px; min-height: 0; }
+.share-stage {
+  position: relative; display: grid; place-items: center; min-height: 0; padding: 14px;
+  border-radius: 16px; background: color-mix(in srgb, var(--raised) 70%, transparent); border: 1px solid var(--border);
+}
+.share-canvas {
+  display: block; max-width: 100%; max-height: min(64vh, 640px); width: auto; height: auto;
+  border-radius: 12px; box-shadow: 0 18px 50px -18px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.25s, filter 0.25s;
+}
+.share-canvas.is-busy { opacity: 0.55; filter: saturate(0.6); }
+.share-empty {
+  position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%); margin: 0; padding: 8px 14px; border-radius: 999px;
+  font-size: 13px; background: rgba(var(--scrim), 0.72); color: #fff; backdrop-filter: blur(8px); white-space: nowrap;
+}
+.share-side { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.share-group { display: flex; flex-direction: column; gap: 8px; }
+.share-group .sc-chips { align-self: flex-start; flex-wrap: wrap; }
+.share-group .sc-chips button { height: 30px; padding: 0 12px; }
+.share-group .field { width: 100%; }
+.share-group .field select { width: 100%; }
+.share-label { font-size: 12px; font-weight: 600; color: var(--muted); }
+.share-acts { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
+.share-acts .btn { justify-content: center; gap: 8px; }
+@media (max-width: 820px) {
+  .share { grid-template-columns: minmax(0, 1fr); }
+  .share-canvas { max-height: 46vh; }
+}
+.share-modal { overflow-y: auto; }

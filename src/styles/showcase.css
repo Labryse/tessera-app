@@ -93,11 +93,14 @@ html:not([data-theme='graphite']):not([data-theme='abyss']):not([data-theme='emb
 .nw-skel.is-big { height: 340px; margin-bottom: 20px; }
 @keyframes shimmer { to { background-position: -200% 0; } }
 
-.nw-read { display: flex; flex-direction: column; gap: 14px; }
-.nw-read-art { margin: -8px -8px 6px; border-radius: 14px; overflow: hidden; aspect-ratio: 16 / 7; background: var(--active); }
+/* the window never grows past the screen: the picture and the text give way, the title and button stay */
+.nw-reader { overflow: hidden; }
+.nw-read { display: flex; flex-direction: column; gap: 14px; flex: 1 1 auto; min-height: 0; }
+.nw-read > * { flex: none; }
+.nw-read-art { margin: -8px -8px 6px; border-radius: 14px; overflow: hidden; aspect-ratio: 16 / 7; max-height: 30vh; background: var(--active); }
 .nw-read-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.nw-read-title { margin: 0; font-size: 24px; line-height: 1.2; letter-spacing: -0.02em; }
-.nw-read-text { max-height: 46vh; overflow-y: auto; padding-right: 6px; line-height: 1.7; font-size: 14.5px; color: color-mix(in srgb, var(--text) 88%, transparent); }
+.nw-read-title { margin: 0; font-size: 24px; line-height: 1.2; letter-spacing: -0.02em; overflow-wrap: anywhere; }
+.nw-read > .nw-read-text { flex: 1 1 auto; min-height: 90px; overflow-y: auto; overscroll-behavior: contain; padding-right: 6px; line-height: 1.7; font-size: 14.5px; color: color-mix(in srgb, var(--text) 88%, transparent); }
 .nw-read-text p { margin: 0 0 12px; }
 .nw-read-text p.is-item { margin: 0 0 6px; padding-left: 4px; }
 .nw-read-foot { display: flex; justify-content: flex-end; }
@@ -202,3 +205,12 @@ button.wl-else:hover { border-color: var(--accent); }
 .fr-menu-sep { height: 1px; margin: 5px 4px; background: rgba(255, 255, 255, 0.12); }
 .fr-menu-game { display: flex; align-items: center; gap: 8px; padding: 6px 10px; font-weight: 650; color: #90ba3c; font-size: 12.5px; }
 .fr-menu.is-xbox .fr-menu-game { color: #6fd36f; }
+
+/* ---------------------------------------------------------------- price search: by store */
+.shop-narrow { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.shop-narrow > .sc-chips { flex: none; }
+/* the store row scrolls sideways and fades at its end instead of being cut */
+.shop-narrow > .shop-stores { flex: 0 1 auto; min-width: 0; overflow-x: auto; scrollbar-width: none; mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent); }
+.shop-stores::-webkit-scrollbar { display: none; }
+.shop-stores button { flex: none; }
+.shop-narrow .sc-chips button { height: 30px; padding: 0 12px; }

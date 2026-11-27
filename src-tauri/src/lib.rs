@@ -14,6 +14,7 @@ mod retro;
 mod retro_cmds;
 mod saves;
 mod scan;
+mod share;
 mod shell;
 mod shots;
 mod steam;
@@ -942,6 +943,18 @@ fn theme_delete(st: State<AppState>, id: String) -> Res<()> {
     themes::delete(&st.dir, &id)
 }
 
+/// a picture for a summary card, as a data URL the canvas may read back
+#[tauri::command]
+async fn image_data(st: State<'_, AppState>, url: String) -> Res<String> {
+    share::image_data(&st.http, &url).await
+}
+
+/// a finished summary card, written where the user chose
+#[tauri::command]
+fn save_png(path: String, data: String) -> Res<()> {
+    share::save_png(std::path::Path::new(&path), &data)
+}
+
 /// the themes folder in Explorer (made if it is not there yet)
 #[tauri::command]
 fn theme_folder(st: State<AppState>) -> Res<()> {
@@ -1422,6 +1435,8 @@ pub fn run() {
             theme_save,
             theme_import,
             theme_export,
+            image_data,
+            save_png,
             theme_delete,
             theme_folder,
             error_info,

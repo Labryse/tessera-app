@@ -2,9 +2,9 @@
 // The results show each game's cheapest price; a game opens its own page with
 // what it is (release, makers, reviews) and the full store list.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, BellRing, Search, Shuffle, X } from 'lucide-react';
+import { ArrowLeft, BadgePercent, BellRing, Search, Shuffle, X } from 'lucide-react';
 import { useStore } from '../store';
-import { api, type GamePrices, type ShopHit, type ShopInfo } from '../lib/backend';
+import { api, type Deal, type GamePrices, type ShopHit, type ShopInfo } from '../lib/backend';
 import { cheapest, KeyAsk, money, PriceList, samplePrices, ShopMark } from './Stores';
 import { steamApp } from './News';
 import { FollowButton, TrackedShelf, useIsTracked } from './Track';
@@ -19,6 +19,72 @@ const NO_ART = { banner: null, small: null, boxart: null };
 const known = new Map<string, ShopHit>();
 const remember = (list: ShopHit[]) => { for (const h of list) known.set(h.gid, { ...h, art: h.art ?? known.get(h.gid)?.art ?? NO_ART }); };
 const PICKS = 18;
+
+// the store and "on sale only" picks, kept between visits
+type Narrow = { shop: number | null; sale: boolean };
+const NARROW_KEY = 'tessera.shopNarrow';
+function loadNarrow(): Narrow {
+  try {
+    const v = JSON.parse(localStorage.getItem(NARROW_KEY) ?? 'null');
+    if (v && typeof v === 'object') return { shop: typeof v.shop === 'number' ? v.shop : null, sale: v.sale === true };
+  } catch { /* no storage */ }
+  return { shop: null, sale: false };
+}
+function saveNarrow(n: Narrow) {
+  try { localStorage.setItem(NARROW_KEY, JSON.stringify(n)); } catch { /* no storage */ }
+}
+
+/** the price a card shows: the chosen store's, otherwise the cheapest */
+function dealOf(h: ShopHit, shop: number | null): Deal | null {
+  const deals = h.prices?.deals ?? [];
+  return shop == null ? cheapest(deals) : deals.find((d) => d.shopId === shop) ?? null;
+}
+const passes = (h: ShopHit, n: Narrow) => {
+  if (n.shop == null && !n.sale) return true;
+  const d = dealOf(h, n.shop);
+  return !!d && (!n.sale || d.cut > 0);
+};
+
+// the stores the library itself comes from go first when counts tie
+const MAIN_SHOPS = [61, 16, 35, 48, 62, 52, 4];
+
+/** the stores that sell something in these results, the busiest first */
+function storesIn(list: ShopHit[]) {
+  const m = new Map<number, { id: number; name: string; n: number }>();
+  for (const h of list) {
+    const seen = new Set<number>();
+    for (const d of h.prices?.deals ?? []) {
+      if (seen.has(d.shopId)) continue;
+      seen.add(d.shopId);
+      const e = m.get(d.shopId);
+      if (e) e.n++; else m.set(d.shopId, { id: d.shopId, name: d.shop, n: 1 });
+    }
+  }
+  const rank = (id: number) => { const i = MAIN_SHOPS.indexOf(id); return i < 0 ? 99 : i; };
+  return [...m.values()].sort((a, b) => b.n - a.n || rank(a.id) - rank(b.id) || a.name.localeCompare(b.name, locale));
+}
+
+type StoreCount = { id: number; name: string; n: number };
+function StoreFilter({ stores, value, onChange }: { stores: StoreCount[]; value: Narrow; onChange: (n: Narrow) => void }) {
+  // a chosen store stays on the row even when these results have nothing from it
+  const list = value.shop != null && !stores.some((x) => x.id === value.shop) ? [...stores, { id: value.shop, name: tr('Seçili mağaza'), n: 0 }] : stores;
+  if (list.length < 2 && value.shop == null && !value.sale) return null;
+  return (
+    <div className="shop-narrow" role="group" aria-label={tr('Mağazaya göre')}>
+      <div className="sc-chips">
+        <button aria-pressed={value.sale} onClick={() => onChange({ ...value, sale: !value.sale })}><BadgePercent size={14} strokeWidth={1.9} /> {tr('İndirimde')}</button>
+      </div>
+      <div className="sc-chips shop-stores">
+        <button aria-pressed={value.shop == null} onClick={() => onChange({ ...value, shop: null })}>{tr('Tüm mağazalar')}</button>
+        {list.map((x) => (
+          <button key={x.id} aria-pressed={value.shop === x.id} onClick={() => onChange({ ...value, shop: value.shop === x.id ? null : x.id })} title={x.name}>
+            <ShopMark id={x.id} name={x.name} size={14} /> {x.name} <b className="num">{x.n}</b>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 const norm = (s: string) => s.toLowerCase().replace(/[™®©:'’.\-–—!?,]/g, '').replace(/\s+/g, ' ').trim();
 
@@ -90,9 +156,12 @@ export function ShopView({ gid }: { gid?: string }) {
 }
 
 /** one game: its art with the cheapest price under it */
-function ShopCard({ h, i, big = false }: { h: ShopHit; i: number; big?: boolean }) {
+function ShopCard({ h, i, big = false, shop = null }: { h: ShopHit; i: number; big?: boolean; shop?: number | null }) {
   const { go, games } = useStore();
-  const best = h.prices ? cheapest(h.prices.deals) : null;
+  const best = h.prices ? dealOf(h, shop) : null;
+  // with one store chosen, a cheaper price elsewhere is still worth a line
+  const low = shop != null && h.prices ? cheapest(h.prices.deals) : null;
+  const elsewhere = low && best && low.shopId !== best.shopId && low.currency === best.currency && low.price < best.price ? low : null;
   const mine = owned(games, h.title);
   const kind = TYPE[h.type ?? ''] ?? '';
   const art = h.art ?? NO_ART;
@@ -121,7 +190,8 @@ function ShopCard({ h, i, big = false }: { h: ShopHit; i: number; big?: boolean 
       </span>
       <span className="shop-body">
         <span className="shop-name" title={h.title}>{h.title}</span>
-        {best && <span className="shop-store"><ShopMark id={best.shopId} name={best.shop} size={13} /> {tr('En ucuz: {0}', best.shop)}</span>}
+        {best && !elsewhere && <span className="shop-store"><ShopMark id={best.shopId} name={best.shop} size={13} /> {shop != null ? best.shop : tr('En ucuz: {0}', best.shop)}</span>}
+        {elsewhere && <span className="shop-store"><ShopMark id={elsewhere.shopId} name={elsewhere.shop} size={13} /> {tr('Daha ucuzu: {0} · {1}', elsewhere.shop, money(elsewhere.price, elsewhere.currency))}</span>}
       </span>
     </button>
   );
@@ -138,6 +208,8 @@ function ShopSearch() {
   const [done, setDone] = useState(last.q);
   const [popular, setPopular] = useState<ShopHit[] | null>(picks);
   const [roll, setRoll] = useState(0);
+  const [narrow, setNarrowState] = useState<Narrow>(loadNarrow);
+  const setNarrow = (n: Narrow) => { setNarrowState(n); saveNarrow(n); };
   const input = useRef<HTMLInputElement>(null);
   useEffect(() => { input.current?.focus(); }, []);
 
@@ -188,6 +260,18 @@ function ShopSearch() {
   // games first, add-ons after; the search's own order within each
   const sorted = useMemo(() => [...items].sort((a, b) => Number(a.type !== 'game') - Number(b.type !== 'game')), [items]);
   const searching = q.trim().length >= 2;
+  const stores = useMemo(() => storesIn(searching ? items : popular ?? []), [searching, items, popular]);
+  const shown = sorted.filter((h) => passes(h, narrow));
+  const shownPopular = (popular ?? []).filter((h) => passes(h, narrow));
+  const narrowed = narrow.shop != null || narrow.sale;
+  const storeName = narrow.shop != null ? stores.find((x) => x.id === narrow.shop)?.name ?? null : null;
+  const nothingHere = (
+    <p className="muted shop-none">
+      {storeName
+        ? narrow.sale ? tr('{0} mağazasında bunlardan indirimde olan yok.', storeName) : tr('Bunların hiçbiri {0} mağazasında satılmıyor.', storeName)
+        : narrow.sale ? tr('Bunlardan indirimde olan yok.') : tr('Bunların hiçbiri seçili mağazada satılmıyor.')}
+    </p>
+  );
   const backdrop = (popular ?? []).map((h) => h.art?.banner ?? h.art?.small).filter(Boolean).slice(0, 5) as string[];
 
   return (
@@ -211,13 +295,16 @@ function ShopSearch() {
       {!hasKey && <div className="panel shop-empty"><KeyAsk onAdd={() => openSettings('accounts')} /></div>}
       {error && <div className="panel shop-empty"><p className="muted">{error}</p></div>}
 
+      {hasKey && (searching ? items.length > 0 : !!popular?.length) && <StoreFilter stores={stores} value={narrow} onChange={setNarrow} />}
+
       {searching ? (
         <>
           {hasKey && !error && done && done === q.trim() && !busy && items.length === 0 && (
             <p className="muted shop-none">“{q.trim()}{tr('” için bir oyun bulunamadı.')}</p>
           )}
+          {narrowed && items.length > 0 && shown.length === 0 && nothingHere}
           <div className="shop-grid">
-            {sorted.map((h, i) => <ShopCard key={h.gid} h={h} i={i} />)}
+            {shown.map((h, i) => <ShopCard key={h.gid} h={h} i={i} shop={narrow.shop} />)}
           </div>
         </>
       ) : hasKey && (
@@ -229,9 +316,10 @@ function ShopSearch() {
             <button className="btn btn-ghost btn-sm" onClick={() => setRoll((n) => n + 1)}><Shuffle size={14} strokeWidth={1.8} /> {tr('Başkaları')}</button>
           </div>
           {!popular && <div className="shop-grid shop-feature">{Array.from({ length: 7 }, (_, i) => <span key={i} className={`shop-skel ${i === 0 ? 'is-big' : ''}`} />)}</div>}
+          {narrowed && !!popular?.length && shownPopular.length === 0 && nothingHere}
           {popular && (
             <div className="shop-grid shop-feature" key={roll}>
-              {popular.map((h, i) => <ShopCard key={h.gid} h={h} i={i} big={i === 0} />)}
+              {shownPopular.map((h, i) => <ShopCard key={h.gid} h={h} i={i} big={i === 0 && !narrowed} shop={narrow.shop} />)}
             </div>
           )}
         </section>

@@ -1,5 +1,3 @@
-import { TODAY } from '../data/library';
-
 import { t, lang, locale } from './i18n';
 const nf1 = new Intl.NumberFormat(locale, { maximumFractionDigits: 1, minimumFractionDigits: 1 });
 const nf0 = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
@@ -29,7 +27,7 @@ export const monthLong = (i: number) => MONTHS_LONG[i];
 
 export function shortDate(d: Date | string): string {
   const x = typeof d === 'string' ? new Date(d) : d;
-  const same = x.getFullYear() === TODAY.getFullYear();
+  const same = x.getFullYear() === new Date().getFullYear();
   return `${x.getDate()} ${MONTHS[x.getMonth()]}${same ? '' : ' ' + x.getFullYear()}`;
 }
 
@@ -48,7 +46,7 @@ export function ago(d: Date | string | null): string {
   if (!d) return t('Hiç');
   const x = typeof d === 'string' ? new Date(d) : d;
   const startOf = (y: Date) => new Date(y.getFullYear(), y.getMonth(), y.getDate()).getTime();
-  const days = Math.round((startOf(TODAY) - startOf(x)) / 86400000);
+  const days = Math.round((startOf(new Date()) - startOf(x)) / 86400000);
   if (days <= 0) return t('Bugün');
   if (days === 1) return t('Dün');
   if (days < 14) return t('{0} gün önce', days);

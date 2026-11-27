@@ -2,6 +2,7 @@
 // behind it breathes — a slow, soft field of colour (or a blurred cover) that
 // swells and settles while the window is open.
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 
 import { t as tr } from '../lib/i18n';
@@ -61,7 +62,8 @@ export function Modal({ open, onClose, label, title, children, size = 'md', plac
   }, [open, onClose]);
 
   if (!mounted) return null;
-  return (
+  // on the body, so a page that scrolls or moves can never carry the window with it
+  return createPortal(
     <div className={`modal-root is-${placement} ${leaving ? 'is-leaving' : ''}`} onMouseDown={onClose}>
       <div className="modal-backdrop" aria-hidden="true">
         {ambient
@@ -92,6 +94,7 @@ export function Modal({ open, onClose, label, title, children, size = 'md', plac
         )}
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

@@ -16,13 +16,13 @@ Games from every store show up in one list. A game you own in two stores becomes
 
 ![Game page](docs/screenshots/en/game.webp)
 
-A game's details, screenshots, achievements, your sessions and notes are on one page. Store prices sit side by side, and when a game on your wishlist goes on sale you get a Windows notification.
+A game's details, screenshots, achievements, your sessions and notes are on one page. Store prices sit side by side, price search can be narrowed to one store or to games on sale, and when a game on your wishlist goes on sale you get a Windows notification.
 
 ## Statistics
 
 ![Statistics](docs/screenshots/en/stats.webp)
 
-How much you play each week, the hours you play most, and how long it would take to finish the games in your backlog. There is a year in review too.
+How much you play each week, the hours you play most, and how long it would take to finish the games in your backlog. There is a year in review too, and a year, a month, your genres or a single game can be turned into a picture card to share.
 
 ## Retro
 

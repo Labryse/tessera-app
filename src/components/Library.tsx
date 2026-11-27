@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { useStore, type Collection, type Scope } from '../store';
 import {
-  CARTRIDGE, isSystem, type PlatformId, PLATFORMS, SMART_COLLECTIONS, STATUSES, TODAY, lastPlayed, minutesBetween, statusLabel,
+  CARTRIDGE, isSystem, type PlatformId, PLATFORMS, SMART_COLLECTIONS, STATUSES, lastPlayed, minutesBetween, statusLabel,
   totalMinutes, tracksWithTessera, type Game,
 } from '../data/library';
 import { Cover, RatingBar } from './bits';
@@ -38,7 +38,7 @@ export function inScope(g: Game, s: Scope, collections: Collection[] = []): bool
       // played once, installed, and left alone for two months (never played ones are under 'never')
       if (s.id === 'stale') {
         const lp = lastPlayed(g);
-        return g.installed && totalMinutes(g) > 0 && !!lp && TODAY.getTime() - lp.getTime() > 60 * DAY;
+        return g.installed && totalMinutes(g) > 0 && !!lp && Date.now() - lp.getTime() > 60 * DAY;
       }
       return false;
     }
@@ -114,7 +114,7 @@ export function LibraryView({ scope }: { scope: Scope }) {
   const { title, sub } = scopeTitle(scope, collections);
   const inCategory = saved ? shown : scoped;
   const installed = inCategory.filter((g) => g.installed).length;
-  const month = new Date(TODAY.getTime() - 30 * DAY);
+  const month = new Date(Date.now() - 30 * DAY);
   const monthMin = minutesBetween(inCategory, month);
   const top = [...inCategory].map((g) => ({ g, m: minutesBetween([g], month) })).sort((a, b) => b.m - a.m)[0];
   const backlog = inCategory.filter((g) => g.status === 'backlog');

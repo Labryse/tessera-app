@@ -7,5 +7,6 @@ import { app } from './en-app';
 import { more } from './en-more';
 import { studio } from './en-studio';
 import { demo } from './en-demo';
+import { share } from './en-share';
 
-export const en: Record<string, Line> = { ...accounts, ...game, ...app, ...more, ...studio, ...demo };
+export const en: Record<string, Line> = { ...accounts, ...game, ...app, ...more, ...studio, ...demo, ...share };

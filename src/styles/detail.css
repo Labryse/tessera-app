@@ -48,7 +48,24 @@
 .detail-body > .stack, .detail-body > .panel { max-width: 1100px; }
 
 /* ---------------------------------------------------------------- overview */
+/* the user's numbers first (once played), then the story and pictures with a
+   rail beside them: prices, other copies, achievements, notes */
 .ov { display: flex; flex-direction: column; gap: 28px; }
+.ov-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 380px); gap: 32px; align-items: start; }
+.ov-cols:has(> .ov-rail:empty) { grid-template-columns: minmax(0, 1fr); }
+.ov-main { display: flex; flex-direction: column; gap: 28px; min-width: 0; }
+.ov-rail { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.ov-rail:empty { display: none; }
+.ov-rail .panel { background: color-mix(in srgb, var(--surface) 55%, transparent); }
+.ov-rail .stores-key { flex-direction: column; align-items: flex-start; }
+/* a narrow rail keeps the price and the cut, not the old price */
+.ov-rail .store-price s { display: none; }
+.ov-rail .store-row { gap: 10px; }
+.ach-panel { gap: 12px; }
+.ach-progress { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; font-size: 13px; }
+.ach-progress strong { font-size: 18px; font-weight: 650; }
+.ach-panel .sub-label { margin-top: 2px; }
+.ov-main .shots-strip { grid-auto-columns: calc((100% - 24px) / 3); }
 .ov-about { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 32px; align-items: start; }
 .ov-about.no-shots { grid-template-columns: minmax(0, 1fr); max-width: 760px; }
 
@@ -138,6 +155,9 @@
 }
 @media (max-width: 1180px) {
   .ov-about { grid-template-columns: minmax(0, 1fr); }
+  .ov-cols { grid-template-columns: minmax(0, 1fr); }
+  .ov-rail { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); align-items: start; }
+  .ov-main .shots-strip { grid-auto-columns: calc((100% - 24px) / 3); }
 }
 .weeks-empty-pill { display: inline-block; padding: 6px 12px; border-radius: 999px; background: var(--surface); box-shadow: 0 0 0 1px var(--border); }
 

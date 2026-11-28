@@ -398,7 +398,7 @@ function Gallery({ shots, thumbs, pixel }: { shots: string[]; thumbs?: string[];
           </button>
         ))}
       </div>
-      {shots.length > 4 && (
+      {shots.length > 3 && (
         <>
           <button className="shots-nav is-prev" aria-label={tr('Önceki görseller')} onClick={() => scroll(-1)}><ChevronLeft size={18} /></button>
           <button className="shots-nav is-next" aria-label={tr('Sonraki görseller')} onClick={() => scroll(1)}><ChevronRight size={18} /></button>
@@ -530,7 +530,7 @@ function LiveSetup({ g }: { g: Game }) {
         <h2 className="panel-title">{tr('Canlı maç bilgisi')}</h2>
         <button className={`btn btn-sm ${state.on ? '' : 'btn-accent'}`} onClick={toggle} disabled={busy} aria-pressed={state.on}>{state.on ? tr('Kapat') : tr('Aç')}</button>
       </div>
-      <p className="muted small">{state.on ? <><span className="ok">{tr('Açık.')}</span> </> : null}{LIVE_GAMES[appid]}</p>
+      {state.on ? <p className="small"><span className="ok">{tr('Açık')}</span> <span className="muted">{tr('· maç sırasında burada ve kenar çubuğunda görünür')}</span></p> : <p className="muted small">{LIVE_GAMES[appid]}</p>}
     </section>
   );
 }
@@ -581,15 +581,9 @@ function Overview({ g, about, onTab }: { g: Game; about: string; onTab: (t: Tab)
   const rare = ach?.list?.filter((a) => a.unlockedAt).sort((a, b) => (a.percent ?? 100) - (b.percent ?? 100)).slice(0, 4) ?? [];
   const note = g.notes[0];
   const facts = rhythmFacts(g);
-  return (
-    <div className="ov">
-      <About g={g} about={about} />
-      <Gallery shots={g.screenshots} pixel={isSystem(g.platform)} />
-      <MyShots g={g} />
-      <Copies g={g} />
-      <LiveSetup g={g} />
-      <StoresPanel g={g} />
-
+  // a game already played opens on the user's own numbers; a new one on what it is
+  const played = totalMinutes(g) > 0 || g.sessions.length > 0;
+  const playRow = (
       <section className="ov-play" aria-label={tr('Oynama')}>
         <PlayPanel g={g} />
         <section className="panel rhythm">
@@ -608,16 +602,32 @@ function Overview({ g, about, onTab }: { g: Game; about: string; onTab: (t: Tab)
         </section>
         <RecordPanel g={g} />
       </section>
-
-      {(rare.length > 0 || note || g.rom) && (
-        <div className="split">
-          {rare.length > 0 && (
-            <section className="panel">
+  );
+  return (
+    <div className="ov">
+      {played && playRow}
+      <div className="ov-cols">
+        <div className="ov-main">
+          <About g={g} about={about} />
+          <Gallery shots={g.screenshots} pixel={isSystem(g.platform)} />
+          <MyShots g={g} />
+        </div>
+        <aside className="ov-rail" aria-label={tr('Oyun hakkında')}>
+          <StoresPanel g={g} />
+          <Copies g={g} />
+          {ach && ach.total > 0 && (
+            <section className="panel ach-panel">
               <div className="panel-head">
-                <h2 className="panel-title">{tr('En nadir başarımların')}</h2>
+                <h2 className="panel-title">{tr('Başarımlar')}</h2>
                 <button className="link" onClick={() => onTab('achievements')}>{tr('Tümü')}</button>
               </div>
-              <ul className="ach-mini">
+              <div className="ach-progress">
+                <span className="num"><strong>{ach.unlocked}</strong> / {ach.total}</span>
+                <Progress value={ach.unlocked} total={ach.total} label={tr('Başarım ilerlemesi')} />
+                <span className="num muted">{pct(Math.round((ach.unlocked / ach.total) * 100))}</span>
+              </div>
+              {rare.length > 0 && <span className="sub-label">{tr('En nadirleri')}</span>}
+              {rare.length > 0 && <ul className="ach-mini">
                 {rare.map((a) => (
                   <li key={a.api}>
                     {a.icon && <img src={a.icon} alt="" />}
@@ -625,7 +635,7 @@ function Overview({ g, about, onTab }: { g: Game; about: string; onTab: (t: Tab)
                     <span className="num muted">{pct(a.percent?.toLocaleString(locale))}</span>
                   </li>
                 ))}
-              </ul>
+              </ul>}
             </section>
           )}
           {note && (
@@ -638,9 +648,11 @@ function Overview({ g, about, onTab }: { g: Game; about: string; onTab: (t: Tab)
               <SpoilerText text={note.text} spoiler={note.spoiler} />
             </section>
           )}
+          <LiveSetup g={g} />
           {g.rom && <RomPanel g={g} />}
-        </div>
-      )}
+        </aside>
+      </div>
+      {!played && playRow}
     </div>
   );
 }

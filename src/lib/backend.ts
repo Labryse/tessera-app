@@ -50,7 +50,7 @@ export interface PriceData { gid?: string; deals: Deal[]; low: { price: number; 
 export interface GamePrices extends Partial<PriceData> { found: boolean; hasKey: boolean; apps?: Record<string, boolean> }
 export interface ShopArt { banner: string | null; small: string | null; boxart: string | null }
 /** a game found by the price search; type is game, dlc, package… */
-export interface ShopHit { gid: string; title: string; type: string | null; mature: boolean; art: ShopArt; prices?: PriceData }
+export interface ShopHit { gid: string; title: string; type: string | null; mature: boolean; art: ShopArt; prices?: PriceData; appid?: number | null; from?: string }
 export interface ShopInfo {
   gid: string; title: string; type: string | null; art: ShopArt; appid: number | null; earlyAccess: boolean; tags: string[];
   releaseDate: string | null; developers: string[]; publishers: string[];
@@ -158,6 +158,7 @@ export const api = {
     invoke<void>('steam_connect', { steamid, persona, method, apiKey }),
   steamSetKey: (key: string | null) => invoke<void>('steam_set_key', { key }),
   steamSync: () => invoke<SyncReport>('steam_sync'),
+  steamCollections: () => invoke<{ collections: { name: string; apps: number[] }[]; favorites: number[] }>('steam_collections'),
   linkStore: (platform: string) => invoke<SyncReport>('link_store', { platform }),
   refreshStores: () => invoke<number>('refresh_stores'),
   fillMissing: () => invoke<number>('fill_missing'),

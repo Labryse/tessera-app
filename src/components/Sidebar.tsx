@@ -8,6 +8,7 @@ import { useStore, type Route, type Scope } from '../store';
 import { PLATFORMS, SMART_COLLECTIONS, type PlatformId } from '../data/library';
 import { inScope } from './Library';
 import { PlatformLogo } from './PlatformLogo';
+import { SteamCollections } from './SteamCollections';
 
 import { t } from '../lib/i18n';
 const sameScope = (a: Scope, b: Scope) =>
@@ -76,6 +77,8 @@ export function Sidebar({ onSearch }: { onSearch: () => void }) {
   const [menuFor, setMenuFor] = useState<{ name: string; x: number; y: number } | null>(null);
   const [renaming, setRenaming] = useState<string | null>(null);
   const [newName, setNewName] = useState('');
+  const [fromSteam, setFromSteam] = useState(false);
+  const steamLinked = !demo && accounts.some((a) => a.platform === 'steam');
 
   const count = (s: Scope) => games.filter((g) => inScope(g, s, collections)).length;
   const libraryActive = (s: Scope) => route.name === 'library' && sameScope(route.scope, s);
@@ -164,7 +167,10 @@ export function Sidebar({ onSearch }: { onSearch: () => void }) {
       <div className="nav-group" data-nav="categories">
         <div className="nav-heading nav-heading-row">
           <span>{t('Kategoriler')}</span>
-          <button className="nav-add" aria-label={t('Yeni kategori')} title={t('Yeni kategori')} onClick={() => setAdding(true)}><Plus size={14} strokeWidth={1.8} /></button>
+          <span className="nav-heading-tools">
+            {steamLinked && <button className="nav-add" aria-label={t('Steam kategorilerini al')} title={t('Steam kategorilerini al')} onClick={() => setFromSteam(true)}><PlatformLogo id="steam" size={13} /></button>}
+            <button className="nav-add" aria-label={t('Yeni kategori')} title={t('Yeni kategori')} onClick={() => setAdding(true)}><Plus size={14} strokeWidth={1.8} /></button>
+          </span>
         </div>
         <div className="nav-group-items">
         {collections.map((c) => renaming === c.id ? (
@@ -196,9 +202,16 @@ export function Sidebar({ onSearch }: { onSearch: () => void }) {
             <span className="nav-icon"><Plus {...ic} /></span><span className="nav-label">{t('Kategori oluştur')}</span>
           </button>
         )}
+        {collections.length === 0 && !adding && steamLinked && (
+          <button className="nav-item nav-hint" onClick={() => setFromSteam(true)}>
+            <span className="nav-icon"><PlatformLogo id="steam" size={15} /></span><span className="nav-label">{t('Steam’den al')}</span>
+          </button>
+        )}
         {SMART_COLLECTIONS.map((c) => lib(c.label, { kind: 'smart', id: c.id }, <ListFilter {...ic} />, 'smart'))}
         </div>
       </div>
+
+      {steamLinked && <SteamCollections open={fromSteam} onClose={() => setFromSteam(false)} />}
 
       <div className="sidebar-foot" data-nav="foot">
         <NowPlaying />

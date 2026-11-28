@@ -190,7 +190,8 @@ function ShelfBrowser({ shelves, loading, empty, kind, handler, onExit, intercep
     const setCol = (c: number) => setCols((m) => ({ ...m, [shelf.id]: c }));
     if (a === 'left') { if (col > 0) { sound('move'); setCol(col - 1); } return true; }
     if (a === 'right') { if (col < shelf.items.length - 1) { sound('move'); setCol(col + 1); } return true; }
-    if (a === 'up') { if (r > 0) { sound('move'); setRow(r - 1); } return true; }
+    // the top row hands 'up' to the shell, which moves to the top bar
+    if (a === 'up') { if (r > 0) { sound('move'); setRow(r - 1); return true; } return false; }
     if (a === 'down') { if (r < shelves.length - 1) { sound('move'); setRow(r + 1); } return true; }
     if ((a === 'a' || a === 'x') && focused) { openPage(focused); return true; }
     if (a === 'y' && focused?.y) { sound('select'); focused.y.run(); return true; }

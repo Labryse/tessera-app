@@ -2,7 +2,7 @@
 // The results show each game's cheapest price; a game opens its own page with
 // what it is (release, makers, reviews) and the full store list.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, BadgePercent, BellRing, Search, Shuffle, X } from 'lucide-react';
+import { ArrowLeft, BadgePercent, BellRing, ChevronLeft, ChevronRight, Search, X } from 'lucide-react';
 import { useStore } from '../store';
 import { api, type Deal, type GamePrices, type ShopHit, type ShopInfo } from '../lib/backend';
 import { cheapest, KeyAsk, money, PriceList, samplePrices, ShopMark } from './Stores';
@@ -18,6 +18,9 @@ let picks: ShopHit[] | null = null;
 const NO_ART = { banner: null, small: null, boxart: null };
 const known = new Map<string, ShopHit>();
 const remember = (list: ShopHit[]) => { for (const h of list) known.set(h.gid, { ...h, art: h.art ?? known.get(h.gid)?.art ?? NO_ART }); };
+/** the charts: this many games on the page, and this many for one store */
+const ALL_CAP = 100;
+const STORE_CAP = 50;
 const PICKS = 18;
 
 // the store and "on sale only" picks, kept between visits
@@ -48,39 +51,70 @@ const passes = (h: ShopHit, n: Narrow) => {
 // the stores the library itself comes from go first when counts tie
 const MAIN_SHOPS = [61, 16, 35, 48, 62, 52, 4];
 
-/** the stores that sell something in these results, the busiest first */
-function storesIn(list: ShopHit[]) {
+/** the stores that sell something in these results (on sale, when only sales are asked for), the busiest first */
+function storesIn(list: ShopHit[], sale = false, cap = Infinity) {
   const m = new Map<number, { id: number; name: string; n: number }>();
   for (const h of list) {
     const seen = new Set<number>();
     for (const d of h.prices?.deals ?? []) {
-      if (seen.has(d.shopId)) continue;
+      if (seen.has(d.shopId) || (sale && d.cut <= 0)) continue;
       seen.add(d.shopId);
       const e = m.get(d.shopId);
       if (e) e.n++; else m.set(d.shopId, { id: d.shopId, name: d.shop, n: 1 });
     }
   }
   const rank = (id: number) => { const i = MAIN_SHOPS.indexOf(id); return i < 0 ? 99 : i; };
+  for (const e of m.values()) e.n = Math.min(e.n, cap);
   return [...m.values()].sort((a, b) => b.n - a.n || rank(a.id) - rank(b.id) || a.name.localeCompare(b.name, locale));
 }
 
 type StoreCount = { id: number; name: string; n: number };
+/** a row wider than its room: the wheel scrolls it sideways, arrows at an end that has more */
+function useSideScroll(deps: unknown) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [more, setMore] = useState({ left: false, right: false });
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const look = () => setMore({ left: el.scrollLeft > 2, right: el.scrollLeft + el.clientWidth < el.scrollWidth - 2 });
+    const wheel = (e: WheelEvent) => {
+      if (el.scrollWidth <= el.clientWidth || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      el.scrollBy({ left: e.deltaY, behavior: 'auto' });
+    };
+    look();
+    const ro = new ResizeObserver(look);
+    ro.observe(el);
+    el.addEventListener('scroll', look, { passive: true });
+    el.addEventListener('wheel', wheel, { passive: false });
+    return () => { ro.disconnect(); el.removeEventListener('scroll', look); el.removeEventListener('wheel', wheel); };
+  }, [deps]);
+  const nudge = (dir: 1 | -1) => ref.current?.scrollBy({ left: dir * ref.current.clientWidth * 0.7, behavior: 'smooth' });
+  return { ref, more, nudge };
+}
+
 function StoreFilter({ stores, value, onChange }: { stores: StoreCount[]; value: Narrow; onChange: (n: Narrow) => void }) {
   // a chosen store stays on the row even when these results have nothing from it
   const list = value.shop != null && !stores.some((x) => x.id === value.shop) ? [...stores, { id: value.shop, name: tr('Seçili mağaza'), n: 0 }] : stores;
-  if (list.length < 2 && value.shop == null && !value.sale) return null;
+  const hide = list.length < 2 && value.shop == null && !value.sale;
+  const row = useSideScroll(hide ? 0 : list.length);
+  if (hide) return null;
   return (
     <div className="shop-narrow" role="group" aria-label={tr('Mağazaya göre')}>
       <div className="sc-chips">
         <button aria-pressed={value.sale} onClick={() => onChange({ ...value, sale: !value.sale })}><BadgePercent size={14} strokeWidth={1.9} /> {tr('İndirimde')}</button>
       </div>
-      <div className="sc-chips shop-stores">
-        <button aria-pressed={value.shop == null} onClick={() => onChange({ ...value, shop: null })}>{tr('Tüm mağazalar')}</button>
-        {list.map((x) => (
-          <button key={x.id} aria-pressed={value.shop === x.id} onClick={() => onChange({ ...value, shop: value.shop === x.id ? null : x.id })} title={x.name}>
-            <ShopMark id={x.id} name={x.name} size={14} /> {x.name} <b className="num">{x.n}</b>
-          </button>
-        ))}
+      <div className={`shop-stores-wrap ${row.more.left ? 'more-left' : ''} ${row.more.right ? 'more-right' : ''}`}>
+        <div className="sc-chips shop-stores" ref={row.ref}>
+          <button aria-pressed={value.shop == null} onClick={() => onChange({ ...value, shop: null })}>{tr('Tüm mağazalar')}</button>
+          {list.map((x) => (
+            <button key={x.id} aria-pressed={value.shop === x.id} onClick={(e) => { e.currentTarget.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' }); onChange({ ...value, shop: value.shop === x.id ? null : x.id }); }} title={x.name}>
+              <ShopMark id={x.id} name={x.name} size={14} /> {x.name} <b className="num">{x.n}</b>
+            </button>
+          ))}
+        </div>
+        {row.more.left && <button className="shop-stores-arrow is-left" onClick={() => row.nudge(-1)} aria-label={tr('Önceki mağazalar')} tabIndex={-1}><ChevronLeft size={16} strokeWidth={2} /></button>}
+        {row.more.right && <button className="shop-stores-arrow is-right" onClick={() => row.nudge(1)} aria-label={tr('Sonraki mağazalar')} tabIndex={-1}><ChevronRight size={16} strokeWidth={2} /></button>}
       </div>
     </div>
   );
@@ -95,12 +129,6 @@ function owned(games: Game[], title: string, appid?: number | null) {
 }
 
 const TYPE: Record<string, string> = { dlc: tr('Ek paket'), package: tr('Paket'), bundle: tr('Paket'), game: '' };
-
-function shuffle<T>(a: T[]) {
-  const v = [...a];
-  for (let i = v.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [v[i], v[j]] = [v[j], v[i]]; }
-  return v;
-}
 
 // SAMPLE: the browser demo cannot reach IsThereAnyDeal
 const steamArt = (a: number) => `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${a}/header.jpg`;
@@ -207,36 +235,39 @@ function ShopSearch() {
   // the term the shown results belong to ("nothing found" only once a search answered)
   const [done, setDone] = useState(last.q);
   const [popular, setPopular] = useState<ShopHit[] | null>(picks);
-  const [roll, setRoll] = useState(0);
   const [narrow, setNarrowState] = useState<Narrow>(loadNarrow);
   const setNarrow = (n: Narrow) => { setNarrowState(n); saveNarrow(n); };
   const input = useRef<HTMLInputElement>(null);
   useEffect(() => { input.current?.focus(); }, []);
 
-  // popular games the user does not own, a different handful each time
+  // this week's best sellers and most played that the user does not own, in chart order
   useEffect(() => {
-    if (picks && roll === 0) return;
+    if (picks) return;
     let live = true;
     (async () => {
       try {
         const r = demo ? { hasKey: true, items: SAMPLE.filter((s) => s.type !== 'dlc').map(sampleHit) } : await api.shopPopular();
         if (!live) return;
         setHasKey(r.hasKey);
-        const chosen = shuffle(r.items.filter((h) => !owned(games, h.title))).slice(0, PICKS).map((h) => ({ ...h, art: h.art ?? NO_ART }));
-        remember(chosen);
-        picks = chosen;
-        setPopular(chosen);
-        if (demo || !chosen.length) return;
-        const art = await api.shopArt(chosen.map((h) => h.gid));
-        if (!live) return;
-        const withArt = chosen.map((h) => ({ ...h, art: art[h.gid] ?? h.art }));
-        remember(withArt);
-        picks = withArt;
-        setPopular(withArt);
+        let list = r.items.filter((h) => !owned(games, h.title, h.appid)).map((h) => ({ ...h, art: h.art ?? NO_ART }));
+        remember(list);
+        picks = list;
+        setPopular(list);
+        if (demo) return;
+        // Steam and GOG charts bring their own pictures; the rest are asked for in small batches
+        const bare = list.filter((h) => !h.art.banner && !h.art.small).map((h) => h.gid).slice(0, 160);
+        for (let i = 0; i < bare.length && live; i += 40) {
+          const art = await api.shopArt(bare.slice(i, i + 40)).catch(() => ({} as Record<string, ShopHit['art']>));
+          if (!live) return;
+          list = list.map((h) => (art[h.gid] ? { ...h, art: art[h.gid] } : h));
+          remember(list);
+          picks = list;
+          setPopular(list);
+        }
       } catch (e) { if (live) setError(String(e)); }
     })();
     return () => { live = false; };
-  }, [roll, demo]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [demo]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const term = q.trim();
@@ -260,9 +291,9 @@ function ShopSearch() {
   // games first, add-ons after; the search's own order within each
   const sorted = useMemo(() => [...items].sort((a, b) => Number(a.type !== 'game') - Number(b.type !== 'game')), [items]);
   const searching = q.trim().length >= 2;
-  const stores = useMemo(() => storesIn(searching ? items : popular ?? []), [searching, items, popular]);
+  const stores = useMemo(() => (searching ? storesIn(items, narrow.sale) : storesIn(popular ?? [], narrow.sale, STORE_CAP)), [searching, items, popular, narrow.sale]);
   const shown = sorted.filter((h) => passes(h, narrow));
-  const shownPopular = (popular ?? []).filter((h) => passes(h, narrow));
+  const shownPopular = (popular ?? []).filter((h) => passes(h, narrow)).slice(0, narrow.shop != null ? STORE_CAP : ALL_CAP);
   const narrowed = narrow.shop != null || narrow.sale;
   const storeName = narrow.shop != null ? stores.find((x) => x.id === narrow.shop)?.name ?? null : null;
   const nothingHere = (
@@ -313,12 +344,12 @@ function ShopSearch() {
         <section className="shop-popular" aria-label={tr('Popüler')}>
           <div className="shop-section-head">
             <h2 className="sc-title">{tr('Popüler')}</h2>
-            <button className="btn btn-ghost btn-sm" onClick={() => setRoll((n) => n + 1)}><Shuffle size={14} strokeWidth={1.8} /> {tr('Başkaları')}</button>
+            {shownPopular.length > 0 && <span className="muted small num">{tr('{0} oyun', shownPopular.length)}</span>}
           </div>
           {!popular && <div className="shop-grid shop-feature">{Array.from({ length: 7 }, (_, i) => <span key={i} className={`shop-skel ${i === 0 ? 'is-big' : ''}`} />)}</div>}
           {narrowed && !!popular?.length && shownPopular.length === 0 && nothingHere}
           {popular && (
-            <div className="shop-grid shop-feature" key={roll}>
+            <div className="shop-grid shop-feature">
               {shownPopular.map((h, i) => <ShopCard key={h.gid} h={h} i={i} big={i === 0 && !narrowed} shop={narrow.shop} />)}
             </div>
           )}
@@ -401,9 +432,10 @@ export const shopData = {
   async popular(demo: boolean, games: Game[]): Promise<ShopHit[]> {
     if (picks) return picks;
     const r = demo ? { hasKey: true, items: SAMPLE.filter((s) => s.type !== 'dlc').map(sampleHit) } : await api.shopPopular();
-    const chosen = shuffle(r.items.filter((h) => !owned(games, h.title))).slice(0, PICKS).map((h) => ({ ...h, art: h.art ?? NO_ART }));
-    if (!demo && chosen.length) {
-      const art = await api.shopArt(chosen.map((h) => h.gid)).catch(() => ({} as Record<string, ShopHit['art']>));
+    const chosen = r.items.filter((h) => !owned(games, h.title, h.appid)).slice(0, PICKS).map((h) => ({ ...h, art: h.art ?? NO_ART }));
+    const bare = chosen.filter((h) => !h.art.banner && !h.art.small).map((h) => h.gid);
+    if (!demo && bare.length) {
+      const art = await api.shopArt(bare).catch(() => ({} as Record<string, ShopHit['art']>));
       picks = chosen.map((h) => ({ ...h, art: art[h.gid] ?? h.art }));
     } else picks = chosen;
     remember(picks);

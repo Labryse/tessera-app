@@ -326,6 +326,132 @@ pub async fn popular(st: &AppState) -> Result<Vec<Value>, String> {
     Ok(out)
 }
 
+// ---------------------------------------------------------------- what sells this week
+
+const CHARTS_FRESH: i64 = 12 * 3600;
+const STEAM_CDN: &str = "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps";
+
+/// Steam apps from one of Steam's public charts, best first, with the name when the chart gives it (no key)
+async fn steam_chart(st: &AppState, which: &str) -> Vec<(u32, Option<String>)> {
+    let (url, input) = match which {
+        "sellers" => (
+            "https://api.steampowered.com/IStoreTopSellersService/GetWeeklyTopSellers/v1/",
+            Some(json!({ "country_code": COUNTRY, "context": { "language": "english", "country_code": COUNTRY }, "page_start": 0, "page_count": 100 })),
+        ),
+        _ => ("https://api.steampowered.com/ISteamChartsService/GetMostPlayedGames/v1/", None),
+    };
+    let mut req = st.http.get(url);
+    if let Some(i) = input {
+        req = req.query(&[("input_json", i.to_string())]);
+    }
+    let Ok(r) = req.send().await else { return vec![] };
+    let Ok(v) = r.json::<Value>().await else { return vec![] };
+    v["response"]["ranks"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter(|x| x["item"]["is_free"].as_bool() != Some(true))
+        // games only: no add-ons, soundtracks or tools (Steam item type 0)
+        .filter(|x| x["item"]["type"].as_i64().is_none_or(|t| t == 0))
+        .filter_map(|x| Some((u32::try_from(x["appid"].as_u64()?).ok()?, x["item"]["name"].as_str().map(str::to_string))))
+        .collect()
+}
+
+/// names of Steam apps, from the store's public item list
+async fn steam_names(st: &AppState, ids: &[u32]) -> HashMap<u32, String> {
+    let mut out = HashMap::new();
+    for chunk in ids.chunks(100) {
+        let req = json!({ "ids": chunk.iter().map(|id| json!({ "appid": id })).collect::<Vec<_>>(), "context": { "language": "english", "country_code": COUNTRY }, "data_request": {} });
+        let Ok(r) = st.http.get("https://api.steampowered.com/IStoreBrowseService/GetItems/v1/").query(&[("input_json", req.to_string())]).send().await else { continue };
+        let Ok(v) = r.json::<Value>().await else { continue };
+        for it in v["response"]["store_items"].as_array().into_iter().flatten() {
+            if let (Some(a), Some(n)) = (it["appid"].as_u64(), it["name"].as_str()) {
+                out.insert(a as u32, n.to_string());
+            }
+        }
+    }
+    out
+}
+
+/// GOG's own best sellers: (title, landscape cover)
+async fn gog_chart(st: &AppState) -> Vec<(String, Option<String>)> {
+    let Ok(r) = st
+        .http
+        .get("https://catalog.gog.com/v1/catalog")
+        .query(&[("limit", "50"), ("order", "desc:bestselling"), ("productType", "in:game")])
+        .send()
+        .await
+    else {
+        return vec![];
+    };
+    let Ok(v) = r.json::<Value>().await else { return vec![] };
+    v["products"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter_map(|p| Some((p["title"].as_str()?.to_string(), p["coverHorizontal"].as_str().map(str::to_string))))
+        .collect()
+}
+
+/// What people buy and play now: Steam's weekly best sellers, then Steam's most
+/// played, then GOG's best sellers, with IsThereAnyDeal's most followed filling in.
+/// One list in that order, each game once: [{gid, title, type, appid?, art?, from}]
+pub async fn charts(st: &AppState) -> Result<Vec<Value>, String> {
+    let ck = "charts:week";
+    if let Some(Value::Array(a)) = db::cache_get(&st.db.lock().unwrap(), ck, CHARTS_FRESH) {
+        if !a.is_empty() {
+            return Ok(a);
+        }
+    }
+    let (sellers, played, gog) = tokio::join!(steam_chart(st, "sellers"), steam_chart(st, "played"), gog_chart(st));
+    let mut apps: Vec<(u32, Option<String>, &str)> = vec![];
+    for (list, from) in [(&sellers, "steam-sellers"), (&played, "steam-played")] {
+        for (a, name) in list {
+            if !apps.iter().any(|(x, _, _)| x == a) {
+                apps.push((*a, name.clone(), from));
+            }
+        }
+    }
+    let ids: Vec<u32> = apps.iter().map(|(a, _, _)| *a).collect();
+    let nameless: Vec<u32> = apps.iter().filter(|(_, n, _)| n.is_none()).map(|(a, _, _)| *a).collect();
+    let (gids, names) = tokio::join!(gids_by_appid(st, &ids), steam_names(st, &nameless));
+    let gids = gids.unwrap_or_default();
+    let mut out: Vec<Value> = vec![];
+    let mut seen = std::collections::HashSet::new();
+    for (a, name, from) in &apps {
+        let Some(g) = gids.get(a) else { continue };
+        let Some(title) = name.clone().or_else(|| names.get(a).cloned()) else { continue };
+        if seen.insert(g.clone()) {
+            out.push(json!({
+                "gid": g, "title": title, "type": "game", "mature": false, "appid": a, "from": from,
+                "art": { "banner": format!("{STEAM_CDN}/{a}/header.jpg"), "small": format!("{STEAM_CDN}/{a}/header.jpg"), "boxart": null },
+            }));
+        }
+    }
+    if !gog.is_empty() {
+        let titles: Vec<&str> = gog.iter().map(|(t, _)| t.as_str()).collect();
+        if let Ok(v) = post(st, &format!("{API}/lookup/id/title/v1"), &[], &json!(titles)).await {
+            for (t, cover) in &gog {
+                let Some(g) = v[t.as_str()].as_str().filter(|g| !g.is_empty()) else { continue };
+                if seen.insert(g.to_string()) {
+                    out.push(json!({ "gid": g, "title": t, "type": "game", "mature": false, "from": "gog-sellers",
+                        "art": { "banner": cover, "small": cover, "boxart": null } }));
+                }
+            }
+        }
+    }
+    for p in popular(st).await.unwrap_or_default() {
+        let Some(g) = p["gid"].as_str() else { continue };
+        if seen.insert(g.to_string()) {
+            let mut p = p.clone();
+            p["from"] = json!("itad");
+            out.push(p);
+        }
+    }
+    let _ = db::cache_put(&st.db.lock().unwrap(), ck, &Value::Array(out.clone()));
+    Ok(out)
+}
+
 // ---------------------------------------------------------------- opening a store
 
 /// is an app registered for this link scheme (steam://, com.epicgames.launcher://…)?
@@ -425,5 +551,24 @@ mod tests {
         assert!(safe_to_open("https://itad.link/x/"));
         assert!(!safe_to_open("file:///C:/Windows/system32/calc.exe"));
         assert!(!safe_to_open("http://example.com"));
+    }
+
+    #[test]
+    #[ignore = "calls Steam, GOG and IsThereAnyDeal"]
+    fn real_charts() {
+        let st = AppState {
+            db: std::sync::Mutex::new(db::open(std::path::Path::new(":memory:")).unwrap()),
+            http: reqwest::Client::builder().user_agent("Tessera/0.1 (game library)").build().unwrap(),
+            tracker: crate::tracker::Tracker::new(true),
+            dir: std::env::temp_dir(),
+        };
+        let v = tauri::async_runtime::block_on(charts(&st)).unwrap();
+        let count = |f: &str| v.iter().filter(|x| x["from"] == f).count();
+        println!("{} games: steam sellers {}, steam played {}, gog {}, itad {}", v.len(), count("steam-sellers"), count("steam-played"), count("gog-sellers"), count("itad"));
+        for x in v.iter().take(10) {
+            println!("{} | {}", x["title"], x["from"]);
+        }
+        assert!(count("steam-sellers") > 20);
+        assert!(v.iter().all(|x| x["title"].as_str().is_some_and(|t| !t.is_empty())));
     }
 }

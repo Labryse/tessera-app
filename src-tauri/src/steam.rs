@@ -616,3 +616,149 @@ mod storage_tests {
         assert_eq!(super::storage_gb("<strong>Memory:</strong> 8 GB RAM"), None);
     }
 }
+
+// ---------------------------------------------------------------- the user's own collections
+#[derive(Serialize, Debug)]
+pub struct SteamCollection {
+    pub name: String,
+    pub apps: Vec<u32>,
+}
+
+#[derive(Serialize, Default, Debug)]
+pub struct Collections {
+    pub collections: Vec<SteamCollection>,
+    pub favorites: Vec<u32>,
+}
+
+/// The collections the user made in the Steam library. The client keeps them in
+/// userdata/<account>/config/cloudstorage (namespace 1); changes made on this PC
+/// and not yet synced sit in the ".modified" file next to it, so that one wins.
+/// Dynamic collections (a saved filter with no list of games) and "hidden" are left
+/// out. Older clients kept a list of tags per app in sharedconfig.vdf instead; that
+/// is read when the new file holds nothing.
+pub fn collections(root: &Path, steamid: &str) -> Collections {
+    let Some(account_id) = steamid.parse::<u64>().ok().and_then(|s| s.checked_sub(STEAMID64_BASE)) else { return Collections::default() };
+    let user = root.join("userdata").join(account_id.to_string());
+    let dir = user.join("config").join("cloudstorage");
+    let mut entries: Vec<(String, Value)> = vec![];
+    for f in ["cloud-storage-namespace-1.json", "cloud-storage-namespace-1.modified.json"] {
+        let Ok(text) = std::fs::read_to_string(dir.join(f)) else { continue };
+        let Ok(Value::Array(items)) = serde_json::from_str::<Value>(&text) else { continue };
+        for it in items {
+            let (Some(k), Some(v)) = (it[0].as_str(), it.get(1)) else { continue };
+            if !k.starts_with("user-collections.") {
+                continue;
+            }
+            entries.retain(|(key, _)| key != k);
+            entries.push((k.to_string(), v.clone()));
+        }
+    }
+    let out = from_cloud(&entries);
+    if !out.collections.is_empty() || !out.favorites.is_empty() {
+        return out;
+    }
+    read(&user.join("7").join("remote").join("sharedconfig.vdf")).map(|v| from_tags(&v)).unwrap_or_default()
+}
+
+fn from_cloud(entries: &[(String, Value)]) -> Collections {
+    let mut out = Collections::default();
+    for (_, e) in entries {
+        if e["is_deleted"].as_bool() == Some(true) {
+            continue;
+        }
+        let Some(val) = e["value"].as_str().and_then(|s| serde_json::from_str::<Value>(s).ok()) else { continue };
+        let ids = |k: &str| -> Vec<u32> {
+            val[k].as_array().map(|a| a.iter().filter_map(|x| x.as_u64()).filter_map(|x| u32::try_from(x).ok()).collect()).unwrap_or_default()
+        };
+        let removed = ids("removed");
+        let apps: Vec<u32> = ids("added").into_iter().filter(|a| !removed.contains(a)).collect();
+        match val["id"].as_str().unwrap_or_default() {
+            "hidden" => {}
+            "favorite" => out.favorites = apps,
+            _ if !val["filterSpec"].is_null() => {}
+            _ => {
+                let name = val["name"].as_str().unwrap_or_default().trim().to_string();
+                if !name.is_empty() && !apps.is_empty() {
+                    out.collections.push(SteamCollection { name, apps });
+                }
+            }
+        }
+    }
+    out.collections.sort_by_key(|c| c.name.to_lowercase());
+    out
+}
+
+fn from_tags(v: &Vdf) -> Collections {
+    let mut out = Collections::default();
+    let Some(apps) = v.path(&["UserRoamingConfigStore", "Software", "Valve", "Steam", "apps"]) else { return out };
+    let mut by_name: Vec<SteamCollection> = vec![];
+    for (id, a) in apps.entries() {
+        let Ok(appid) = id.parse::<u32>() else { continue };
+        let Some(tags) = a.get("tags") else { continue };
+        for (_, t) in tags.entries() {
+            let Some(name) = t.str().map(str::trim).filter(|s| !s.is_empty()) else { continue };
+            if name == "favorite" {
+                out.favorites.push(appid);
+            } else if let Some(c) = by_name.iter_mut().find(|c| c.name == name) {
+                c.apps.push(appid);
+            } else {
+                by_name.push(SteamCollection { name: name.to_string(), apps: vec![appid] });
+            }
+        }
+    }
+    by_name.sort_by_key(|c| c.name.to_lowercase());
+    out.collections = by_name;
+    out
+}
+
+#[cfg(test)]
+mod collection_tests {
+    use super::*;
+
+    fn entry(key: &str, value: Option<Value>) -> (String, Value) {
+        match value {
+            Some(v) => (key.into(), json!({ "key": key, "value": v.to_string() })),
+            None => (key.into(), json!({ "key": key, "is_deleted": true })),
+        }
+    }
+
+    #[test]
+    fn reads_cloud_collections() {
+        let e = vec![
+            entry("user-collections.favorite", Some(json!({ "id": "favorite", "name": "", "added": [10, 20], "removed": [] }))),
+            entry("user-collections.hidden", Some(json!({ "id": "hidden", "name": "", "added": [30], "removed": [] }))),
+            entry("user-collections.uc-a", Some(json!({ "id": "uc-a", "name": "Korku", "added": [40, 50, 60], "removed": [50] }))),
+            entry("user-collections.uc-b", Some(json!({ "id": "uc-b", "name": "Dynamic", "added": [], "filterSpec": { "nFormatVersion": 2 } }))),
+            entry("user-collections.uc-c", None),
+            entry("user-collections.uc-d", Some(json!({ "id": "uc-d", "name": "aksiyon", "added": [70], "removed": [] }))),
+        ];
+        let c = from_cloud(&e);
+        assert_eq!(c.favorites, vec![10, 20]);
+        let names: Vec<&str> = c.collections.iter().map(|x| x.name.as_str()).collect();
+        assert_eq!(names, vec!["aksiyon", "Korku"]);
+        assert_eq!(c.collections[1].apps, vec![40, 60]);
+    }
+
+    #[test]
+    fn reads_old_tags() {
+        let v = vdf::parse(r#""UserRoamingConfigStore" { "Software" { "Valve" { "Steam" { "apps" {
+            "10" { "tags" { "0" "favorite" "1" "Korku" } }
+            "20" { "tags" { "0" "Korku" } }
+            "30" { "LastPlayed" "1" }
+        } } } } }"#);
+        let c = from_tags(&v);
+        assert_eq!(c.favorites, vec![10]);
+        assert_eq!(c.collections.len(), 1);
+        assert_eq!(c.collections[0].apps, vec![10, 20]);
+    }
+
+    #[test]
+    #[ignore = "reads the local Steam install"]
+    fn local_collections() {
+        let r = root().expect("steam root");
+        for a in local_accounts(&r) {
+            let c = collections(&r, &a.steamid);
+            println!("collections: {}, favorites: {}", c.collections.len(), c.favorites.len());
+        }
+    }
+}

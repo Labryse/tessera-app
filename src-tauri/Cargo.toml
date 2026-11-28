@@ -1,6 +1,6 @@
 [package]
 name = "tessera"
-version = "0.1.2"
+version = "0.1.3"
 description = "Tessera game library"
 authors = []
 license = "GPL-3.0-or-later"
@@ -24,7 +24,7 @@ log = "0.4"
 tauri = { version = "2.12.5", features = ["tray-icon"] }
 tauri-plugin-log = "2"
 rusqlite = { version = "0.41.1", features = ["bundled"] }
-tokio = { version = "1", features = ["time", "sync"] }
+tokio = { version = "1", features = ["time", "sync", "macros"] }
 reqwest = { version = "0.13.5", default-features = false, features = ["form", "json", "query", "rustls"] }
 winreg = "0.56.0"
 url = "2.5.8"

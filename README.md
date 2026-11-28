@@ -10,13 +10,13 @@ An open source game library for Windows that brings your Steam, Epic, GOG, Xbox,
 
 ## Library
 
-Games from every store show up in one list. A game you own in two stores becomes a single card, with the play time added up. Filter by genre, tag, play time, score or Steam Deck support, and build categories that fill themselves from filters. When you can't decide what to play, Tessera picks a game for you.
+Games from every store show up in one list. A game you own in two stores becomes a single card, with the play time added up. Filter by genre, tag, play time, score or Steam Deck support, and build categories that fill themselves from filters, or bring over the collections you made in Steam. When you can't decide what to play, Tessera picks a game for you, from the whole library or just the category you are in.
 
 ## Game page
 
 ![Game page](docs/screenshots/en/game.webp)
 
-A game's details, screenshots, achievements, your sessions and notes are on one page. Store prices sit side by side, price search can be narrowed to one store or to games on sale, and when a game on your wishlist goes on sale you get a Windows notification.
+A game's details, screenshots, achievements, your sessions and notes are on one page. Store prices sit side by side, price search opens on this week's best sellers and most played games you don't own and can be narrowed to one store or to games on sale, and when a game on your wishlist goes on sale you get a Windows notification.
 
 ## Statistics
 
@@ -34,7 +34,7 @@ Point Tessera at your ROM folder. It recognises the games, finds their covers an
 
 ![Big screen](docs/screenshots/en/big-screen.webp)
 
-A full-screen mode for the TV and a controller. Open it with F11 or the Start button on your controller.
+A full-screen mode for the TV and a controller. Open it with F11, or with Start or the Xbox/PS button on your controller (Tessera asks first). The rest of the app works with a controller too: the d-pad moves between controls, A presses, B goes back.
 
 ## Theme studio
 

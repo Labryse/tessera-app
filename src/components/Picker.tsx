@@ -3,7 +3,7 @@
 // on that game's art.
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { BellOff, Shuffle, Download, ExternalLink, Play, X } from 'lucide-react';
-import { useStore } from '../store';
+import { useStore, type PickerScope } from '../store';
 import { PLATFORMS, isSystem, lastPlayed, totalMinutes, type Game } from '../data/library';
 import { Modal } from './Modal';
 import { Cover } from './bits';
@@ -63,13 +63,14 @@ function pace(g: Game): { pace: Pace; from: 'hltb' | 'tags' } | null {
   return null;
 }
 
-function fits(g: Game, pool: Pool, len: Len, installedOnly: boolean, snoozed: Record<string, number>) {
+function fits(g: Game, pool: Pool, len: Len, installedOnly: boolean, snoozed: Record<string, number>, scoped: boolean) {
   if (isSystem(g.platform)) return false;
   if ((snoozed[g.id] ?? 0) > Date.now()) return false;
   if (installedOnly && !g.installed) return false;
   if (pool === 'queue' && g.status !== 'backlog') return false;
   if (pool === 'half' && g.status !== 'paused' && g.status !== 'played') return false;
-  if (pool === 'all' && !['backlog', 'paused', 'played', 'playing'].includes(g.status)) return false;
+  // inside a category the user chose, "Hepsi" means every game in it, finished ones too
+  if (pool === 'all' && !scoped && !['backlog', 'paused', 'played', 'playing'].includes(g.status)) return false;
   if (len === 'any') return true;
   return pace(g)?.pace === len;
 }
@@ -108,7 +109,10 @@ function ReelCover({ g }: { g: Game }) {
 }
 
 export function Picker() {
-  const { games, pickerOpen, closePicker, go, launch, prefs } = useStore();
+  const { games, pickerOpen, pickerScope, closePicker, go, launch, prefs } = useStore();
+  // "Tüm kütüphane" lets go of the category for this opening only
+  const [freed, setFreed] = useState<PickerScope | null>(null);
+  const among = pickerScope && freed !== pickerScope ? pickerScope : null;
   const [pool, setPool] = useState<Pool>('all');
   const [len, setLen] = useState<Len>('any');
   const [installedOnly, setInstalledOnly] = useState(false);
@@ -120,10 +124,10 @@ export function Picker() {
   const stripRef = useRef<HTMLDivElement>(null);
   const anim = useRef<Animation | null>(null);
 
-  const candidates = useMemo(
-    () => games.filter((g) => fits(g, pool, len, installedOnly, snoozed)),
-    [games, pool, len, installedOnly, snoozed],
-  );
+  const candidates = useMemo(() => {
+    const only = among ? new Set(among.ids) : null;
+    return games.filter((g) => (!only || only.has(g.id)) && fits(g, pool, len, installedOnly, snoozed, !!only));
+  }, [games, pool, len, installedOnly, snoozed, among]);
 
   // covers are fetched ahead, so the reel never rolls through empty frames
   useEffect(() => {
@@ -185,7 +189,7 @@ export function Picker() {
     if (pickerOpen) roll();
     else { anim.current?.cancel(); setReel(null); }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pickerOpen, pool, len, installedOnly]);
+  }, [pickerOpen, pool, len, installedOnly, among]);
 
   const rolling = !!reel;
   const others = order.slice(1, 5);
@@ -219,7 +223,9 @@ export function Picker() {
       <div className="p2-top">
         <div>
           <h2 className="p2-heading">{tr('Ne oynasam?')}</h2>
-          <p className="muted small">{candidates.length} {tr('oyun arasından ·')} <kbd>{tr('Boşluk')}</kbd> {tr('yeniden karıştır ·')} <kbd>{tr('Enter')}</kbd> {tr('oyna')}</p>
+          <p className="muted small">
+            {among && <><button className="p2-scope" onClick={() => setFreed(among)} title={tr('Tüm kütüphaneden seç')}>{among.label} <X size={12} strokeWidth={2} /></button>{' '}</>}
+            {candidates.length} {tr('oyun arasından ·')} <kbd>{tr('Boşluk')}</kbd> {tr('yeniden karıştır ·')} <kbd>{tr('Enter')}</kbd> {tr('oyna')}</p>
         </div>
         <button className="icon-btn modal-close" data-close aria-label={tr('Kapat')} onClick={closePicker}><X size={16} strokeWidth={1.7} /></button>
       </div>

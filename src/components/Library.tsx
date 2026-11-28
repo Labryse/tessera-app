@@ -53,7 +53,7 @@ function scopeTitle(s: Scope, collections: Collection[]): { title: string; sub?:
     case 'platform': return { title: PLATFORMS[s.id].name };
     case 'collection': {
       const c = collections.find((x) => x.id === s.id);
-      return { title: s.id, sub: c?.filter ? tr('Dinamik kategori') : c?.description ?? tr('Senin kategorin') };
+      return { title: s.id, sub: c?.filter ? tr('Dinamik kategori') : undefined };
     }
     case 'smart': {
       const c = SMART_COLLECTIONS.find((x) => x.id === s.id)!;
@@ -117,8 +117,6 @@ export function LibraryView({ scope }: { scope: Scope }) {
   const month = new Date(Date.now() - 30 * DAY);
   const monthMin = minutesBetween(inCategory, month);
   const top = [...inCategory].map((g) => ({ g, m: minutesBetween([g], month) })).sort((a, b) => b.m - a.m)[0];
-  const backlog = inCategory.filter((g) => g.status === 'backlog');
-  const backlogHours = backlog.reduce((a, g) => a + (g.hltb ?? 0), 0);
 
   const continueList = scope.kind === 'all'
     ? [...games].filter((g) => g.status === 'playing' && !isSystem(g.platform)).sort((a, b) => recentKey(b) - recentKey(a)).slice(0, 3)
@@ -132,6 +130,10 @@ export function LibraryView({ scope }: { scope: Scope }) {
   // the quick status chips work on the same filters as the panel
   const statusOnly = (s: Game['status'] | 'any') => setF({ ...f, status: s === 'any' ? [] : f.status.length === 1 && f.status[0] === s ? [] : [s] });
   const clear = () => { setF(saved ? { ...EMPTY_FILTERS } : EMPTY_FILTERS); setQ(''); };
+  // "Ne oynasam?" picks among what this page shows: the category, with its filters and search
+  const narrowed = scope.kind !== 'all' || nActive > 0 || !!q.trim();
+  const pickAmong = narrowed ? { ids: shown.map((g) => g.id), label: nActive > 0 || q.trim() ? tr('{0} · süzülmüş', title) : title } : undefined;
+  const pickHere = () => openPicker(pickAmong);
 
   if (!demo && loaded && games.length === 0) return <FirstRun />;
 
@@ -140,36 +142,30 @@ export function LibraryView({ scope }: { scope: Scope }) {
       <header className="title-row">
         <div>
           <h1>{title}</h1>
-          <p className="title-meta">
-            {inCategory.length} {tr('oyun ·')} {installed} {tr('yüklü')}{sub ? ` · ${sub}` : ''}
+          <p className="title-meta is-facts">
+            <span className="num">{tr('{0} oyun', inCategory.length)}</span>
+            {scope.kind !== 'installed' && <span className="num">{tr('{0} yüklü', installed)}</span>}
+            {anySessions && monthMin > 0 && (
+              <span>{tr('Son 30 gün')} <strong className="num">{duration(monthMin, { compact: true })}</strong>
+                {top && top.m > 0 && <> · {tr('en çok')} <button className="link" onClick={() => go({ name: 'game', id: top.g.id })}>{top.g.title}</button></>}
+              </span>
+            )}
+            {!anySessions && totalAll > 0 && (
+              <span>{tr('Toplam')} <strong className="num">{int(Math.round(totalAll / 60))} {tr('saat')}</strong>
+                {latest && <> · {tr('en son')} <button className="link" onClick={() => go({ name: 'game', id: latest.id })}>{latest.title}</button></>}
+              </span>
+            )}
+            {sub && <span>{sub}</span>}
           </p>
         </div>
         <div className="title-actions">
-          {!demo && <button className="btn" onClick={() => setAddOpen(true)}><Plus size={16} strokeWidth={1.7} /> {tr('Oyun ekle')}</button>}
-          {!demo && <button className="btn" onClick={() => setScanOpen(true)}><ScanSearch size={16} strokeWidth={1.6} /> {tr('Bilgisayarı tara')}</button>}
-          <button className="btn" onClick={openPicker}>
+          {!demo && scope.kind === 'all' && <button className="btn" onClick={() => setAddOpen(true)}><Plus size={16} strokeWidth={1.7} /> {tr('Oyun ekle')}</button>}
+          {!demo && scope.kind === 'all' && <button className="btn" onClick={() => setScanOpen(true)}><ScanSearch size={16} strokeWidth={1.6} /> {tr('Bilgisayarı tara')}</button>}
+          <button className="btn" onClick={pickHere} title={pickAmong ? tr('{0} içinden seçer', pickAmong.label) : undefined}>
             <Shuffle size={16} strokeWidth={1.6} /> {tr('Ne oynasam?')}
           </button>
         </div>
       </header>
-
-      {inCategory.length > 0 && !anySessions && (
-        <p className="finding">
-          {tr('Toplam')} <strong>{int(Math.round(totalAll / 60))} {tr('saat')}</strong>
-          {latest && <> {tr('· en son')} <button className="link" onClick={() => go({ name: 'game', id: latest.id })}>{latest.title}</button>, {ago(lastPlayed(latest)).toLocaleLowerCase(locale)}</>}
-        </p>
-      )}
-
-      {inCategory.length > 0 && anySessions && (
-        <p className="finding">
-          {monthMin > 0 ? (
-            <>{tr('Son 30 günde')} <strong>{duration(monthMin, { compact: monthMin >= 600 })}</strong> {tr('oynadın')}
-              {top && top.m > 0 && <>{tr(', en çok')} <button className="link" onClick={() => go({ name: 'game', id: top.g.id })}>{top.g.title}</button> ({duration(top.m, { compact: true })})</>}.
-            </>
-          ) : <>{tr('Son 30 günde bu listeden bir şey oynamadın.')}</>}
-          {backlog.length > 0 && <> {tr('Sırada {0} oyun bekliyor; ana hikâyeleri toplam ~{1} saat.', backlog.length, backlogHours)}</>}
-        </p>
-      )}
 
       {continueList.length > 0 && (
         <section className="continue" aria-label={tr('Kaldığın yerden')}>

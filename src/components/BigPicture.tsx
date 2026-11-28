@@ -3,6 +3,7 @@
 // shelves of big tiles with the focused one's art filling the screen. A opens a
 // page, B goes back. Works with a controller, the keyboard and the mouse.
 import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { MonitorUp } from 'lucide-react';
 import { useStore } from '../store';
 import { tick, usePad, type PadAction, type PadKind } from '../lib/pad';
 import { playChime } from '../lib/chime';
@@ -48,6 +49,8 @@ export function BigPicture() {
   const [tab, setTab] = useState<TabId>('library');
   const [leaving, setLeaving] = useState(false);
   const [leaveAt, setLeaveAt] = useState(0);
+  // up from the top row lands on the way back to the desktop, in the top bar
+  const [onExit, setOnExit] = useState(false);
   // on screen at all, and which part of its life: the opening, the view, the closing
   const [shown, setShown] = useState(big);
   const [phase, setPhase] = useState<'intro' | 'on' | 'out'>('on');
@@ -59,7 +62,7 @@ export function BigPicture() {
 
   useEffect(() => {
     if (big) {
-      setShown(true); setLeaving(false); setTab('library');
+      setShown(true); setLeaving(false); setOnExit(false); setTab('library');
       root.current?.focus();
       if (still) { setPhase('on'); return; }
       setPhase('intro');
@@ -89,10 +92,18 @@ export function BigPicture() {
       if (a === 'left' || a === 'right') { sound('move'); setLeaveAt((v) => 1 - v); }
       return;
     }
+    if (onExit) {
+      if (a === 'a') { sound('select'); setLeaveAt(0); setLeaving(true); }
+      if (a === 'down' || a === 'b') { sound('back'); setOnExit(false); }
+      if (a === 'lb') { setOnExit(false); switchTab(-1); }
+      if (a === 'rb') { setOnExit(false); switchTab(1); }
+      return;
+    }
     if (handler.current?.(a)) return;
+    if (a === 'up') { sound('move'); setOnExit(true); return; }
     if (a === 'lb') { switchTab(-1); return; }
     if (a === 'rb') { switchTab(1); return; }
-    if (a === 'b' || a === 'select') { sound('back'); setLeaveAt(0); setLeaving(true); }
+    if (a === 'b' || a === 'select' || a === 'guide') { sound('back'); setLeaveAt(0); setLeaving(true); }
   };
 
   const kind = usePad(act, big && phase === 'on');
@@ -123,7 +134,7 @@ export function BigPicture() {
   const at = TABS.findIndex((x) => x.id === tab);
 
   return (
-    <div className={`big is-${phase} ${still ? 'is-still' : ''}`} ref={root} tabIndex={-1} role="application" aria-label={tr('Geniş ekran')}>
+    <div className={`big is-${phase} ${still ? 'is-still' : ''} ${onExit ? 'is-top' : ''}`} ref={root} tabIndex={-1} role="application" aria-label={tr('Geniş ekran')}>
       <BigTab key={tab} tab={tab} kind={kind} now={now} handler={handler} onExit={() => { setLeaveAt(0); setLeaving(true); }} />
 
       <header className="big-top">
@@ -146,7 +157,9 @@ export function BigPicture() {
             </span>
           )}
           <span className="big-time num">{time}</span>
-          <button className="big-exit" onClick={() => { setLeaveAt(0); setLeaving(true); }}>{tr('Masaüstü')}</button>
+          <button className={"big-exit" + (onExit ? " is-focus" : "")} onClick={() => { setLeaveAt(0); setLeaving(true); }} onMouseEnter={() => setOnExit(false)} aria-label={tr('Masaüstüne dön')}>
+            <MonitorUp strokeWidth={1.8} aria-hidden="true" /><span>{tr('Masaüstü')}</span>
+          </button>
         </span>
       </header>
 

@@ -113,3 +113,100 @@ html[data-theme='abyss'] { --radius-sheet: 20px; --radius-card: 16px; }
 
 @media (prefers-reduced-motion: reduce) { [data-theme='abyss'] body::before { animation: none; } }
 html.reduce-motion body::before { animation: none; }
+
+/* ---------------------------------------------------------------- Phosphor: a green screen in a dark room */
+html[data-theme='phosphor'] {
+  --font: 'Cascadia Mono', 'Cascadia Code', Consolas, ui-monospace, monospace;
+  --radius-sheet: 2px; --radius-card: 2px; --radius-cover: 1px; --radius-control: 2px; --radius-chip: 2px;
+}
+[data-theme='phosphor'] body {
+  background: radial-gradient(120% 90% at 50% 40%, #0a160d 0%, #030503 75%);
+  background-attachment: fixed;
+  text-shadow: 0 0 6px rgba(57, 255, 122, 0.22);
+}
+/* scan lines over everything */
+[data-theme='phosphor'] body::after {
+  content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 3px);
+}
+[data-theme='phosphor'] .sheet { border: 1px solid #1f5a33; box-shadow: inset 0 0 80px rgba(57, 255, 122, 0.05), 0 0 0 1px rgba(57, 255, 122, 0.06); }
+[data-theme='phosphor'] h1, [data-theme='phosphor'] .panel-title, [data-theme='phosphor'] .section-title, [data-theme='phosphor'] .lib-group-title {
+  text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;
+}
+[data-theme='phosphor'] h1::before { content: '> '; color: var(--accent); }
+[data-theme='phosphor'] h1::after { content: '_'; margin-left: 4px; color: var(--accent); animation: phosphorBlink 1.1s steps(1) infinite; }
+@keyframes phosphorBlink { 50% { opacity: 0; } }
+[data-theme='phosphor'] .nav-item.is-active { background: var(--accent); color: var(--accent-ink); text-shadow: none; }
+[data-theme='phosphor'] .nav-item.is-active .nav-count { color: var(--accent-ink); }
+[data-theme='phosphor'] .btn { border: 1px solid var(--control); background: transparent; }
+[data-theme='phosphor'] .btn:hover { background: var(--accent-wash); border-color: var(--accent); }
+[data-theme='phosphor'] .btn-accent, [data-theme='phosphor'] .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); text-shadow: none; box-shadow: 0 0 18px rgba(57, 255, 122, 0.35); }
+[data-theme='phosphor'] .panel { border-style: dashed; border-color: #24573a; }
+[data-theme='phosphor'] .tile-cover .cover-img { filter: saturate(0.55) contrast(1.05); transition: filter 0.25s; }
+[data-theme='phosphor'] .tile-hit:hover .cover-img, [data-theme='phosphor'] .tile-hit:focus-visible .cover-img { filter: none; }
+[data-theme='phosphor'] .tile-hit:hover .tile-cover, [data-theme='phosphor'] .tile-hit:focus-visible .tile-cover { outline: 1px solid var(--accent); outline-offset: 3px; }
+[data-theme='phosphor'] .big-tile.is-focus { box-shadow: 0 0 0 2px var(--accent), 0 0 30px rgba(57, 255, 122, 0.45); }
+
+/* ---------------------------------------------------------------- Aero: glass over a bright sky */
+html[data-theme='aero'] { --radius-sheet: 22px; --radius-card: 16px; --radius-cover: 10px; --radius-control: 999px; }
+[data-theme='aero'] body {
+  background:
+    radial-gradient(70vw 30vw at 15% 108%, rgba(120, 210, 90, 0.55) 0%, transparent 70%),
+    radial-gradient(60vw 26vw at 90% 110%, rgba(80, 190, 120, 0.45) 0%, transparent 70%),
+    radial-gradient(40vw 30vw at 80% 8%, rgba(255, 255, 255, 0.9) 0%, transparent 70%),
+    linear-gradient(180deg, #5bb4ee 0%, #9fd6f7 45%, #dff1fb 100%);
+  background-attachment: fixed;
+}
+[data-theme='aero'] .sheet {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.64));
+  backdrop-filter: blur(22px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: inset 0 1px 0 #fff, 0 20px 60px rgba(20, 80, 140, 0.25);
+}
+[data-theme='aero'] .panel { background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(240, 249, 255, 0.6)); box-shadow: inset 0 1px 0 #fff, 0 6px 18px rgba(20, 80, 140, 0.1); }
+/* glossy buttons: a bright upper half, like a bubble */
+[data-theme='aero'] .btn {
+  background: linear-gradient(180deg, #ffffff 0%, #eaf5fd 49%, #d5ebfa 51%, #e8f5fe 100%);
+  border: 1px solid #9cc3e0; box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(20, 80, 140, 0.18); color: var(--text);
+}
+[data-theme='aero'] .btn:hover { border-color: #5aa8dd; box-shadow: inset 0 1px 0 #fff, 0 0 10px rgba(10, 132, 214, 0.35); }
+[data-theme='aero'] .btn-ghost { background: transparent; border-color: transparent; box-shadow: none; }
+[data-theme='aero'] .btn-accent, [data-theme='aero'] .btn-primary {
+  background: linear-gradient(180deg, #6cc8ff 0%, #1d9be8 49%, #0a7fcc 51%, #2aa6ee 100%);
+  border-color: #0a6fb3; color: #fff; text-shadow: 0 -1px 0 rgba(0, 60, 110, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 2px 8px rgba(10, 120, 200, 0.4);
+}
+[data-theme='aero'] .nav-item.is-active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(205, 233, 252, 0.9));
+  box-shadow: inset 0 0 0 1px rgba(90, 168, 221, 0.6), 0 2px 8px rgba(20, 100, 170, 0.15); color: #0a5c99;
+}
+[data-theme='aero'] h1 { color: #0b4f86; text-shadow: 0 1px 0 #fff; }
+[data-theme='aero'] .tile-cover { box-shadow: 0 8px 20px rgba(20, 80, 140, 0.2); }
+[data-theme='aero'] .tile-cover::after {
+  content: ''; position: absolute; inset: 0 0 55% 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0));
+}
+
+/* ---------------------------------------------------------------- Press: the printed page */
+html[data-theme='press'] { --radius-sheet: 0px; --radius-card: 0px; --radius-cover: 0px; --radius-control: 0px; --radius-chip: 0px; }
+[data-theme='press'] body { background: #e9e3d6; }
+[data-theme='press'] .sheet { background: #faf8f2; border: 0; border-left: 1px solid #1b1916; box-shadow: none; }
+[data-theme='press'] h1, [data-theme='press'] .panel-title, [data-theme='press'] .section-title, [data-theme='press'] .big-title, [data-theme='press'] .p2-heading {
+  font-family: Georgia, 'Times New Roman', 'Sitka Text', serif; font-weight: 700; letter-spacing: -0.01em;
+}
+[data-theme='press'] h1 { font-size: 34px; line-height: 40px; padding-bottom: 8px; border-bottom: 3px double #1b1916; }
+[data-theme='press'] .title-meta, [data-theme='press'] .nav-heading, [data-theme='press'] .sub-label, [data-theme='press'] .dh-facts dt { font-variant: small-caps; letter-spacing: 0.06em; }
+[data-theme='press'] .panel { border: 0; border-top: 2px solid #1b1916; padding-left: 0; padding-right: 0; background: none; }
+[data-theme='press'] .nav-item.is-active { background: none; color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); font-weight: 700; }
+[data-theme='press'] .btn { border: 1px solid #1b1916; background: transparent; }
+[data-theme='press'] .btn:hover { background: #1b1916; color: #faf8f2; }
+[data-theme='press'] .btn-ghost { border-color: transparent; }
+[data-theme='press'] .btn-accent, [data-theme='press'] .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+[data-theme='press'] .btn-accent:hover, [data-theme='press'] .btn-primary:hover { background: #121110; border-color: #121110; }
+[data-theme='press'] .tile-cover { box-shadow: none; outline: 1px solid #1b1916; outline-offset: 2px; }
+[data-theme='press'] .tile-cover .cover-img { filter: grayscale(0.85) contrast(1.08); transition: filter 0.3s; }
+[data-theme='press'] .tile-hit:hover .cover-img, [data-theme='press'] .tile-hit:focus-visible .cover-img { filter: none; }
+[data-theme='press'] .tile-title { font-family: Georgia, 'Times New Roman', serif; font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) { [data-theme='phosphor'] h1::after { animation: none; } }
+html.reduce-motion[data-theme='phosphor'] h1::after { animation: none; }

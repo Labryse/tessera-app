@@ -10,13 +10,13 @@ Steam, Epic, GOG, Xbox, Battle.net, EA ve Ubisoft oyunlarını ve retro ROM'lar�
 
 ## Kütüphane
 
-Bütün mağazalardaki oyunların tek listede görünür. Aynı oyun iki mağazada varsa tek kart olur ve süreler toplanır. Türe, etikete, süreye, puana ya da Steam Deck desteğine göre filtreleyebilir, filtrelerden otomatik dolan kategoriler kurabilirsin. "Ne oynasam?" kararsız kaldığında bir oyun seçer.
+Bütün mağazalardaki oyunların tek listede görünür. Aynı oyun iki mağazada varsa tek kart olur ve süreler toplanır. Türe, etikete, süreye, puana ya da Steam Deck desteğine göre filtreleyebilir, filtrelerden otomatik dolan kategoriler kurabilir ya da Steam’de oluşturduğun koleksiyonları olduğu gibi alabilirsin. "Ne oynasam?" kararsız kaldığında bütün kütüphaneden ya da bulunduğun kategoriden bir oyun seçer.
 
 ## Oyun sayfası
 
 ![Oyun sayfası](docs/screenshots/tr/game.webp)
 
-Oyunun bilgileri, ekran görüntüleri, başarımları, oturumların ve notların tek sayfada durur. Mağaza fiyatları yan yana görünür, Fiyat ara’da sonuçları mağazaya ve indirime göre süzebilirsin; istek listendeki oyun indirime girince Windows bildirimi gelir.
+Oyunun bilgileri, ekran görüntüleri, başarımları, oturumların ve notların tek sayfada durur. Mağaza fiyatları yan yana görünür, Fiyat ara bu haftanın en çok satan ve en çok oynanan, sende olmayan oyunlarıyla açılır, mağazaya ve indirime göre süzülebilir; istek listendeki oyun indirime girince Windows bildirimi gelir.
 
 ## İstatistikler
 
@@ -34,7 +34,7 @@ ROM klasörünü gösterirsin; Tessera oyunları tanır, kapaklarını bulur ve 
 
 ![Geniş ekran](docs/screenshots/tr/big-screen.webp)
 
-Televizyon ve kumanda için tam ekran mod. F11 ya da kumandadaki Start tuşuyla açılır.
+Televizyon ve kumanda için tam ekran mod. F11 ile ya da kumandadaki Start veya Xbox/PS tuşuyla açılır (Tessera önce sorar). Uygulamanın geri kalanı da kumandayla kullanılır: yön tuşları kontroller arasında gezer, A basar, B geri döner.
 
 ## Tema stüdyosu
 

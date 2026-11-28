@@ -160,6 +160,8 @@ html.studio-on.studio-peek .app { margin: 0; }
 .sd-font-btn:hover { border-color: var(--sd-faint) !important; }
 .sd-font-list { position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 3; padding: 8px; border-radius: 12px; background: #1c1c20; border: 1px solid #333338; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; gap: 6px; }
 .sd-font-scroll { max-height: 280px; overflow-y: auto; display: flex; flex-direction: column; scrollbar-width: thin; }
+/* items keep their height; in a full list a flex child would shrink and the first one got cut */
+.sd-font-scroll > * { flex: none; }
 .sd-font-scroll button { display: block; width: 100%; text-align: left; padding: 7px 9px; border-radius: 8px; font-size: 15px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sd-font-scroll button:hover { background: var(--sd-hover); }
 .sd-font-scroll button.is-on { color: var(--sd-accent); }

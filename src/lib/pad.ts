@@ -4,11 +4,11 @@
 // a game never reaches Tessera.
 import { useEffect, useRef, useState } from 'react';
 
-export type PadAction = 'up' | 'down' | 'left' | 'right' | 'a' | 'b' | 'x' | 'y' | 'lb' | 'rb' | 'start' | 'select';
+export type PadAction = 'up' | 'down' | 'left' | 'right' | 'a' | 'b' | 'x' | 'y' | 'lb' | 'rb' | 'start' | 'select' | 'guide';
 export type PadKind = 'xbox' | 'ps';
 
 // standard mapping: https://w3c.github.io/gamepad/#remapping
-const BUTTONS: [number, PadAction][] = [[0, 'a'], [1, 'b'], [2, 'x'], [3, 'y'], [4, 'lb'], [5, 'rb'], [8, 'select'], [9, 'start'], [16, 'start']];
+const BUTTONS: [number, PadAction][] = [[0, 'a'], [1, 'b'], [2, 'x'], [3, 'y'], [4, 'lb'], [5, 'rb'], [8, 'select'], [9, 'start'], [16, 'guide']];
 const DIRS: [PadAction, (p: Gamepad) => boolean][] = [
   ['up', (p) => !!p.buttons[12]?.pressed || (p.axes[1] ?? 0) < -0.55],
   ['down', (p) => !!p.buttons[13]?.pressed || (p.axes[1] ?? 0) > 0.55],

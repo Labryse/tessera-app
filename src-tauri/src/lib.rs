@@ -887,7 +887,7 @@ async fn shop_popular(st: State<'_, AppState>) -> Res<Value> {
     if prices::key().is_none() {
         return Ok(json!({ "hasKey": false, "items": [] }));
     }
-    let pool = prices::popular(&st).await?;
+    let pool = prices::charts(&st).await?;
     let gids: Vec<String> = pool.iter().filter_map(|i| i["gid"].as_str().map(str::to_string)).collect();
     let found = prices::for_gids(&st, &gids).await?;
     let items: Vec<Value> = pool
@@ -1184,6 +1184,17 @@ struct SyncReport {
     warning: Option<String>,
 }
 
+/// the collections the connected account made in the Steam library, read from the client's files
+#[tauri::command]
+fn steam_collections(st: State<AppState>) -> Res<steam::Collections> {
+    let steamid = {
+        let c = st.db.lock().unwrap();
+        db::account(&c, "steam").map_err(e)?.ok_or(crate::l("Steam bağlı değil.", "Steam is not connected."))?.external_id
+    };
+    let root = steam::root().ok_or(crate::l("Steam bu bilgisayarda bulunamadı.", "Steam wasn't found on this PC."))?;
+    Ok(steam::collections(&root, &steamid))
+}
+
 #[tauri::command]
 async fn steam_sync(st: State<'_, AppState>) -> Res<SyncReport> {
     sync_steam(&st).await
@@ -1453,6 +1464,7 @@ pub fn run() {
             steam_connect,
             steam_set_key,
             steam_sync,
+            steam_collections,
             steam_achievements,
         ])
         .build(tauri::generate_context!())

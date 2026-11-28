@@ -23,7 +23,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
       .slice(0, n ? 8 : 5)
       .map((g) => ({ id: g.id, label: g.title, game: g, hint: `${PLATFORMS[g.platform].short} · ${statusLabel(g.status)}`, run: () => go({ name: 'game', id: g.id }) }));
     const actions: Cmd[] = [
-      { id: 'pick', label: tr('Ne oynasam?'), icon: <Shuffle size={16} strokeWidth={1.6} />, run: openPicker },
+      { id: 'pick', label: tr('Ne oynasam?'), icon: <Shuffle size={16} strokeWidth={1.6} />, run: () => openPicker() },
       { id: 'settings', label: tr('Ayarlar'), icon: <Settings size={16} strokeWidth={1.6} />, run: () => openSettings('appearance') },
       { id: 'accounts', label: tr('Hesap bağla'), icon: <Settings size={16} strokeWidth={1.6} />, run: () => openSettings('accounts') },
       ...(demo ? [] : [

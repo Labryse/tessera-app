@@ -101,6 +101,7 @@ kbd {
 .nav-heading-row { display: flex; align-items: center; justify-content: space-between; padding-right: 6px; }
 .nav-add { width: 22px; height: 22px; display: grid; place-items: center; border-radius: 6px; color: var(--faint); }
 .nav-add:hover { background: var(--raised); color: var(--text); }
+.nav-heading-tools { display: inline-flex; gap: 2px; }
 .nav-new { display: flex; align-items: center; gap: 10px; height: 32px; padding: 0 10px; border-radius: 8px; background: var(--raised); color: var(--muted); }
 .nav-new input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--text); }
 .nav-new input::placeholder { color: var(--faint); }
@@ -195,6 +196,9 @@ kbd {
 .title-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
 h1 { font-size: 24px; line-height: 30px; font-weight: 650; letter-spacing: -0.015em; }
 .title-meta { margin-top: 4px; color: var(--muted); }
+.title-meta.is-facts { display: flex; flex-wrap: wrap; align-items: baseline; row-gap: 2px; }
+.title-meta.is-facts > span + span::before { content: '·'; margin: 0 8px; color: var(--faint); }
+.title-meta.is-facts strong { color: var(--text); font-weight: 600; }
 .title-actions { display: flex; gap: 8px; }
 
 .finding { font-size: 16px; line-height: 24px; color: var(--muted); max-width: 72ch; margin-top: -6px; }
@@ -264,7 +268,7 @@ select option { background: var(--surface); color: var(--text); }
 .segmented { display: inline-flex; padding: 3px; border-radius: var(--radius-control); background: var(--raised); gap: 2px; }
 .segmented button { height: 28px; min-width: 32px; padding: 0 8px; display: grid; place-items: center; border-radius: 7px; color: var(--muted); }
 .segmented button[aria-pressed='true'] { background: var(--surface); color: var(--text); }
-.segmented-text button { padding: 0 12px; }
+.segmented-text button { padding: 0 12px; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 
 /* ---------------------------------------------------------------- continue strip */
 .continue { display: flex; flex-direction: column; gap: 12px; }
@@ -936,3 +940,10 @@ html.dim-remote .tile.is-remote .tile-hit:hover .cover-img { filter: none; opaci
 
 .nav-row { display: contents; }
 .ctx-danger, .ctx-danger svg { color: var(--negative) !important; }
+
+/* ---------------------------------------------------------------- controller focus */
+/* moving with a controller (or the keyboard after it) shows where the focus is */
+html.pad-nav :focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+html.pad-nav .tile-hit:focus { outline: none; }
+html.pad-nav .tile-hit:focus .tile-cover { outline: 3px solid var(--accent); outline-offset: 3px; transform: translateY(-2px); transition: transform 0.15s var(--ease); }
+html.pad-nav .nav-item:focus { outline-offset: -2px; }

@@ -171,6 +171,78 @@
   --dark: 1;
 }
 
+[data-theme='phosphor'] {
+  color-scheme: dark;
+  --ground: #050806;
+  --surface: #081009;
+  --raised: #0d1a10;
+  --active: #132617;
+  --border: #173a1f;
+  --rule: #10261a;
+  --control: #24573a;
+  --text: #b6ffc8;
+  --muted: #6fcf8a;
+  --faint: #4fa56a;
+  --accent: #39ff7a;
+  --accent-ink: #021006;
+  --accent-wash: #0c2a16;
+  --primary: #39ff7a;
+  --primary-ink: #021006;
+  --positive: #39ff7a;
+  --negative: #ffb340;
+  --cover-shade: rgba(0, 20, 6, 0.45);
+  --scrim: 2, 8, 4;
+  --dark: 1;
+}
+
+[data-theme='aero'] {
+  color-scheme: light;
+  --ground: #cfe8fb;
+  --surface: rgba(255, 255, 255, 0.72);
+  --raised: rgba(255, 255, 255, 0.78);
+  --active: #d6ecfb;
+  --border: rgba(255, 255, 255, 0.95);
+  --rule: rgba(30, 90, 140, 0.12);
+  --control: #9cc3e0;
+  --text: #0f2a40;
+  --muted: #3c5d77;
+  --faint: #56758d;
+  --accent: #0a84d6;
+  --accent-ink: #ffffff;
+  --accent-wash: #d5ecfc;
+  --primary: #0b6fb8;
+  --primary-ink: #ffffff;
+  --positive: #1f8a4c;
+  --negative: #c0392b;
+  --cover-shade: rgba(20, 70, 120, 0.16);
+  --scrim: 10, 40, 70;
+  --dark: 0;
+}
+
+[data-theme='press'] {
+  color-scheme: light;
+  --ground: #f3efe6;
+  --surface: #faf8f2;
+  --raised: #efeadf;
+  --active: #e5dfd1;
+  --border: #1b1916;
+  --rule: #cfc8b8;
+  --control: #8d8676;
+  --text: #121110;
+  --muted: #4a4640;
+  --faint: #6b665c;
+  --accent: #c8102e;
+  --accent-ink: #ffffff;
+  --accent-wash: #f6dcd9;
+  --primary: #121110;
+  --primary-ink: #faf8f2;
+  --positive: #2b6b3f;
+  --negative: #c8102e;
+  --cover-shade: rgba(20, 18, 14, 0.12);
+  --scrim: 18, 16, 12;
+  --dark: 0;
+}
+
 :root {
   --font: 'Hanken Grotesk Variable', 'Segoe UI', system-ui, sans-serif;
   --radius-sheet: 16px;

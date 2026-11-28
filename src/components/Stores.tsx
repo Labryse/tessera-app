@@ -18,6 +18,7 @@ const MARKS: Record<number, string> = { 61: 'steam', 16: 'epic', 35: 'gog', 48: 
 const APP_SHOPS = new Set([61]);
 
 export function money(amount: number, currency: string) {
+  if (amount === 0) return tr('Ücretsiz');
   try {
     return new Intl.NumberFormat(locale, { style: 'currency', currency, maximumFractionDigits: amount % 1 === 0 ? 0 : 2 }).format(amount);
   } catch {

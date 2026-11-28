@@ -10,6 +10,7 @@ import type { Filters } from './lib/filters';
 
 import { t as tr, locale } from './lib/i18n';
 /** a category: games the user put in it, or (dynamic) every game matching saved filters */
+export interface PickerScope { ids: string[]; label: string }
 export interface Collection { id: string; description: string; filter?: Filters }
 
 export type Scope =
@@ -65,9 +66,9 @@ const readPrefs = (): Prefs => {
 
 export interface GameMenu { x: number; y: number; id: string }
 
-export type ThemeId = 'graphite' | 'linen' | 'sorbet' | 'synth' | 'bauhaus' | 'abyss' | 'ember';
+export type ThemeId = 'graphite' | 'linen' | 'sorbet' | 'synth' | 'bauhaus' | 'abyss' | 'ember' | 'phosphor' | 'aero' | 'press';
 /** themes on a light ground */
-export const isLightTheme = (t: ThemeId) => t === 'linen' || t === 'sorbet' || t === 'bauhaus';
+export const isLightTheme = (t: ThemeId) => t === 'linen' || t === 'sorbet' || t === 'bauhaus' || t === 'aero' || t === 'press';
 export const THEMES: { id: ThemeId; name: string; note: string; swatch: [string, string, string] }[] = [
   { id: 'graphite', name: tr('Graphite'), note: tr('Koyu, nötr'), swatch: ['#141414', '#2a2a2a', '#a9bdd1'] },
   { id: 'linen', name: tr('Linen'), note: tr('Açık, kâğıt'), swatch: ['#efeeeb', '#e2e0dc', '#3a6585'] },
@@ -76,6 +77,9 @@ export const THEMES: { id: ThemeId; name: string; note: string; swatch: [string,
   { id: 'bauhaus', name: tr('Bauhaus'), note: tr('Geometrik, kâğıt'), swatch: ['#efe8da', '#161514', '#d63a2b'] },
   { id: 'abyss', name: tr('Abyss'), note: tr('Derin deniz'), swatch: ['#031018', '#0c2a36', '#4fe0c6'] },
   { id: 'ember', name: tr('Ember'), note: tr('Sıcak, kor'), swatch: ['#130e0b', '#251c16', '#ff9c52'] },
+  { id: 'phosphor', name: tr('Phosphor'), note: tr('Yeşil ekran, terminal'), swatch: ['#050806', '#0d1a10', '#39ff7a'] },
+  { id: 'aero', name: tr('Aero'), note: tr('Cam, gökyüzü'), swatch: ['#5bb4ee', '#ffffff', '#0a84d6'] },
+  { id: 'press', name: tr('Press'), note: tr('Gazete, mürekkep'), swatch: ['#faf8f2', '#121110', '#c8102e'] },
 ];
 
 interface Store {
@@ -89,7 +93,9 @@ interface Store {
   setTheme: (t: ThemeId) => void;
   launch: (g: Game) => void;
   toast: string | null;
-  openPicker: () => void;
+  /** with a list, "Ne oynasam?" picks only among those games (a category, a filtered view) */
+  openPicker: (among?: PickerScope) => void;
+  pickerScope: PickerScope | null;
   pickerOpen: boolean;
   closePicker: () => void;
   collections: Collection[];
@@ -216,6 +222,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<ThemeId>(readTheme);
   const [toast, setToast] = useState<string | null>(null);
   const [pickerOpen, setPickerOpen] = useState(() => !isDesktop && window.location.hash === '#picker');
+  const [pickerScope, setPickerScope] = useState<PickerScope | null>(null);
 
   // what the screens show: copies of one game folded into one card (unless turned off)
   const games = useMemo(() => (prefs.mergeCopies ? foldCopies(raw) : raw), [raw, prefs.mergeCopies]);
@@ -468,7 +475,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isDesktop) return;
     const off = listen<WishData>('wishlist', ({ payload }) => { if (payload && Array.isArray(payload.items)) setWishlist(payload); });
-    const pick = listen('open-picker', () => setPickerOpen(true));
+    const pick = listen('open-picker', () => { setPickerScope(null); setPickerOpen(true); });
     return () => { off.then((f) => f()); pick.then((f) => f()); };
   }, []);
   const [trackAll, setTrackAllState] = useState(true);
@@ -501,7 +508,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const value: Store = {
     games, byId, update, route, go, back, theme, setTheme, launch, toast,
-    pickerOpen, openPicker: () => setPickerOpen(true), closePicker: () => setPickerOpen(false),
+    pickerOpen, pickerScope, openPicker: (among?: PickerScope) => { setPickerScope(among ?? null); setPickerOpen(true); }, closePicker: () => setPickerOpen(false),
     collections, addCollection, renameCollection, removeCollection, setCollectionFilter, fileGames, backupExtra, applyBackupExtra, notify, accounts, refresh, loaded, demo: !isDesktop,
     settings, openSettings, closeSettings, prefs, setPref,
     menu, openMenu: setMenu, closeMenu: () => setMenu(null),

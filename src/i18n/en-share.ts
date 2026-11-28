@@ -55,4 +55,47 @@ export const share: Record<string, Line> = {
   "Bunların hiçbiri {0} mağazasında satılmıyor.": "None of these are sold at {0}.",
   "Bunlardan indirimde olan yok.": "None of these are on sale.",
   "Bunların hiçbiri seçili mağazada satılmıyor.": "None of these are sold at the chosen store.",
+  "Önceki mağazalar": "Earlier stores",
+  "Sonraki mağazalar": "More stores",
+
+  // the library's header line and "Ne oynasam?" inside a category
+  "{0} oyun": (a) => (a[0] === 1 || a[0] === '1' ? '1 game' : `${a[0]} games`),
+  "{0} yüklü": "{0} installed",
+  "en çok": "most played",
+  "en son": "last played",
+  "{0} · süzülmüş": "{0} · filtered",
+  "{0} içinden seçer": "Picks from {0}",
+  "Tüm kütüphaneden seç": "Pick from the whole library",
+
+  // Steam collections
+  "Steam kategorileri": "Steam collections",
+  "Steam kategorilerini al": "Bring in Steam collections",
+  "Steam’den al": "Bring in from Steam",
+  "Steam kütüphanen okunuyor…": "Reading your Steam library…",
+  "Steam’de kendi oluşturduğun bir koleksiyon bulunamadı.": "No collections of your own were found in Steam.",
+  "Aynı adda dinamik kategori var": "A dynamic category has this name",
+  "Kütüphanede yok": "Not in the library",
+  "{0} oyun · var olana eklenir": "{0} games · added to the existing one",
+  "Steam favorilerini de favorilere ekle ({0})": "Also add Steam favourites to Favourites ({0})",
+  "{0} kategoriyi aktar": (a) => (a[0] === 1 || a[0] === '1' ? 'Bring in 1 collection' : `Bring in ${a[0]} collections`),
+  "Favorileri aktar": "Bring in favourites",
+  "Steam’den {0} kategori aktarıldı": (a) => (a[0] === 1 || a[0] === '1' ? '1 collection brought in from Steam' : `${a[0]} collections brought in from Steam`),
+  "Steam favorileri eklendi": "Steam favourites added",
+
+  // controller
+  "Geniş ekrana geçilsin mi?": "Switch to the wide screen?",
+  "Geniş ekrana geç": "Switch to wide screen",
+  "Masaüstüne dön": "Back to the desktop",
+  "Kumandada Start ya da Xbox/PS tuşu geniş ekranı sorsun": "Start or the Xbox/PS button on a controller offers the wide screen",
+
+  // themes
+  "Yeşil ekran, terminal": "Green screen, terminal",
+  "Cam, gökyüzü": "Glass, sky",
+  "Gazete, mürekkep": "Newsprint, ink",
+
+  // the game page
+  "Oyun hakkında": "About the game",
+  "En nadirleri": "Rarest",
+  "Açık": "On",
+  "· maç sırasında burada ve kenar çubuğunda görünür": "· shows here and in the sidebar during a match",
 };

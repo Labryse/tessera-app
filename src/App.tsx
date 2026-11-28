@@ -17,7 +17,9 @@ import { Splash } from './components/Splash';
 import { ScanDialog } from './components/ScanDialog';
 import { AddGameDialog, MatchDialog } from './components/GameMatch';
 import { BigPicture } from './components/BigPicture';
-import { usePad } from './lib/pad';
+import { usePadNav } from './lib/padnav';
+import { Modal } from './components/Modal';
+import { t as tr } from './lib/i18n';
 import { reopened, syncLang } from './lib/i18n';
 import { Welcome } from './components/Welcome';
 import { useTrackedEvents } from './components/Track';
@@ -32,8 +34,14 @@ const editable = (t: EventTarget | null) =>
 
 function Shell() {
   const { route, theme, toast, back, openSettings, settings, closeSettings, big, setBig, prefs } = useStore();
-  // Start (or the guide button) on a controller opens the wide-screen mode
-  usePad((a) => { if (a === 'start') setBig(true); }, prefs.padOpensBig && !big);
+  // a controller moves around the window; Start or the guide button asks before the wide-screen mode
+  const [bigAsk, setBigAsk] = useState(false);
+  usePadNav({
+    enabled: !big, back, bigAsked: bigAsk,
+    askBig: () => { if (prefs.padOpensBig) setBigAsk(true); },
+    openBig: () => { setBigAsk(false); setBig(true); },
+    closeAsk: () => setBigAsk(false),
+  });
   const [paletteOpen, setPaletteOpen] = useState(false);
   const { nav, list } = cleanLayout(useLayout());
   const withList = list !== 'off' && (route.name === 'library' || route.name === 'game');
@@ -98,6 +106,12 @@ function Shell() {
       <AddGameDialog />
       <MatchDialog />
       <div className={`toast ${toast ? 'is-on' : ''}`} role="status" aria-live="polite">{toast}</div>
+      <Modal open={bigAsk} onClose={() => setBigAsk(false)} label={tr('Geniş ekrana geçilsin mi?')} title={tr('Geniş ekrana geçilsin mi?')} size="sm" className="big-ask">
+        <div className="dialog-actions">
+          <button className="btn btn-ghost" onClick={() => setBigAsk(false)}>{tr('Vazgeç')}</button>
+          <button className="btn btn-primary" autoFocus onClick={() => { setBigAsk(false); setBig(true); }}>{tr('Geniş ekrana geç')}</button>
+        </div>
+      </Modal>
       <BigPicture />
       <Welcome />
       <ErrorReport />

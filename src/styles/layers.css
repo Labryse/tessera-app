@@ -79,6 +79,9 @@
 .p2-top { display: flex; align-items: flex-start; justify-content: space-between; }
 .p2-heading { font-size: 22px; line-height: 28px; font-weight: 650; letter-spacing: -0.015em; }
 .p2-top kbd { margin: 0 2px; }
+.p2-scope { display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 8px 0 10px; border-radius: 999px; background: var(--raised); box-shadow: 0 0 0 1px var(--border); color: var(--text); font-weight: 600; font-size: 12px; vertical-align: 1px; }
+.p2-scope:hover { background: var(--active); }
+.p2-scope svg { opacity: 0.6; }
 
 .p2-body { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 36px; align-items: center; flex: 1; }
 .p2-stage { perspective: 900px; display: grid; place-items: center; padding: 6px; }

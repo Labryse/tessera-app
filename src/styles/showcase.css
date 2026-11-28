@@ -209,8 +209,19 @@ button.wl-else:hover { border-color: var(--accent); }
 /* ---------------------------------------------------------------- price search: by store */
 .shop-narrow { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .shop-narrow > .sc-chips { flex: none; }
-/* the store row scrolls sideways and fades at its end instead of being cut */
-.shop-narrow > .shop-stores { flex: 0 1 auto; min-width: 0; overflow-x: auto; scrollbar-width: none; mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent); }
+/* the store row scrolls sideways (wheel, arrows, drag on touch) and fades where there is more */
+.shop-stores-wrap { position: relative; flex: 0 1 auto; min-width: 0; display: flex; }
+.shop-narrow .shop-stores { min-width: 0; overflow-x: auto; scrollbar-width: none; scroll-padding-inline: 44px; overscroll-behavior-x: contain; }
+.shop-stores-wrap.more-right .shop-stores { mask-image: linear-gradient(90deg, #000 calc(100% - 64px), transparent calc(100% - 8px)); }
+.shop-stores-wrap.more-left .shop-stores { mask-image: linear-gradient(90deg, transparent 8px, #000 64px); }
+.shop-stores-wrap.more-left.more-right .shop-stores { mask-image: linear-gradient(90deg, transparent 8px, #000 64px, #000 calc(100% - 64px), transparent calc(100% - 8px)); }
+.shop-stores-arrow {
+  position: absolute; top: 50%; translate: 0 -50%; width: 28px; height: 28px; border-radius: 999px; display: grid; place-items: center;
+  background: var(--raised); color: var(--text); box-shadow: 0 0 0 1px var(--border), 0 4px 12px rgba(0, 0, 0, 0.25); transition: background 0.15s;
+}
+.shop-stores-arrow:hover { background: var(--active); }
+.shop-stores-arrow.is-left { left: 0; }
+.shop-stores-arrow.is-right { right: 0; }
 .shop-stores::-webkit-scrollbar { display: none; }
 .shop-stores button { flex: none; }
 .shop-narrow .sc-chips button { height: 30px; padding: 0 12px; }

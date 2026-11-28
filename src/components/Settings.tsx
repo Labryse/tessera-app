@@ -37,6 +37,11 @@ const PREVIEW: Record<ThemeId, { ground: string; surface: string; raised: string
     bg: 'radial-gradient(60% 50% at 20% 15%, rgba(40,140,160,0.55), transparent 70%), radial-gradient(60% 50% at 85% 40%, rgba(30,80,160,0.5), transparent 70%), #031018' },
   ember: { ground: '#130e0b', surface: '#1a1410', raised: '#2f241c', text: '#f6eadf', accent: '#ff9c52',
     bg: 'radial-gradient(90% 60% at 50% 115%, rgba(255,120,40,0.4), transparent 70%), #130e0b' },
+  phosphor: { ground: '#050806', surface: '#081009', raised: '#132617', text: '#b6ffc8', accent: '#39ff7a', radius: 1, edge: '#1f5a33',
+    bg: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.35) 0 1px, transparent 1px 3px), radial-gradient(90% 80% at 50% 40%, #0d1f12, #030503)' },
+  aero: { ground: '#9fd6f7', surface: 'rgba(255,255,255,0.75)', raised: '#d6ecfb', text: '#0f2a40', accent: '#0a84d6', radius: 10, edge: 'rgba(255,255,255,0.95)',
+    bg: 'radial-gradient(80% 40% at 20% 110%, rgba(120,210,90,0.7), transparent 70%), linear-gradient(180deg, #5bb4ee, #dff1fb)' },
+  press: { ground: '#e9e3d6', surface: '#faf8f2', raised: '#efeadf', text: '#121110', accent: '#c8102e', radius: 0, edge: '#1b1916' },
 };
 
 function Toggle({ on, onChange, label, hint }: { on: boolean; onChange: (v: boolean) => void; label: string; hint?: string }) {
@@ -199,7 +204,7 @@ function LibraryPrefs() {
         {demo && <div className="set-row"><span className="set-hint">{tr('Masaüstü uygulamasında çalışır.')}</span></div>}
       </div>
       <div className="set-group">
-        <Toggle label={tr('Kumandada Start geniş ekranı açsın')} hint={tr('Geniş ekran, televizyonda kumandayla gezmek için. Klavyede F11 ile de açılır.')} on={prefs.padOpensBig} onChange={(v) => setPref('padOpensBig', v)} />
+        <Toggle label={tr('Kumandada Start ya da Xbox/PS tuşu geniş ekranı sorsun')} hint={tr('Geniş ekran, televizyonda kumandayla gezmek için. Klavyede F11 ile de açılır.')} on={prefs.padOpensBig} onChange={(v) => setPref('padOpensBig', v)} />
         <div className="set-row"><button className="btn btn-sm" onClick={() => { closeSettings(); setBig(true); }}>{tr('Geniş ekranı aç')}</button></div>
       </div>
     </div>
